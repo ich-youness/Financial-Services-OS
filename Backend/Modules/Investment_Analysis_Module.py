@@ -32,7 +32,7 @@ MarketResearchBot = Agent(
     name="Market Research Bot",
     # model=OpenAIChat(id="gpt-4o-mini", api_key=api_key_openai),
     model=Gemini(id="gemini-2.5-pro",api_key=api_key_gemini),
-    # model=MistralChat(id="magistral-medium-2507", api_key="yDAsZfgLBVDUVzNxjFBuhyAfcLLiZLLI"),
+    
     tools=[
         # ScrapeGraphTools(),
         # FileTools(),
@@ -222,7 +222,7 @@ def risk_parity_portfolio(returns: pd.DataFrame) -> dict:
 PortfolioOptimizerAgent = Agent(
     name="Portfolio Optimizer Agent",
     # model=Gemini(id=id_gemini, api_key=api_key_gemini),
-    model=MistralChat(id="mistral-medium-2508", api_key="yDAsZfgLBVDUVzNxjFBuhyAfcLLiZLLI"),
+    
     tools=[
         analyze_market_data,  # market metrics from OHLCV
         YFinanceTools(stock_price=True, analyst_recommendations=True, stock_fundamentals=True,
@@ -314,7 +314,7 @@ RecommendationEngineBot = Agent(
     name="Recommendation Engine Bot",
     # model=OpenAIChat(id=OPENAI_ID, api_key=OPENAI_KEY),
     # model=Gemini(id=id_gemini,api_key=api_key_gemini),
-    model=MistralChat(id="mistral-medium-2508", api_key="yDAsZfgLBVDUVzNxjFBuhyAfcLLiZLLI"),
+    
     tools=[
         FileTools(),         # read/write client and product files
         YFinanceTools(),

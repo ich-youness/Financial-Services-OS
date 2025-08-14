@@ -405,10 +405,10 @@ def correlation_matrix_analysis(self, tickers: list, from_date: str, to_date: st
 
 MarketRiskBot = Agent(
     name="Market Risk agent",
-    # model=OpenAIChat(id="gpt-4o-mini", api_key="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"),
+  
     model=Gemini(id=id_gemini,api_key=api_key_gemini),
     # model=Gemini(id="gemini-2.0-flash-lite",api_key=api_key_gemini),
-    # model=MistralChat(id="mistral-small-2506", api_key="yDAsZfgLBVDUVzNxjFBuhyAfcLLiZLLI"),
+    
     tools=[
         # CustomMarketDataTool(api_key=os.getenv("MARKET_API_KEY")),  # Your live data fetcher
         YFinanceTools(stock_price=True, analyst_recommendations=True, stock_fundamentals=True, historical_prices=True, company_info=True, income_statements=True, key_financial_ratios=True, company_news=True),
@@ -506,7 +506,7 @@ knowledge_base_Compliance = MarkdownKnowledgeBase(
 TransactionMonitoringAgent = Agent(
     name="Transaction Checker Agent",
     # model=Gemini(id=id_gemini, api_key=api_key_gemini),
-    model=MistralChat(id="mistral-medium-2508", api_key="yDAsZfgLBVDUVzNxjFBuhyAfcLLiZLLI"),
+    
     # tools=[],
     description="""
 An AI-powered compliance and anti–money laundering (AML) monitoring agent that analyzes transaction data, 

@@ -64,7 +64,7 @@ Always present results in a clear, actionable engagement plan format.
 UpsellIdentifierBot = Agent(
     name="Upsell Identifier Bot",
     # model=OpenAIChat(id=id_openai, api_key=api_key_openai),
-    model=MistralChat(id="mistral-medium-2508", api_key="yDAsZfgLBVDUVzNxjFBuhyAfcLLiZLLI"),
+    
     description="""
 An AI agent that identifies cross-sell and upsell opportunities for clients 
 based on account data, life stage, product usage, and peer benchmarks.
@@ -105,7 +105,7 @@ Always present recommendations in a concise report format with reasoning.
 OnboardingGuideAgent = Agent(
     name="Onboarding Guide Agent",
     # model=OpenAIChat(id=id_openai, api_key=api_key_openai),
-    model=MistralChat(id="mistral-medium-2508", api_key="yDAsZfgLBVDUVzNxjFBuhyAfcLLiZLLI"),
+
     description="""
 An AI onboarding assistant that ensures new clients complete all required steps
 for account setup, identity verification, and product activation in compliance with regulations.
