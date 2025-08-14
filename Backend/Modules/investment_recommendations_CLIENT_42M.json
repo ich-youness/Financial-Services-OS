@@ -1,0 +1,108 @@
+{
+  "client_id": "CLIENT_42M_20240814",
+  "recommendations": [
+    {
+      "product_id": "ICLN",
+      "product_name": "iShares Global Clean Energy ETF",
+      "product_type": "ETF",
+      "recommended_allocation": 0.20,
+      "suitability_score": "High",
+      "reasons": [
+        "Strong alignment with client's interest in renewable energy.",
+        "Diversified exposure to global clean energy companies.",
+        "Moderate to high risk tolerance matches the fund's volatility."
+      ],
+      "risks": [
+        "Market volatility due to regulatory changes in energy policies.",
+        "Potential underperformance during periods of low oil prices.",
+        "Currency risk due to global exposure."
+      ],
+      "fees": "0.42% expense ratio"
+    },
+    {
+      "product_id": "XLV",
+      "product_name": "Health Care Select Sector SPDR Fund",
+      "product_type": "ETF",
+      "recommended_allocation": 0.25,
+      "suitability_score": "High",
+      "reasons": [
+        "Strong historical performance and stability in the healthcare sector.",
+        "Low volatility compared to broader market indices.",
+        "Alignment with client's interest in healthcare."
+      ],
+      "risks": [
+        "Regulatory changes impacting healthcare companies.",
+        "Potential underperformance in a high-interest-rate environment.",
+        "Sector-specific risks such as drug trial failures."
+      ],
+      "fees": "0.10% expense ratio"
+    },
+    {
+      "product_id": "QQQ",
+      "product_name": "Invesco QQQ Trust",
+      "product_type": "ETF",
+      "recommended_allocation": 0.30,
+      "suitability_score": "High",
+      "reasons": [
+        "Strong exposure to leading technology companies.",
+        "High growth potential in the tech sector.",
+        "Alignment with client's interest in technology."
+      ],
+      "risks": [
+        "High volatility due to market sentiment around tech stocks.",
+        "Potential regulatory risks impacting large tech firms.",
+        "Concentration risk in top holdings."
+      ],
+      "fees": "0.20% expense ratio"
+    },
+    {
+      "product_id": "VHT",
+      "product_name": "Vanguard Health Care Index Fund ETF Shares",
+      "product_type": "ETF",
+      "recommended_allocation": 0.15,
+      "suitability_score": "Medium",
+      "reasons": [
+        "Diversified exposure to the healthcare sector.",
+        "Lower expense ratio compared to peers.",
+        "Strong historical returns and stability."
+      ],
+      "risks": [
+        "Exposure to regulatory changes in healthcare.",
+        "Potential underperformance in economic downturns.",
+        "Sector-specific risks such as patent expirations."
+      ],
+      "fees": "0.10% expense ratio"
+    },
+    {
+      "product_id": "IBB",
+      "product_name": "iShares Biotechnology ETF",
+      "product_type": "ETF",
+      "recommended_allocation": 0.10,
+      "suitability_score": "Medium",
+      "reasons": [
+        "Focused exposure to the biotechnology sector.",
+        "Potential for high growth from innovative biotech firms.",
+        "Alignment with client's interest in healthcare."
+      ],
+      "risks": [
+        "High volatility due to clinical trial outcomes.",
+        "Regulatory risks impacting drug approvals.",
+        "Sector-specific risks such as high R&D costs."
+      ],
+      "fees": "0.45% expense ratio"
+    }
+  ],
+  "portfolio_level": {
+    "expected_return": "8-10% annually",
+    "expected_volatility": "Moderate to High",
+    "overall_suitability": "Compliant",
+    "disclosures": [
+      "Diversification does not guarantee a profit or protect against a loss in a declining market.",
+      "Investments in sector-specific ETFs carry concentration risk.",
+      "Past performance is not indicative of future results.",
+      "Fees and expenses will reduce returns.",
+      "Client's restrictions on tobacco and firearms companies are respected in all recommendations."
+    ]
+  },
+  "audit_log_reference": "AUDIT_20240814_42M_TECH_HEALTH_RENEW"
+}
