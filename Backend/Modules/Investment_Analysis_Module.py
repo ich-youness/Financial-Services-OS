@@ -407,7 +407,7 @@ RecommendationEngineBot = Agent(
 investment_router_team = Team(
     name="Investment Router Team",
     mode="route",
-    model=OpenAIChat("gpt-4o"),
+    model=Gemini(id=id_gemini, api_key=api_key_gemini),
     members=[MarketResearchBot, PortfolioOptimizerAgent, RecommendationEngineBot],
     show_tool_calls=True,
     markdown=True,

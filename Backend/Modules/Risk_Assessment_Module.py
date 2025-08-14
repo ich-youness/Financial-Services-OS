@@ -225,17 +225,17 @@ Analyze applicant financial and behavioral data to determine their likelihood of
 # CreditAnalyzerAgent.print_response("I'm a new graduate, i am 23 years old, i have 100$ as savings in my account, i wanna buy a car with a loan of 9k $, and i just strated working in a company as an ai engineer with a salary of 1k $ per month?",)
 # CreditAnalyzerAgent.print_response("I'm an ai engineer, i am 25 years old, i have 3500$ as savings in my account, i wanna buy a car with a loan of 14k $, and i just strated working in a company as an ai engineer with a salary of 1.8k $ per month?",)
 
-CreditAnalyzerAgent.print_response("""
-Evaluate the creditworthiness of the following applicant:
+# CreditAnalyzerAgent.print_response("""
+# Evaluate the creditworthiness of the following applicant:
 
-Name: John Smith
-Credit Report: 2 late payments in the last 24 months, credit utilization at 35%, no bankruptcies.
-Income Verification: $78,000 annual salary.
-Debt-to-Income Ratio: 28%
-Employment History: 6 years at the same company, stable industry.
-Collateral Value: $150,000 property against a $60,000 loan request.
+# Name: John Smith
+# Credit Report: 2 late payments in the last 24 months, credit utilization at 35%, no bankruptcies.
+# Income Verification: $78,000 annual salary.
+# Debt-to-Income Ratio: 28%
+# Employment History: 6 years at the same company, stable industry.
+# Collateral Value: $150,000 property against a $60,000 loan request.
 
-""")
+# """)
 
 def get_historical_stock_data(self, ticker: str, from_date: str, to_date: str, timespan: str = "day", multiplier: int = 1) -> list:
         """
@@ -657,3 +657,13 @@ financial_router_team = Team(
     ],
     show_members_responses=True,
 )
+
+# financial_router_team.print_response("""Evaluate the creditworthiness of the following applicant:
+
+# Name: John Smith
+# Credit Report: 2 late payments in the last 24 months, credit utilization at 35%, no bankruptcies.
+# Income Verification: $78,000 annual salary.
+# Debt-to-Income Ratio: 28%
+# Employment History: 6 years at the same company, stable industry.
+# Collateral Value: $150,000 property against a $60,000 loan request.
+# """, stream=True)
