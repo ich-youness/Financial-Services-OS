@@ -175,7 +175,7 @@ knowledge_base = MarkdownKnowledgeBase(
 
 CreditAnalyzerAgent = Agent(
     name="Credit Analyzer Agent",
-    model=MistralChat(id="mistral-small-2506", api_key="yDAsZfgLBVDUVzNxjFBuhyAfcLLiZLLI"),
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API")),
     tools=[calculate_credit_score],
     description="""
 An AI-powered credit underwriting agent designed to assess the creditworthiness of individuals or businesses.
@@ -405,10 +405,10 @@ def correlation_matrix_analysis(self, tickers: list, from_date: str, to_date: st
 
 MarketRiskBot = Agent(
     name="Market Risk agent",
-  
+   
     model=Gemini(id=id_gemini,api_key=api_key_gemini),
     # model=Gemini(id="gemini-2.0-flash-lite",api_key=api_key_gemini),
-    
+    # model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API")),
     tools=[
         # CustomMarketDataTool(api_key=os.getenv("MARKET_API_KEY")),  # Your live data fetcher
         YFinanceTools(stock_price=True, analyst_recommendations=True, stock_fundamentals=True, historical_prices=True, company_info=True, income_statements=True, key_financial_ratios=True, company_news=True),
@@ -506,7 +506,7 @@ knowledge_base_Compliance = MarkdownKnowledgeBase(
 TransactionMonitoringAgent = Agent(
     name="Transaction Checker Agent",
     # model=Gemini(id=id_gemini, api_key=api_key_gemini),
-    
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API")),
     # tools=[],
     description="""
 An AI-powered compliance and anti–money laundering (AML) monitoring agent that analyzes transaction data, 
@@ -559,43 +559,43 @@ Return results in the following JSON structure:
 
 
 
-TransactionMonitoringAgent.print_response("""
-Evaluate the following transaction for compliance risks:
+# TransactionMonitoringAgent.print_response("""
+# Evaluate the following transaction for compliance risks:
 
-Transaction ID: TX-982173
-Date: 2025-08-08
-Amount: $250,000
-Currency: USD
-Sender: GreenWave Imports LLC (Customer ID: C-45012)
-Sender Country: United States
-Receiver: SunBright Trading Co.
-Receiver Country: North Korea
-Payment Type: Wire Transfer
-Purpose: "Equipment purchase"
+# Transaction ID: TX-982173
+# Date: 2025-08-08
+# Amount: $250,000
+# Currency: USD
+# Sender: GreenWave Imports LLC (Customer ID: C-45012)
+# Sender Country: United States
+# Receiver: SunBright Trading Co.
+# Receiver Country: North Korea
+# Payment Type: Wire Transfer
+# Purpose: "Equipment purchase"
 
-Customer Profile:
-- Business type: Import/Export
-- Industry: Electronics
-- KYC Status: Verified
-- PEP Status: No
-- Transaction history: Mostly under $50,000, domestic and to low-risk jurisdictions
+# Customer Profile:
+# - Business type: Import/Export
+# - Industry: Electronics
+# - KYC Status: Verified
+# - PEP Status: No
+# - Transaction history: Mostly under $50,000, domestic and to low-risk jurisdictions
 
-Jurisdiction Requirements:
-- US regulations (OFAC sanctions apply)
-- Report all transactions over $10,000 to FinCEN within 24 hours
+# Jurisdiction Requirements:
+# - US regulations (OFAC sanctions apply)
+# - Report all transactions over $10,000 to FinCEN within 24 hours
 
-Config:
-- Compliance ruleset: US AML + OFAC
-- Violation threshold: >$10,000 without due diligence
-- Alert severity mapping: Sanctioned country = High
+# Config:
+# - Compliance ruleset: US AML + OFAC
+# - Violation threshold: >$10,000 without due diligence
+# - Alert severity mapping: Sanctioned country = High
 
-Please:
-1. Check for violations of AML or sanctions rules.
-2. Assign a compliance status.
-3. List alerts and violations in JSON format.
-4. Provide recommended next steps.
-5. Include an audit log reference.
-""", stream=True)
+# Please:
+# 1. Check for violations of AML or sanctions rules.
+# 2. Assign a compliance status.
+# 3. List alerts and violations in JSON format.
+# 4. Provide recommended next steps.
+# 5. Include an audit log reference.
+# """, stream=True)
 
 # TransactionMonitoringAgent.print_response("""
 # Evaluate the following transaction for compliance risks:
@@ -634,3 +634,26 @@ Please:
 # 4. Provide recommended next steps.
 # 5. Include an audit log reference.
 # """)
+
+
+
+financial_router_team = Team(
+    name="Financial Router Team",
+    mode="route",
+    # model=OpenAIChat("gpt-4o"),
+    model=Gemini(id=id_gemini, api_key=api_key_gemini),
+    members=[CreditAnalyzerAgent, MarketRiskBot, TransactionMonitoringAgent],
+    show_tool_calls=True,
+    markdown=True,
+    description="You are a financial query router that directs questions to the appropriate specialized agent.",
+    instructions=[
+        "Identify the main topic of the user's query and direct it to the relevant agent.",
+        "If the query is about credit scoring, loan approval, creditworthiness assessment, or related financial underwriting, route to CreditAnalyzerAgent.",
+        "If the query is about market risk analysis, Value at Risk (VaR), portfolio stress testing, stock data, or related market monitoring, route to MarketRiskBot.",
+        "If the query is about transaction compliance, AML checks, sanctions screening, or regulatory violations in transactions, route to TransactionMonitoringAgent.",
+        "If the query does not match any of the above categories, respond in English with: 'I can only handle queries related to credit analysis, market risk, or transaction compliance. Please rephrase your question accordingly.'",
+        "Always analyze the query's content before routing to an agent.",
+        "For ambiguous queries, ask for clarification before routing.",
+    ],
+    show_members_responses=True,
+)

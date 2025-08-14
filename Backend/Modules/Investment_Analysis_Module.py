@@ -18,7 +18,7 @@ import pandas as pd
 from scipy.stats import norm
 
 # from huggingface_hub import login
-# login(token="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")
+
 
 
 load_dotenv()
@@ -31,8 +31,8 @@ api_key_openai = os.getenv("api_key_openai")
 MarketResearchBot = Agent(
     name="Market Research Bot",
     # model=OpenAIChat(id="gpt-4o-mini", api_key=api_key_openai),
-    model=Gemini(id="gemini-2.5-pro",api_key=api_key_gemini),
-    
+    # model=Gemini(id="gemini-2.5-pro",api_key=api_key_gemini),
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API")),
     tools=[
         # ScrapeGraphTools(),
         # FileTools(),
@@ -222,7 +222,7 @@ def risk_parity_portfolio(returns: pd.DataFrame) -> dict:
 PortfolioOptimizerAgent = Agent(
     name="Portfolio Optimizer Agent",
     # model=Gemini(id=id_gemini, api_key=api_key_gemini),
-    
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API")),
     tools=[
         analyze_market_data,  # market metrics from OHLCV
         YFinanceTools(stock_price=True, analyst_recommendations=True, stock_fundamentals=True,
@@ -314,7 +314,7 @@ RecommendationEngineBot = Agent(
     name="Recommendation Engine Bot",
     # model=OpenAIChat(id=OPENAI_ID, api_key=OPENAI_KEY),
     # model=Gemini(id=id_gemini,api_key=api_key_gemini),
-    
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API")),
     tools=[
         FileTools(),         # read/write client and product files
         YFinanceTools(),
@@ -387,19 +387,39 @@ RecommendationEngineBot = Agent(
     """,
     markdown=True
 )
-RecommendationEngineBot.print_response("""
-Generate personalized investment recommendations for the following client profile:
+# RecommendationEngineBot.print_response("""
+# Generate personalized investment recommendations for the following client profile:
 
-Client Profile:
-- Age: 42
-- Investment Horizon: 15 years
-- Risk Tolerance: Moderate to High
-- Current Portfolio: 
-    * 40% US Equities
-    * 20% International Equities
-    * 25% Bonds
-    * 10% Real Estate
-    * 5% Cash
-- Preferences: Interested in technology, healthcare, and renewable energy sectors
-- Restrictions: Avoid tobacco and firearms companies
-""")
+# Client Profile:
+# - Age: 42
+# - Investment Horizon: 15 years
+# - Risk Tolerance: Moderate to High
+# - Current Portfolio: 
+#     * 40% US Equities
+#     * 20% International Equities
+#     * 25% Bonds
+#     * 10% Real Estate
+#     * 5% Cash
+# - Preferences: Interested in technology, healthcare, and renewable energy sectors
+# - Restrictions: Avoid tobacco and firearms companies
+# """)
+
+investment_router_team = Team(
+    name="Investment Router Team",
+    mode="route",
+    model=OpenAIChat("gpt-4o"),
+    members=[MarketResearchBot, PortfolioOptimizerAgent, RecommendationEngineBot],
+    show_tool_calls=True,
+    markdown=True,
+    description="You are an investment query router that directs questions to the appropriate specialized agent.",
+    instructions=[
+        "Identify the main topic of the user's query and direct it to the relevant agent.",
+        "If the query is about market research, trends, stock analysis, sector performance, or related investment insights, route to MarketResearchBot.",
+        "If the query is about portfolio optimization, allocation strategies, rebalancing, or risk-return analysis, route to PortfolioOptimizerAgent.",
+        "If the query is about personalized investment recommendations, suitability assessments, or product suggestions based on client profiles, route to RecommendationEngineBot.",
+        "If the query does not match any of the above categories, respond in English with: 'I can only handle queries related to market research, portfolio optimization, or investment recommendations. Please rephrase your question accordingly.'",
+        "Always analyze the query's content before routing to an agent.",
+        "For ambiguous queries, ask for clarification before routing.",
+    ],
+    show_members_responses=True,
+)

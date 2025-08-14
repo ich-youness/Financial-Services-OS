@@ -2,6 +2,7 @@ from agno.agent import Agent
 from agno.team.team import Team
 from agno.models.openai import OpenAIChat
 from agno.models.google import Gemini
+from agno.models.mistral import MistralChat
 from agno.tools.scrapegraph import ScrapeGraphTools
 from agno.tools.file import FileTools
 from agno.tools.exa import ExaTools
@@ -24,7 +25,8 @@ api_key_openai = os.getenv("api_key_openai")
 TransactionMonitorBot = Agent(
     name="Transaction Monitor Bot",
     # model=OpenAIChat(id=id_openai, api_key=api_key_openai),
-    model=Gemini(id=id_gemini,api_key=api_key_gemini),
+    # model=Gemini(id=id_gemini,api_key=api_key_gemini),
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API")),
     description="""
 An AI agent that monitors real-time transaction streams to detect anomalous or potentially fraudulent activity.
 It analyzes transaction data, account profiles, device fingerprints, location info, and behavioral patterns.
@@ -75,7 +77,8 @@ Present your output as a structured alert report for each flagged transaction.
 
 PatternRecognitionAgent = Agent(
     name="Pattern Recognition Agent",
-    model=OpenAIChat(id=id_openai, api_key=api_key_openai),
+    # model=OpenAIChat(id=id_openai, api_key=api_key_openai),
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API")),
     description="""
 An AI agent that analyzes historical fraud cases and transaction sequences to identify complex fraud patterns.
 It applies network analysis and feature engineering to improve fraud detection sensitivity and reduce false positives.
@@ -115,7 +118,8 @@ Present your findings and recommendations clearly, with examples of identified p
 
 InvestigationCoordinatorBot = Agent(
     name="Investigation Coordinator Bot",
-    model=OpenAIChat(id=id_openai, api_key=api_key_openai),
+    # model=OpenAIChat(id=id_openai, api_key=api_key_openai),
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API")),
     description="""
 An AI agent that manages fraud investigation workflows by prioritizing alerts, routing cases to investigators,
 and tracking resolution status. It enforces escalation rules and ensures timely case closure.
@@ -156,3 +160,23 @@ Present your workflow decisions clearly, prioritizing efficiency and compliance.
 
 # Please respond with a clear case management plan.
 # """)
+
+fraud_detection_router_team = Team(
+    name="Fraud Detection Router Team",
+    mode="route",
+    model=Gemini(id=id_gemini, api_key=api_key_gemini),
+    members=[TransactionMonitorBot, PatternRecognitionAgent, InvestigationCoordinatorBot],
+    show_tool_calls=True,
+    markdown=True,
+    description="You are a fraud detection query router that directs questions to the appropriate specialized agent.",
+    instructions=[
+        "Identify the main topic of the user's query and direct it to the relevant agent.",
+        "If the query is about real-time transaction monitoring, anomaly detection, fraud alerts, or analyzing individual transactions for suspicious activity, route to TransactionMonitorBot.",
+        "If the query is about analyzing historical fraud data, identifying patterns, network analysis, feature engineering, or improving fraud detection rules, route to PatternRecognitionAgent.",
+        "If the query is about managing fraud investigation workflows, prioritizing alerts, routing cases to investigators, tracking resolutions, or escalations, route to InvestigationCoordinatorBot.",
+        "If the query does not match any of the above categories, respond in English with: 'I can only handle queries related to transaction monitoring, pattern recognition, or investigation coordination in fraud detection. Please rephrase your question accordingly.'",
+        "Always analyze the query's content before routing to an agent.",
+        "For ambiguous queries, ask for clarification before routing.",
+    ],
+    show_members_responses=True,
+)

@@ -24,7 +24,8 @@ api_key_openai = os.getenv("api_key_openai")
 RelationshipManagerAgent = Agent(
     name="Relationship Manager Agent",
     # model=OpenAIChat(id=id_openai, api_key=api_key_openai),
-    model=Gemini(id=id_gemini,api_key=api_key_gemini),
+    # model=Gemini(id=id_gemini,api_key=api_key_gemini),
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API")),
     description="""
 An AI-powered relationship manager that analyzes client data, interactions, and life events 
 to generate personalized engagement strategies. Helps maintain high satisfaction and loyalty.
@@ -64,7 +65,7 @@ Always present results in a clear, actionable engagement plan format.
 UpsellIdentifierBot = Agent(
     name="Upsell Identifier Bot",
     # model=OpenAIChat(id=id_openai, api_key=api_key_openai),
-    
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API")),
     description="""
 An AI agent that identifies cross-sell and upsell opportunities for clients 
 based on account data, life stage, product usage, and peer benchmarks.
@@ -105,7 +106,7 @@ Always present recommendations in a concise report format with reasoning.
 OnboardingGuideAgent = Agent(
     name="Onboarding Guide Agent",
     # model=OpenAIChat(id=id_openai, api_key=api_key_openai),
-
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API")),
     description="""
 An AI onboarding assistant that ensures new clients complete all required steps
 for account setup, identity verification, and product activation in compliance with regulations.
@@ -128,17 +129,37 @@ Always return results in a structured checklist format with next steps.
     stream=True,
 )
 
-OnboardingGuideAgent.print_response("""
-Client: Emily Parker
-Jurisdiction: US
-Submitted Documents: Passport copy, utility bill (address verification)
-Account Application: Individual brokerage account, margin enabled
-Product Selections: US equity trading, options trading
-Funding Source: Linked checking account (verification pending)
-Missing: Social Security Number
+# OnboardingGuideAgent.print_response("""
+# Client: Emily Parker
+# Jurisdiction: US
+# Submitted Documents: Passport copy, utility bill (address verification)
+# Account Application: Individual brokerage account, margin enabled
+# Product Selections: US equity trading, options trading
+# Funding Source: Linked checking account (verification pending)
+# Missing: Social Security Number
 
-Task:
-1. Review the onboarding status.
-2. Identify missing steps and potential compliance issues.
-3. Provide a clear checklist for completion.
-""")
+# Task:
+# 1. Review the onboarding status.
+# 2. Identify missing steps and potential compliance issues.
+# 3. Provide a clear checklist for completion.
+# """)
+
+client_service_router_team = Team(
+    name="Client Service Router Team",
+    mode="route",
+    model=Gemini(id=id_gemini, api_key=api_key_gemini),
+    members=[RelationshipManagerAgent, UpsellIdentifierBot, OnboardingGuideAgent],
+    show_tool_calls=True,
+    markdown=True,
+    description="You are a client service query router that directs questions to the appropriate specialized agent.",
+    instructions=[
+        "Identify the main topic of the user's query and direct it to the relevant agent.",
+        "If the query is about client engagement, interaction history, satisfaction, loyalty, or personalized outreach strategies, route to RelationshipManagerAgent.",
+        "If the query is about identifying cross-sell, upsell opportunities, product gaps, or revenue potential based on client data, route to UpsellIdentifierBot.",
+        "If the query is about onboarding processes, KYC verification, account setup, or compliance checks for new clients, route to OnboardingGuideAgent.",
+        "If the query does not match any of the above categories, respond in English with: 'I can only handle queries related to relationship management, upsell identification, or client onboarding. Please rephrase your question accordingly.'",
+        "Always analyze the query's content before routing to an agent.",
+        "For ambiguous queries, ask for clarification before routing.",
+    ],
+    show_members_responses=True,
+)
