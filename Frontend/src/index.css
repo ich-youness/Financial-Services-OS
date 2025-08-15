@@ -1,0 +1,257 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Financial Services OS Design System - Professional & Modern */
+
+@layer base {
+  :root {
+    /* Core Brand Colors */
+    --background: 0 0% 99%;
+    --foreground: 215 25% 27%;
+    
+    /* Card System */
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 27%;
+    
+    /* Interactive Elements */
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 27%;
+    
+    /* Primary Brand - Financial Navy */
+    --primary: 215 28% 17%;
+    --primary-foreground: 0 0% 98%;
+    --primary-hover: 215 28% 22%;
+    
+    /* Secondary - Professional Gray */
+    --secondary: 215 16% 47%;
+    --secondary-foreground: 0 0% 98%;
+    --secondary-hover: 215 16% 42%;
+    
+    /* Muted Tones */
+    --muted: 215 16% 96%;
+    --muted-foreground: 215 16% 47%;
+    
+    /* Accent - Financial Blue */
+    --accent: 210 40% 48%;
+    --accent-foreground: 0 0% 98%;
+    --accent-hover: 210 40% 43%;
+    
+    /* Status Colors */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 98%;
+    --warning: 48 96% 53%;
+    --warning-foreground: 215 25% 27%;
+    
+    /* Module-specific Colors */
+    --risk-color: 0 84% 60%;
+    --investment-color: 142 76% 36%;
+    --client-color: 260 84% 60%;
+    --fraud-color: 25 95% 53%;
+    --compliance-color: 210 40% 48%;
+    --support-color: 280 60% 50%;
+    
+    /* Interface Elements */
+    --border: 215 20% 91%;
+    --input: 215 20% 91%;
+    --ring: 210 40% 48%;
+    
+    /* Layout */
+    --radius: 0.75rem;
+    --header-height: 4rem;
+    --sidebar-width: 16rem;
+    --sidebar-collapsed: 4rem;
+    
+    /* Shadows & Effects */
+    --shadow-card: 0 1px 3px 0 hsl(215 28% 17% / 0.1), 0 1px 2px 0 hsl(215 28% 17% / 0.06);
+    --shadow-card-hover: 0 4px 6px -1px hsl(215 28% 17% / 0.1), 0 2px 4px -1px hsl(215 28% 17% / 0.06);
+    --shadow-dropdown: 0 10px 15px -3px hsl(215 28% 17% / 0.1), 0 4px 6px -2px hsl(215 28% 17% / 0.05);
+    
+    /* Transitions */
+    --transition-base: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-colors: color 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Typography Scale */
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 1.875rem;
+    --text-4xl: 2.25rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+
+  .dark {
+    /* Core Brand Colors - Dark Mode */
+    --background: 215 28% 17%;
+    --foreground: 0 0% 95%;
+    
+    /* Card System */
+    --card: 215 27% 19%;
+    --card-foreground: 0 0% 95%;
+    
+    /* Interactive Elements */
+    --popover: 215 27% 19%;
+    --popover-foreground: 0 0% 95%;
+    
+    /* Primary Brand - Financial Navy */
+    --primary: 210 40% 48%;
+    --primary-foreground: 0 0% 98%;
+    --primary-hover: 210 40% 53%;
+    
+    /* Secondary - Professional Gray */
+    --secondary: 215 16% 25%;
+    --secondary-foreground: 0 0% 98%;
+    --secondary-hover: 215 16% 30%;
+    
+    /* Muted Tones */
+    --muted: 215 16% 25%;
+    --muted-foreground: 215 16% 65%;
+    
+    /* Accent - Financial Blue */
+    --accent: 210 40% 48%;
+    --accent-foreground: 0 0% 98%;
+    --accent-hover: 210 40% 53%;
+    
+    /* Status Colors */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 98%;
+    --warning: 48 96% 53%;
+    --warning-foreground: 215 25% 27%;
+    
+    /* Interface Elements */
+    --border: 215 20% 25%;
+    --input: 215 20% 25%;
+    --ring: 210 40% 48%;
+    
+    /* Sidebar Dark Mode */
+    --sidebar-background: 215 28% 17%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 210 40% 48%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 215 16% 25%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 215 20% 25%;
+    --sidebar-ring: 210 40% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+@layer components {
+  /* Module Card Variants */
+  .module-card {
+    @apply bg-card border border-border rounded-lg p-6 transition-all duration-200 hover:shadow-lg cursor-pointer;
+  }
+  
+  .module-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+  }
+  
+  .module-card-risk {
+    @apply border-l-4;
+    border-left-color: hsl(var(--risk-color));
+  }
+  
+  .module-card-investment {
+    @apply border-l-4;
+    border-left-color: hsl(var(--investment-color));
+  }
+  
+  .module-card-client {
+    @apply border-l-4;
+    border-left-color: hsl(var(--client-color));
+  }
+  
+  .module-card-fraud {
+    @apply border-l-4;
+    border-left-color: hsl(var(--fraud-color));
+  }
+  
+  .module-card-compliance {
+    @apply border-l-4;
+    border-left-color: hsl(var(--compliance-color));
+  }
+  
+  .module-card-support {
+    @apply border-l-4;
+    border-left-color: hsl(var(--support-color));
+  }
+
+  /* Agent Input Area */
+  .agent-input-area {
+    @apply bg-card border border-border rounded-lg p-4 space-y-4;
+  }
+  
+  /* Output Display Area */
+  .output-display {
+    @apply bg-muted/30 border border-border rounded-lg p-6 min-h-[200px];
+  }
+  
+  /* Sidebar Navigation */
+  .sidebar-nav-item {
+    @apply flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-accent/10;
+  }
+  
+  .sidebar-nav-item.active {
+    @apply bg-accent text-accent-foreground;
+  }
+  
+  /* Professional Header */
+  .app-header {
+    @apply bg-card border-b border-border px-6 py-4 flex items-center justify-between;
+    height: var(--header-height);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  /* Module Color Utilities */
+  .text-risk { color: hsl(var(--risk-color)); }
+  .text-investment { color: hsl(var(--investment-color)); }
+  .text-client { color: hsl(var(--client-color)); }
+  .text-fraud { color: hsl(var(--fraud-color)); }
+  .text-compliance { color: hsl(var(--compliance-color)); }
+  .text-support { color: hsl(var(--support-color)); }
+  
+  .bg-risk { background-color: hsl(var(--risk-color)); }
+  .bg-investment { background-color: hsl(var(--investment-color)); }
+  .bg-client { background-color: hsl(var(--client-color)); }
+  .bg-fraud { background-color: hsl(var(--fraud-color)); }
+  .bg-compliance { background-color: hsl(var(--compliance-color)); }
+  .bg-support { background-color: hsl(var(--support-color)); }
+}
