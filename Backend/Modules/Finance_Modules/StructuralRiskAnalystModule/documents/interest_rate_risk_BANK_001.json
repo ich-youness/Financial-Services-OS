@@ -1,0 +1,241 @@
+{
+  "bank_id": "BANK_001",
+  "reporting_date": "2024-01-31",
+  "reporting_period": "Q4 2024",
+  "regulatory_framework": "BCBS 368 / EBA Guidelines",
+  
+  "net_present_value_sensitivity": {
+    "economic_value_of_equity": {
+      "base_scenario": {
+        "assets": 2500000000,
+        "liabilities": 2000000000,
+        "eve": 500000000
+      },
+      "interest_rate_shocks": {
+        "parallel_shifts": {
+          "+100_bp": {
+            "assets": 2450000000,
+            "liabilities": 1980000000,
+            "eve": 470000000,
+            "change": -30000000,
+            "percentage_change": -6.0
+          },
+          "+200_bp": {
+            "assets": 2400000000,
+            "liabilities": 1960000000,
+            "eve": 440000000,
+            "change": -60000000,
+            "percentage_change": -12.0
+          },
+          "-100_bp": {
+            "assets": 2550000000,
+            "liabilities": 2020000000,
+            "eve": 530000000,
+            "change": 30000000,
+            "percentage_change": 6.0
+          },
+          "-200_bp": {
+            "assets": 2600000000,
+            "liabilities": 2040000000,
+            "eve": 560000000,
+            "change": 60000000,
+            "percentage_change": 12.0
+          }
+        },
+        "non_parallel_shifts": {
+          "steepening": {
+            "short_term": "+100_bp",
+            "long_term": "+200_bp",
+            "eve_change": -25000000,
+            "percentage_change": -5.0
+          },
+          "flattening": {
+            "short_term": "+200_bp",
+            "long_term": "+100_bp",
+            "eve_change": -35000000,
+            "percentage_change": -7.0
+          }
+        }
+      }
+    },
+    
+    "duration_measures": {
+      "modified_duration": {
+        "assets": 4.2,
+        "liabilities": 3.8,
+        "gap": 0.4
+      },
+      "effective_duration": {
+        "assets": 4.5,
+        "liabilities": 4.0,
+        "gap": 0.5
+      },
+      "convexity": {
+        "assets": 25.0,
+        "liabilities": 20.0,
+        "net_convexity": 5.0
+      }
+    }
+  },
+  
+  "earnings_at_risk": {
+    "net_interest_income": {
+      "base_scenario": {
+        "12_months": 120000000,
+        "24_months": 250000000,
+        "36_months": 380000000
+      },
+      "rate_scenarios": {
+        "+100_bp": {
+          "12_months": 125000000,
+          "24_months": 260000000,
+          "36_months": 395000000,
+          "change_12m": 5000000,
+          "change_24m": 10000000,
+          "change_36m": 15000000
+        },
+        "+200_bp": {
+          "12_months": 130000000,
+          "24_months": 270000000,
+          "36_months": 410000000,
+          "change_12m": 10000000,
+          "change_24m": 20000000,
+          "change_36m": 30000000
+        },
+        "-100_bp": {
+          "12_months": 115000000,
+          "24_months": 240000000,
+          "36_months": 365000000,
+          "change_12m": -5000000,
+          "change_24m": -10000000,
+          "change_36m": -15000000
+        },
+        "-200_bp": {
+          "12_months": 110000000,
+          "24_months": 230000000,
+          "36_months": 350000000,
+          "change_12m": -10000000,
+          "change_24m": -20000000,
+          "change_36m": -30000000
+        }
+      }
+    },
+    
+    "margin_at_risk": {
+      "net_interest_margin": {
+        "current": 0.025,
+        "target": 0.030,
+        "minimum": 0.020
+      },
+      "margin_volatility": {
+        "12_months": 0.002,
+        "24_months": 0.003,
+        "36_months": 0.004
+      }
+    }
+  },
+  
+  "irrbb_standardized_approach": {
+    "risk_categories": {
+      "gap_risk": {
+        "exposure": 500000000,
+        "risk_weight": 0.15,
+        "capital_requirement": 75000000
+      },
+      "basis_risk": {
+        "exposure": 300000000,
+        "risk_weight": 0.10,
+        "capital_requirement": 30000000
+      },
+      "optionality_risk": {
+        "exposure": 200000000,
+        "risk_weight": 0.20,
+        "capital_requirement": 40000000
+      }
+    },
+    "total_capital_requirement": 145000000,
+    "regulatory_limit": 75000000,
+    "compliance_status": "exceeds_limit"
+  },
+  
+  "credit_spread_risk": {
+    "banking_book_assets": {
+      "corporate_loans": {
+        "amount": 800000000,
+        "average_spread": 0.025,
+        "spread_duration": 3.5,
+        "spread_convexity": 15.0
+      },
+      "covered_bonds": {
+        "amount": 400000000,
+        "average_spread": 0.015,
+        "spread_duration": 4.2,
+        "spread_convexity": 18.0
+      },
+      "residential_mortgages": {
+        "amount": 600000000,
+        "average_spread": 0.020,
+        "spread_duration": 5.0,
+        "spread_convexity": 22.0
+      }
+    },
+    
+    "spread_sensitivity": {
+      "parallel_widening": {
+        "+50_bp": {
+          "eve_change": -15000000,
+          "percentage_change": -3.0
+        },
+        "+100_bp": {
+          "eve_change": -30000000,
+          "percentage_change": -6.0
+        }
+      },
+      "spread_curves": {
+        "investment_grade": "+75_bp",
+        "high_yield": "+150_bp",
+        "subprime": "+300_bp"
+      }
+    }
+  },
+  
+  "its_irrbb_templates": {
+    "template_1": {
+      "status": "completed",
+      "submission_date": "2024-01-15",
+      "next_update": "2024-04-15"
+    },
+    "template_2": {
+      "status": "completed",
+      "submission_date": "2024-01-15",
+      "next_update": "2024-04-15"
+    },
+    "template_3": {
+      "status": "completed",
+      "submission_date": "2024-01-15",
+      "next_update": "2024-04-15"
+    }
+  },
+  
+  "regulatory_compliance": {
+    "bcbs_368": "compliant",
+    "eba_guidelines": "compliant",
+    "its_irrbb": "compliant",
+    "next_review_date": "2024-04-30"
+  },
+  
+  "risk_limits": {
+    "eve_sensitivity": {
+      "limit": 75000000,
+      "current": 60000000,
+      "utilization": 80.0,
+      "status": "within_limit"
+    },
+    "nii_sensitivity": {
+      "limit": 24000000,
+      "current": 20000000,
+      "utilization": 83.3,
+      "status": "within_limit"
+    }
+  }
+} 

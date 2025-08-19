@@ -1,0 +1,21 @@
+{
+    "P&L": {
+        "Revenue": {"Actual": 1200000, "Budget": 1150000, "Prior": 1100000},
+        "COGS": {"Actual": 700000, "Budget": 680000, "Prior": 650000},
+        "Operating_Profit": {"Actual": 500000, "Budget": 470000, "Prior": 450000}
+    },
+    "Balance_Sheet": {
+        "Assets": {"Actual": 2500000, "Prior": 2400000},
+        "Liabilities": {"Actual": 1500000, "Prior": 1450000},
+        "Equity": {"Actual": 1000000, "Prior": 950000}
+    },
+    "Cash_Flow": {
+        "Operating": {"Actual": 300000, "Prior": 280000},
+        "Investing": {"Actual": -50000, "Prior": -40000},
+        "Financing": {"Actual": 20000, "Prior": 15000}
+    },
+    "Audit_Findings": [
+        {"Issue": "Intercompany elimination missing for Subsidiary A", "AdjustmentRequired": true},
+        {"Issue": "FX translation discrepancy for Subsidiary B", "AdjustmentRequired": true}
+    ]
+}

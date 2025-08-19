@@ -188,7 +188,11 @@
     @apply border-l-4;
     border-left-color: hsl(var(--investment-color));
   }
-  
+  .module-card-accounting {
+  @apply border-l-4;
+  border-left-color: hsl(var(--accounting-color));
+}
+
   .module-card-client {
     @apply border-l-4;
     border-left-color: hsl(var(--client-color));

@@ -1,0 +1,7 @@
+instrument_id,type,principal,currency,interest_rate,maturity_date,covenant,lender
+DEBT001,Loan,5000000,USD,4.5%,2027-06-30,Max Debt/EBITDA 3.5x,BankA
+DEBT002,Bond,10000000,USD,5.2%,2030-09-15,Interest Coverage ≥ 2.5x,Institutional Investors
+DEBT003,Loan,3000000,EUR,3.8%,2026-05-15,Maintain Liquidity ≥ 1.5x,BankC
+CREDIT01,CreditLine,2000000,USD,6.0%,2026-12-31,Available until maturity,BankB
+CREDIT02,CreditLine,1500000,EUR,4.2%,2025-11-01,Available until maturity,BankD
+EQUITY01,Equity,12000000,USD,N/A,N/A,N/A,Shareholders

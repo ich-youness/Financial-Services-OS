@@ -1,0 +1,52 @@
+{
+    "compliance_audit_report": {
+        "metadata": {
+            "generated": "2025-08-12",
+            "transactions_reviewed": 2,
+            "invalid_transactions_excluded": 1
+        },
+        "transactions": [
+            {
+                "date": "2025-08-10",
+                "amount": 1500,
+                "account_code": "1200",
+                "description": "Office Supplies",
+                "type": "expense",
+                "status": "valid",
+                "compliance_status": "compliant",
+                "notes": "Expense appears reasonable and properly categorized"
+            },
+            {
+                "date": "2025-08-11",
+                "amount": 5000,
+                "account_code": "2001",
+                "description": "Loan Payment",
+                "type": "liability",
+                "status": "valid",
+                "compliance_status": "compliant",
+                "notes": "Liability payment appears properly documented"
+            }
+        ],
+        "excluded_transactions": [
+            {
+                "description": "Product Sale",
+                "reason_for_exclusion": "Data format issues"
+            }
+        ],
+        "findings": {
+            "anomalies_detected": 0,
+            "patterns_identified": 0,
+            "compliance_violations": 0,
+            "regulatory_issues": 0
+        },
+        "analysis": {
+            "overall_compliance": "All reviewed transactions appear to be compliant with general accounting standards.",
+            "risk_assessment": "Low risk identified based on the transactions reviewed.",
+            "recommendations": [
+                "Maintain current documentation standards for expenses and liabilities",
+                "Continue monitoring transaction patterns as more data becomes available",
+                "Ensure proper data formatting for all transactions to avoid exclusions"
+            ]
+        }
+    }
+}

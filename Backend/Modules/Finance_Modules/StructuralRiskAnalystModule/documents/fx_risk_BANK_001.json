@@ -1,0 +1,295 @@
+{
+  "bank_id": "BANK_001",
+  "reporting_date": "2024-01-31",
+  "reporting_period": "Q4 2024",
+  "regulatory_framework": "Basel III / Local FX Regulations",
+  
+  "net_open_position": {
+    "trading_book": {
+      "spot_positions": {
+        "usd": {
+          "long": 50000000,
+          "short": 30000000,
+          "net": 20000000,
+          "currency": "USD"
+        },
+        "eur": {
+          "long": 80000000,
+          "short": 60000000,
+          "net": 20000000,
+          "currency": "EUR"
+        },
+        "gbp": {
+          "long": 30000000,
+          "short": 40000000,
+          "net": -10000000,
+          "currency": "GBP"
+        },
+        "jpy": {
+          "long": 20000000,
+          "short": 25000000,
+          "net": -5000000,
+          "currency": "JPY"
+        }
+      },
+      "forward_positions": {
+        "usd": {
+          "long": 25000000,
+          "short": 15000000,
+          "net": 10000000,
+          "currency": "USD"
+        },
+        "eur": {
+          "long": 40000000,
+          "short": 35000000,
+          "net": 5000000,
+          "currency": "EUR"
+        },
+        "gbp": {
+          "long": 15000000,
+          "short": 20000000,
+          "net": -5000000,
+          "currency": "GBP"
+        }
+      },
+      "options_positions": {
+        "usd": {
+          "long": 10000000,
+          "short": 8000000,
+          "net": 2000000,
+          "currency": "USD"
+        },
+        "eur": {
+          "long": 15000000,
+          "short": 12000000,
+          "net": 3000000,
+          "currency": "EUR"
+        }
+      }
+    },
+    
+    "banking_book": {
+      "structural_positions": {
+        "usd": {
+          "assets": 150000000,
+          "liabilities": 120000000,
+          "net": 30000000,
+          "currency": "USD"
+        },
+        "eur": {
+          "assets": 200000000,
+          "liabilities": 180000000,
+          "net": 20000000,
+          "currency": "EUR"
+        },
+        "gbp": {
+          "assets": 80000000,
+          "liabilities": 90000000,
+          "net": -10000000,
+          "currency": "GBP"
+        }
+      },
+      "investment_positions": {
+        "usd": {
+          "amount": 50000000,
+          "currency": "USD"
+        },
+        "eur": {
+          "amount": 60000000,
+          "currency": "EUR"
+        }
+      }
+    },
+    
+    "total_nop": {
+      "usd": {
+        "net_position": 62000000,
+        "usd_equivalent": 62000000,
+        "regulatory_limit": 20000000,
+        "status": "exceeds_limit"
+      },
+      "eur": {
+        "net_position": 48000000,
+        "usd_equivalent": 52000000,
+        "regulatory_limit": 20000000,
+        "status": "exceeds_limit"
+      },
+      "gbp": {
+        "net_position": -20000000,
+        "usd_equivalent": -25000000,
+        "regulatory_limit": 20000000,
+        "status": "within_limit"
+      },
+      "jpy": {
+        "net_position": -5000000,
+        "usd_equivalent": -350000,
+        "regulatory_limit": 20000000,
+        "status": "within_limit"
+      }
+    },
+    
+    "aggregate_nop": {
+      "total_long": 114000000,
+      "total_short": 68000000,
+      "net_aggregate": 46000000,
+      "regulatory_limit": 40000000,
+      "status": "exceeds_limit"
+    }
+  },
+  
+  "fx_sensitivity_measures": {
+    "delta": {
+      "usd": 0.65,
+      "eur": 0.58,
+      "gbp": -0.32,
+      "jpy": -0.08
+    },
+    "gamma": {
+      "usd": 0.12,
+      "eur": 0.15,
+      "gbp": 0.08,
+      "jpy": 0.02
+    },
+    "vega": {
+      "usd": 0.25,
+      "eur": 0.30,
+      "gbp": 0.18,
+      "jpy": 0.05
+    },
+    "theta": {
+      "usd": -0.05,
+      "eur": -0.06,
+      "gbp": -0.03,
+      "jpy": -0.01
+    }
+  },
+  
+  "stress_testing": {
+    "currency_shocks": {
+      "usd_appreciation": {
+        "scenario": "+20%",
+        "capital_impact": -12400000,
+        "liquidity_impact": -8000000
+      },
+      "eur_appreciation": {
+        "scenario": "+20%",
+        "capital_impact": -10400000,
+        "liquidity_impact": -6000000
+      },
+      "gbp_depreciation": {
+        "scenario": "-20%",
+        "capital_impact": 5000000,
+        "liquidity_impact": 3000000
+      },
+      "jpy_depreciation": {
+        "scenario": "-20%",
+        "capital_impact": 700000,
+        "liquidity_impact": 400000
+      }
+    },
+    
+    "correlation_scenarios": {
+      "safe_haven_flows": {
+        "description": "USD and EUR strengthen, GBP and JPY weaken",
+        "capital_impact": -15000000,
+        "liquidity_impact": -10000000
+      },
+      "risk_off_scenario": {
+        "description": "All currencies weaken against USD",
+        "capital_impact": -8000000,
+        "liquidity_impact": -5000000
+      },
+      "emerging_market_crisis": {
+        "description": "EM currencies collapse, major currencies strengthen",
+        "capital_impact": -20000000,
+        "liquidity_impact": -12000000
+      }
+    }
+  },
+  
+  "hedging_effectiveness": {
+    "hedging_strategies": {
+      "natural_hedging": {
+        "usd": {
+          "assets": 150000000,
+          "liabilities": 120000000,
+          "natural_hedge": 30000000,
+          "effectiveness": 0.85
+        },
+        "eur": {
+          "assets": 200000000,
+          "liabilities": 180000000,
+          "natural_hedge": 20000000,
+          "effectiveness": 0.80
+        }
+      },
+      "derivative_hedging": {
+        "forward_contracts": {
+          "usd": {
+            "notional": 40000000,
+            "hedge_ratio": 0.65,
+            "effectiveness": 0.92
+          },
+          "eur": {
+            "notional": 30000000,
+            "hedge_ratio": 0.63,
+            "effectiveness": 0.89
+          }
+        },
+        "options_strategies": {
+          "usd": {
+            "notional": 20000000,
+            "hedge_ratio": 0.32,
+            "effectiveness": 0.78
+          },
+          "eur": {
+            "notional": 15000000,
+            "hedge_ratio": 0.31,
+            "effectiveness": 0.75
+          }
+        }
+      }
+    },
+    
+    "overall_effectiveness": {
+      "total_exposure": 46000000,
+      "hedged_exposure": 32000000,
+      "hedge_ratio": 0.70,
+      "effectiveness_score": 0.85,
+      "target": 0.80,
+      "status": "meets_target"
+    }
+  },
+  
+  "regulatory_compliance": {
+    "individual_currency_limits": {
+      "usd": "non_compliant",
+      "eur": "non_compliant",
+      "gbp": "compliant",
+      "jpy": "compliant"
+    },
+    "aggregate_limit": "non_compliant",
+    "hedging_requirements": "compliant",
+    "next_review_date": "2024-04-30"
+  },
+  
+  "risk_limits": {
+    "individual_currency": {
+      "limit": 20000000,
+      "highest_exposure": 62000000,
+      "utilization": 310.0,
+      "status": "exceeds_limit"
+    },
+    "aggregate_exposure": {
+      "limit": 40000000,
+      "current": 46000000,
+      "utilization": 115.0,
+      "status": "exceeds_limit"
+    },
+    "hedging_effectiveness": {
+      "minimum": 0.80,
+      "current": 0.85,
+      "status": "within_limit"
+    }
+  }
+} 

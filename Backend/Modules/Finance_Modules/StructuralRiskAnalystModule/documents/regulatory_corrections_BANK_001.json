@@ -1,0 +1,277 @@
+{
+  "bank_id": "BANK_001",
+  "reporting_date": "2024-01-31",
+  "reporting_period": "Q4 2024",
+  "correction_reference": "CORR_2024_001",
+  
+  "error_identification": {
+    "detection_method": "regulator_feedback",
+    "detection_date": "2024-02-15",
+    "error_type": "calculation_error",
+    "severity": "high",
+    "regulatory_impact": "capital_adequacy_reporting",
+    "affected_reports": [
+      "COREP_2024_Q4",
+      "FINREP_2024_Q4",
+      "LCR_2024_Q4",
+      "NSFR_2024_Q4"
+    ]
+  },
+  
+  "error_details": {
+    "description": "Incorrect risk weight application for corporate exposures in RWA calculation",
+    "root_cause": "Data mapping error between risk rating system and regulatory calculation engine",
+    "affected_exposures": {
+      "corporate_loans": {
+        "amount": 300000000,
+        "incorrect_risk_weight": 0.75,
+        "correct_risk_weight": 1.0,
+        "rwa_impact": 75000000
+      },
+      "covered_bonds": {
+        "amount": 60000000,
+        "incorrect_risk_weight": 0.15,
+        "correct_risk_weight": 0.15,
+        "rwa_impact": 0
+      }
+    },
+    "total_rwa_impact": 75000000,
+    "capital_ratio_impact": {
+      "cet1_ratio": -0.0167,
+      "tier1_ratio": -0.0167,
+      "total_capital_ratio": -0.0167
+    }
+  },
+  
+  "correction_process": {
+    "correction_date": "2024-02-20",
+    "corrected_by": "Structural_Risk_Analyst_Team",
+    "correction_methodology": "Data reconciliation and recalculation",
+    "data_sources_updated": [
+      "risk_rating_system",
+      "regulatory_calculation_engine",
+      "data_warehouse"
+    ],
+    "validation_steps": [
+      "Source data reconciliation",
+      "Calculation verification",
+      "Regulatory compliance check",
+      "Management review and approval"
+    ],
+    "audit_trail": "complete"
+  },
+  
+  "corrected_metrics": {
+    "risk_weighted_assets": {
+      "before_correction": 447700000,
+      "after_correction": 522700000,
+      "change": 75000000
+    },
+    "capital_ratios": {
+      "cet1_ratio": {
+        "before": 0.1898,
+        "after": 0.1626,
+        "change": -0.0272,
+        "status": "compliant"
+      },
+      "tier1_ratio": {
+        "before": 0.2234,
+        "after": 0.1914,
+        "change": -0.0320,
+        "status": "compliant"
+      },
+      "total_capital_ratio": {
+        "before": 0.2680,
+        "after": 0.2295,
+        "change": -0.0385,
+        "status": "compliant"
+      }
+    }
+  },
+  
+  "multi_regulatory_compliance": {
+    "mifid_ii": {
+      "transaction_reporting": {
+        "status": "corrected",
+        "correction_date": "2024-02-20",
+        "affected_period": "Q4 2024",
+        "correction_details": "Updated transaction data with corrected counterparty risk ratings"
+      },
+      "best_execution": {
+        "status": "compliant",
+        "review_date": "2024-02-18",
+        "findings": "No issues identified"
+      },
+      "transparency_obligations": {
+        "status": "compliant",
+        "review_date": "2024-02-18",
+        "findings": "All transparency requirements met"
+      }
+    },
+    
+    "emir": {
+      "otc_derivatives_reporting": {
+        "status": "corrected",
+        "correction_date": "2024-02-20",
+        "affected_period": "Q4 2024",
+        "correction_details": "Updated trade reporting with corrected risk metrics"
+      },
+      "clearing_obligations": {
+        "status": "compliant",
+        "review_date": "2024-02-18",
+        "findings": "All clearing obligations met"
+      },
+      "margining_requirements": {
+        "status": "compliant",
+        "review_date": "2024-02-18",
+        "findings": "Margin calculations accurate"
+      }
+    },
+    
+    "dodd_frank_act": {
+      "swap_data_reporting": {
+        "status": "corrected",
+        "correction_date": "2024-02-20",
+        "affected_period": "Q4 2024",
+        "correction_details": "Updated SDR reporting with corrected risk metrics"
+      },
+      "clearing_requirements": {
+        "status": "compliant",
+        "review_date": "2024-02-18",
+        "findings": "All clearing requirements met"
+      },
+      "margin_requirements": {
+        "status": "compliant",
+        "review_date": "2024-02-18",
+        "findings": "Margin calculations compliant"
+      }
+    },
+    
+    "ifrs": {
+      "financial_reporting": {
+        "status": "corrected",
+        "correction_date": "2024-02-20",
+        "affected_period": "Q4 2024",
+        "correction_details": "Updated financial statements with corrected risk metrics"
+      },
+      "hedge_accounting": {
+        "status": "compliant",
+        "review_date": "2024-02-18",
+        "findings": "Hedge effectiveness testing passed"
+      },
+      "fair_value_measurement": {
+        "status": "compliant",
+        "review_date": "2024-02-18",
+        "findings": "Fair value calculations accurate"
+      }
+    },
+    
+    "basel_crr3": {
+      "solvency_metrics": {
+        "status": "corrected",
+        "correction_date": "2024-02-20",
+        "affected_period": "Q4 2024",
+        "correction_details": "Updated COREP templates with corrected RWA calculations"
+      },
+      "liquidity_metrics": {
+        "status": "compliant",
+        "review_date": "2024-02-18",
+        "findings": "LCR and NSFR calculations accurate"
+      },
+      "leverage_metrics": {
+        "status": "compliant",
+        "review_date": "2024-02-18",
+        "findings": "Leverage ratio calculation accurate"
+      }
+    }
+  },
+  
+  "re_submission_status": {
+    "correp": {
+      "status": "re_submitted",
+      "submission_date": "2024-02-21",
+      "regulator_acknowledgment": "received",
+      "next_review": "2024-03-15"
+    },
+    "finrep": {
+      "status": "re_submitted",
+      "submission_date": "2024-02-21",
+      "regulator_acknowledgment": "received",
+      "next_review": "2024-03-15"
+    },
+    "lcr_nsfr": {
+      "status": "re_submitted",
+      "submission_date": "2024-02-21",
+      "regulator_acknowledgment": "received",
+      "next_review": "2024-03-15"
+    },
+    "mifid_ii": {
+      "status": "re_submitted",
+      "submission_date": "2024-02-21",
+      "regulator_acknowledgment": "received",
+      "next_review": "2024-03-15"
+    },
+    "emir": {
+      "status": "re_submitted",
+      "submission_date": "2024-02-21",
+      "regulator_acknowledgment": "received",
+      "next_review": "2024-03-15"
+    },
+    "dodd_frank": {
+      "status": "re_submitted",
+      "submission_date": "2024-02-21",
+      "regulator_acknowledgment": "received",
+      "next_review": "2024-03-15"
+    }
+  },
+  
+  "preventive_measures": {
+    "data_quality_improvements": [
+      "Enhanced data validation rules",
+      "Automated reconciliation processes",
+      "Real-time data quality monitoring",
+      "Improved error detection algorithms"
+    ],
+    "process_improvements": [
+      "Additional review checkpoints",
+      "Enhanced audit trail requirements",
+      "Regular data quality assessments",
+      "Staff training on regulatory requirements"
+    ],
+    "system_improvements": [
+      "Enhanced risk calculation engine",
+      "Improved data mapping tools",
+      "Better integration between systems",
+      "Automated compliance checking"
+    ]
+  },
+  
+  "regulatory_communication": {
+    "regulator_notifications": [
+      "EBA - COREP/FINREP corrections",
+      "Local regulator - Capital adequacy updates",
+      "Trading venues - Transaction reporting updates",
+      "Trade repositories - Derivatives reporting updates"
+    ],
+    "stakeholder_communications": [
+      "Board of directors - Correction summary",
+      "Risk committee - Impact assessment",
+      "Audit committee - Process review",
+      "External auditors - Correction details"
+    ],
+    "next_steps": [
+      "Monitor regulator feedback",
+      "Implement preventive measures",
+      "Conduct root cause analysis review",
+      "Update risk management framework"
+    ]
+  },
+  
+  "compliance_status": {
+    "overall_status": "compliant",
+    "correction_complete": true,
+    "re_submission_complete": true,
+    "preventive_measures_implemented": true,
+    "next_review_date": "2024-04-30"
+  }
+} 

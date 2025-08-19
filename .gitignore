@@ -8,3 +8,5 @@ Backend/.env
 
 .venv
 System*
+
+__init__.py

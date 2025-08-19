@@ -1,0 +1,6 @@
+instrument_id,type,principal,currency,interest_rate,maturity_date,counterparty,credit_rating,benchmark
+INV001,MoneyMarket,2000000,USD,4.0%,2025-09-01,BankA,AAA,LIBOR
+INV002,ShortTermBond,5000000,USD,5.2%,2026-03-15,Government,N/A,TreasuryYield
+INV003,GovernmentSecurity,3000000,EUR,3.5%,2025-12-31,Government,AAA,TreasuryYield
+INV004,CorporateBond,4000000,USD,6.0%,2027-06-30,CorpX,AA,CorporateBondIndex
+INV005,MoneyMarket,1500000,USD,3.8%,2025-08-31,BankB,AA,LIBOR

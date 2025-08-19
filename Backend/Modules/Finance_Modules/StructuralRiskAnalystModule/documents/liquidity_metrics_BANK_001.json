@@ -1,0 +1,247 @@
+{
+  "bank_id": "BANK_001",
+  "reporting_date": "2024-01-31",
+  "reporting_period": "Q4 2024",
+  "regulatory_framework": "Basel III LCR/NSFR",
+  
+  "liquidity_coverage_ratio": {
+    "high_quality_liquid_assets": {
+      "level_1_assets": {
+        "cash": {
+          "amount": 50000000,
+          "currency": "EUR",
+          "haircut": 0.0,
+          "hqla_value": 50000000
+        },
+        "central_bank_reserves": {
+          "amount": 80000000,
+          "currency": "EUR",
+          "haircut": 0.0,
+          "hqla_value": 80000000
+        },
+        "sovereign_bonds": {
+          "amount": 120000000,
+          "currency": "EUR",
+          "haircut": 0.0,
+          "hqla_value": 120000000
+        },
+        "total_level_1": 250000000
+      },
+      "level_2a_assets": {
+        "corporate_bonds": {
+          "amount": 80000000,
+          "currency": "EUR",
+          "haircut": 0.15,
+          "hqla_value": 68000000
+        },
+        "covered_bonds": {
+          "amount": 60000000,
+          "currency": "EUR",
+          "haircut": 0.15,
+          "hqla_value": 51000000
+        },
+        "total_level_2a": 119000000
+      },
+      "level_2b_assets": {
+        "equities": {
+          "amount": 40000000,
+          "currency": "EUR",
+          "haircut": 0.25,
+          "hqla_value": 30000000
+        },
+        "lower_rated_bonds": {
+          "amount": 30000000,
+          "currency": "EUR",
+          "haircut": 0.50,
+          "hqla_value": 15000000
+        },
+        "total_level_2b": 45000000
+      },
+      "total_hqla": 414000000
+    },
+    
+    "net_cash_outflows": {
+      "retail_deposits": {
+        "stable_deposits": {
+          "amount": 200000000,
+          "currency": "EUR",
+          "run_off_rate": 0.05,
+          "outflow": 10000000
+        },
+        "less_stable_deposits": {
+          "amount": 150000000,
+          "currency": "EUR",
+          "run_off_rate": 0.10,
+          "outflow": 15000000
+        }
+      },
+      "wholesale_funding": {
+        "operational_deposits": {
+          "amount": 100000000,
+          "currency": "EUR",
+          "run_off_rate": 0.25,
+          "outflow": 25000000
+        },
+        "non_operational_deposits": {
+          "amount": 80000000,
+          "currency": "EUR",
+          "run_off_rate": 0.40,
+          "outflow": 32000000
+        }
+      },
+      "derivatives": {
+        "net_outflow": 15000000
+      },
+      "other_liabilities": {
+        "amount": 20000000,
+        "currency": "EUR",
+        "run_off_rate": 0.30,
+        "outflow": 6000000
+      },
+      "total_net_outflows": 130000000
+    },
+    
+    "lcr_calculation": {
+      "numerator": 414000000,
+      "denominator": 130000000,
+      "ratio": 3.185,
+      "minimum_requirement": 1.0,
+      "status": "compliant"
+    }
+  },
+  
+  "net_stable_funding_ratio": {
+    "available_stable_funding": {
+      "tier_1_capital": {
+        "amount": 100000000,
+        "currency": "EUR",
+        "asf_factor": 1.0,
+        "asf_value": 100000000
+      },
+      "tier_2_capital": {
+        "amount": 20000000,
+        "currency": "EUR",
+        "asf_factor": 1.0,
+        "asf_value": 20000000
+      },
+      "stable_deposits": {
+        "retail": {
+          "amount": 200000000,
+          "currency": "EUR",
+          "asf_factor": 0.95,
+          "asf_value": 190000000
+        },
+        "small_business": {
+          "amount": 80000000,
+          "currency": "EUR",
+          "asf_factor": 0.95,
+          "asf_value": 76000000
+        }
+      },
+      "less_stable_funding": {
+        "wholesale": {
+          "amount": 180000000,
+          "currency": "EUR",
+          "asf_factor": 0.50,
+          "asf_value": 90000000
+        }
+      },
+      "total_asf": 476000000
+    },
+    
+    "required_stable_funding": {
+      "cash": {
+        "amount": 50000000,
+        "currency": "EUR",
+        "rsf_factor": 0.0,
+        "rsf_value": 0
+      },
+      "sovereign_bonds": {
+        "amount": 120000000,
+        "currency": "EUR",
+        "rsf_factor": 0.05,
+        "rsf_value": 6000000
+      },
+      "corporate_bonds": {
+        "amount": 80000000,
+        "currency": "EUR",
+        "rsf_factor": 0.65,
+        "rsf_value": 52000000
+      },
+      "loans": {
+        "residential_mortgages": {
+          "amount": 300000000,
+          "currency": "EUR",
+          "rsf_factor": 0.65,
+          "rsf_value": 195000000
+        },
+        "corporate_loans": {
+          "amount": 250000000,
+          "currency": "EUR",
+          "rsf_factor": 0.85,
+          "rsf_value": 212500000
+        }
+      },
+      "total_rsf": 458600000
+    },
+    
+    "nsfr_calculation": {
+      "numerator": 476000000,
+      "denominator": 458600000,
+      "ratio": 1.038,
+      "minimum_requirement": 1.0,
+      "status": "compliant"
+    }
+  },
+  
+  "stress_testing": {
+    "scenarios": {
+      "market_wide_stress": {
+        "lcr_impact": -0.15,
+        "nsfr_impact": -0.08
+      },
+      "idiosyncratic_stress": {
+        "lcr_impact": -0.25,
+        "nsfr_impact": -0.12
+      },
+      "combined_stress": {
+        "lcr_impact": -0.35,
+        "nsfr_impact": -0.18
+      }
+    },
+    "survival_period": "90 days",
+    "early_warning_indicators": [
+      "funding_concentration_increase",
+      "market_access_deterioration",
+      "asset_quality_decline"
+    ]
+  },
+  
+  "funding_structure": {
+    "core_deposits": {
+      "percentage": 45.0,
+      "stability_score": "high"
+    },
+    "wholesale_funding": {
+      "percentage": 35.0,
+      "stability_score": "medium"
+    },
+    "secured_funding": {
+      "percentage": 20.0,
+      "stability_score": "high"
+    },
+    "maturity_profile": {
+      "less_than_1_month": 25.0,
+      "1_to_3_months": 30.0,
+      "3_to_12_months": 25.0,
+      "more_than_1_year": 20.0
+    }
+  },
+  
+  "regulatory_compliance": {
+    "lcr_compliance": "compliant",
+    "nsfr_compliance": "compliant",
+    "stress_testing": "compliant",
+    "next_review_date": "2024-04-30"
+  }
+} 

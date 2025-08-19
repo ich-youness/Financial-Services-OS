@@ -1,0 +1,144 @@
+{
+  "bank_id": "BANK_001",
+  "reporting_date": "2024-01-31",
+  "reporting_period": "Q4 2024",
+  "regulatory_framework": "Basel III/CRR3",
+  
+  "capital_adequacy": {
+    "common_equity_tier1": {
+      "amount": 85000000,
+      "currency": "EUR",
+      "components": {
+        "common_shares": 50000000,
+        "retained_earnings": 25000000,
+        "other_comprehensive_income": 5000000,
+        "regulatory_adjustments": -5000000
+      }
+    },
+    "additional_tier1": {
+      "amount": 15000000,
+      "currency": "EUR",
+      "components": {
+        "perpetual_preferred_shares": 10000000,
+        "contingent_convertibles": 5000000
+      }
+    },
+    "tier2_capital": {
+      "amount": 20000000,
+      "currency": "EUR",
+      "components": {
+        "subordinated_debt": 15000000,
+        "loan_loss_reserves": 5000000
+      }
+    },
+    "total_capital": 120000000,
+    "deductions": {
+      "goodwill": 8000000,
+      "deferred_tax_assets": 3000000,
+      "investments_in_financial_institutions": 2000000
+    }
+  },
+  
+  "risk_weighted_assets": {
+    "credit_risk": {
+      "sovereign_exposures": {
+        "amount": 200000000,
+        "risk_weight": 0.0,
+        "rwa": 0
+      },
+      "bank_exposures": {
+        "amount": 150000000,
+        "risk_weight": 0.2,
+        "rwa": 30000000
+      },
+      "corporate_exposures": {
+        "amount": 300000000,
+        "risk_weight": 1.0,
+        "rwa": 300000000
+      },
+      "retail_exposures": {
+        "amount": 100000000,
+        "risk_weight": 0.75,
+        "rwa": 75000000
+      },
+      "total_credit_rwa": 405000000
+    },
+    "market_risk": {
+      "standardized_approach": {
+        "interest_rate_risk": 15000000,
+        "equity_risk": 8000000,
+        "foreign_exchange_risk": 12000000,
+        "commodity_risk": 2000000,
+        "total_market_rwa": 37000000
+      }
+    },
+    "operational_risk": {
+      "basic_indicator": {
+        "gross_income": 50000000,
+        "alpha_factor": 0.15,
+        "rwa": 7500000
+      }
+    },
+    "total_rwa": 447700000
+  },
+  
+  "capital_ratios": {
+    "cet1_ratio": {
+      "numerator": 85000000,
+      "denominator": 447700000,
+      "ratio": 0.1898,
+      "minimum_requirement": 0.045,
+      "target": 0.07,
+      "status": "compliant"
+    },
+    "tier1_ratio": {
+      "numerator": 100000000,
+      "denominator": 447700000,
+      "ratio": 0.2234,
+      "minimum_requirement": 0.06,
+      "target": 0.085,
+      "status": "compliant"
+    },
+    "total_capital_ratio": {
+      "numerator": 120000000,
+      "denominator": 447700000,
+      "ratio": 0.2680,
+      "minimum_requirement": 0.08,
+      "target": 0.105,
+      "status": "compliant"
+    },
+    "leverage_ratio": {
+      "numerator": 100000000,
+      "denominator": 3000000000,
+      "ratio": 0.0333,
+      "minimum_requirement": 0.03,
+      "status": "compliant"
+    }
+  },
+  
+  "data_quality_controls": {
+    "reconciliation_status": "completed",
+    "data_sources": [
+      "core_banking_system",
+      "risk_management_system",
+      "accounting_system",
+      "trading_system"
+    ],
+    "validation_checks": {
+      "completeness": 100.0,
+      "accuracy": 99.8,
+      "consistency": 99.9,
+      "timeliness": 100.0
+    },
+    "anomalies_detected": [],
+    "audit_trail": "complete"
+  },
+  
+  "regulatory_compliance": {
+    "basel_iii": "compliant",
+    "crr3": "compliant",
+    "eba_guidelines": "compliant",
+    "local_regulation": "compliant",
+    "next_review_date": "2024-04-30"
+  }
+} 

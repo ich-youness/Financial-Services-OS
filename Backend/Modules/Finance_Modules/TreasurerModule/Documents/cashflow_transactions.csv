@@ -1,0 +1,11 @@
+date,transaction_id,description,type,amount,currency,account
+2025-08-01,TXN001,Customer Payment - Invoice 1023,inflow,50000,USD,BankA - Operating
+2025-08-02,TXN002,Supplier Payment - Raw Materials,outflow,20000,USD,BankA - Operating
+2025-08-03,TXN003,Payroll,outflow,15000,USD,BankA - Operating
+2025-08-05,TXN004,Loan Repayment,outflow,10000,USD,BankB - Loan
+2025-08-10,TXN005,Customer Payment - Invoice 1024,inflow,60000,USD,BankA - Operating
+2025-08-15,TXN006,Office Rent,outflow,8000,USD,BankA - Operating
+2025-08-18,TXN007,Interest Income,inflow,2000,USD,BankC - Investment
+2025-08-20,TXN008,Customer Payment - Invoice 1025,inflow,40000,USD,BankA - Operating
+2025-08-25,TXN009,Payroll,outflow,16000,USD,BankA - Operating
+2025-08-28,TXN010,Utility Bill,outflow,3000,USD,BankA - Operating
