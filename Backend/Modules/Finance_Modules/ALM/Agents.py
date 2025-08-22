@@ -87,7 +87,7 @@ def calculate_nii_sensitivity(asset_cf: pd.DataFrame, liability_cf: pd.DataFrame
     nii_change = asset_impact - liability_impact
     return nii_change
 
-
+# Assessing Liquidity and Interest Rate Risks
 Liquidity_Interest_Rate_Risk_Assessor = Agent(
     name="Liquidity Interest Rate Risk Assessor",
     model=MistralChat(id="mistral-large-latest", api_key=os.getenv("MISTRAL_API_KEY")),
@@ -244,6 +244,7 @@ knowledge_base_Agent2 = MarkdownKnowledgeBase(
     path="Knowledge/Solvency_Capital_Strategist.md",
 )
 
+# Developing Strategies to Ensure Solvency
 Solvency_Capital_Strategist = Agent(
     name="Solvency Capital Strategist",
     model=MistralChat(id="mistral-large-latest", api_key=os.getenv("MISTRAL_API_KEY")),
@@ -436,6 +437,7 @@ knowledge_base_Agent3 = MarkdownKnowledgeBase(
     path="Knowledge/Profitability_Optimizer.md",
 )
 
+# Developing Strategies to Maximize Return on Assets
 Profitability_Optimizer = Agent(
     name="Profitability Optimizer",
     model=MistralChat(id="mistral-large-latest", api_key=os.getenv("MISTRAL_API_KEY")),
@@ -592,6 +594,8 @@ def calculate_interest_rate_sensitivity(portfolio: pd.DataFrame, rate_shifts: li
 knowledge_base_Agent4 = MarkdownKnowledgeBase(
     path="Knowledge/Risk_Model_Builder.md",
 )
+
+# Creation of Risk Models
 Risk_Model_Builder = Agent(
     name="Risk Model Builder",
     model=MistralChat(id="mistral-large-latest", api_key=os.getenv("MISTRAL_API_KEY")),
@@ -738,7 +742,7 @@ def simulate_funding_strategy(current_liquidity: float, funding_options: list) -
 Knowledge_base_Agent5 = MarkdownKnowledgeBase(
     path="Knowledge/Liquidity_Operations_Manager.md"
 )
-
+#Liquidity Operations Manager
 Liquidity_Operations_Manager = Agent(
     name="Liquidity Operations Manager",
     model=MistralChat(id="mistral-large-latest", api_key=os.getenv("MISTRAL_API_KEY")),
@@ -878,6 +882,8 @@ def calculate_alm_metrics(balance_sheet: pd.DataFrame, interest_rates: dict) -> 
         'CapitalAdequacyRatio': capital_adequacy_ratio
     }
 
+
+# Treasury and ALM Risk Management
 Treasury_ALM_Risk_Controller = Agent(
     name="Treasury ALM Risk Controller",
     model=MistralChat(id="mistral-large-latest", api_key=os.getenv("MISTRAL_API_KEY")),
@@ -939,23 +945,98 @@ balance_sheet_json = json.dumps([
 interest_rates_json = json.dumps({"USD": 0.02, "EUR": 0.01}, indent=4)
 
 
-Treasury_ALM_Risk_Controller.print_response(
-    f"""
-You are a Treasury & ALM Risk Controller agent.
+# Treasury_ALM_Risk_Controller.print_response(
+#     f"""
+# You are a Treasury & ALM Risk Controller agent.
 
-Step 1: FX & Counterparty Risk Assessment
-- Use the knowledge base to ensure counterparty limits and compliance standards are respected.
-Cash Positions: {cash_positions_json}
-FX Rates: {fx_rates_json}
-Counterparty Limits: {counterparty_limits_json}
+# Step 1: FX & Counterparty Risk Assessment
+# - Use the knowledge base to ensure counterparty limits and compliance standards are respected.
+# Cash Positions: {cash_positions_json}
+# FX Rates: {fx_rates_json}
+# Counterparty Limits: {counterparty_limits_json}
 
-Step 2: ALM Metrics Calculation
-- Use the knowledge base to validate balance sheet adjustments, interest rate exposure, and liquidity ratios.
-Balance Sheet: {balance_sheet_json}
-Interest Rates: {interest_rates_json}
+# Step 2: ALM Metrics Calculation
+# - Use the knowledge base to validate balance sheet adjustments, interest rate exposure, and liquidity ratios.
+# Balance Sheet: {balance_sheet_json}
+# Interest Rates: {interest_rates_json}
 
-Step 3: Reporting & Recommendations
-- Summarize FX exposures, counterparty limit breaches, and key ALM metrics (liquidity ratio, interest rate gap, capital adequacy ratio).
-- Provide actionable recommendations to maintain financial equilibrium and ALM compliance.
-"""
+# Step 3: Reporting & Recommendations
+# - Summarize FX exposures, counterparty limit breaches, and key ALM metrics (liquidity ratio, interest rate gap, capital adequacy ratio).
+# - Provide actionable recommendations to maintain financial equilibrium and ALM compliance.
+# """
+# )
+
+
+# Add this to your existing code after defining all your agents
+
+# Create the Treasury Risk Management Team with route mode
+almTeam = Team(
+    name="ALM Team",
+    mode="route",
+    model=MistralChat(id="mistral-large-latest", api_key=os.getenv("MISTRAL_API_KEY")),
+    members=[
+        Liquidity_Interest_Rate_Risk_Assessor,
+        Solvency_Capital_Strategist,
+        Profitability_Optimizer,
+        Risk_Model_Builder,
+        Liquidity_Operations_Manager,
+        Treasury_ALM_Risk_Controller
+    ],
+    show_tool_calls=True,
+    markdown=True,
+    instructions=[
+        "You are a Treasury Risk Management Team Leader that routes queries to the most appropriate specialist agent.",
+        "Analyze each user query to determine which team member has the right expertise to handle it.",
+        "",
+        "Team Members and Their Specializations:",
+        "1. Liquidity Interest Rate Risk Assessor - Evaluates liquidity position, interest rate risk exposure, LCR, NSFR, liquidity gaps, EVE, and NII sensitivity",
+        "2. Solvency Capital Strategist - Ensures capital adequacy, contingency funding, balance sheet optimization for regulatory compliance",
+        "3. Profitability Optimizer - Maximizes return on assets, minimizes funding costs, optimizes asset allocation and liability structure",
+        "4. Risk Model Builder - Creates analytical tools for liquidity projections and interest rate risk (IRRBB) modeling",
+        "5. Liquidity Operations Manager - Oversees daily liquidity management, funding strategy execution, and contingency measures",
+        "6. Treasury ALM Risk Controller - Manages treasury operations, FX/counterparty risk, and ALM metrics for financial stability",
+        "",
+        "Routing Guidelines:",
+        "- Liquidity ratios, LCR, NSFR, interest rate gaps, EVE/NII sensitivity → Liquidity Interest Rate Risk Assessor",
+        "- Capital adequacy, regulatory compliance, contingency funding, balance sheet optimization → Solvency Capital Strategist",
+        "- Yield optimization, funding cost reduction, asset-liability mix optimization → Profitability Optimizer",
+        "- Risk modeling, liquidity projections, IRRBB analysis, stress testing → Risk Model Builder",
+        "- Daily liquidity monitoring, funding strategy, operational cash management → Liquidity Operations Manager",
+        "- FX exposure, counterparty risk, ALM metrics, treasury risk oversight → Treasury ALM Risk Controller",
+        "",
+        "If a query spans multiple areas, route to the most relevant specialist based on the primary focus.",
+        "Always provide clear reasoning for your routing decision when appropriate."
+    ],
+    show_members_responses=True,
 )
+
+# Example usage (you can uncomment these to test):
+# almTeam.print_response(
+#     "Calculate our liquidity coverage ratio and net stable funding ratio given current balance sheet",
+#     stream=True
+# )
+
+# almTeam.print_response(
+#     "Analyze interest rate sensitivity of our portfolio for +100bps and -100bps shocks",
+#     stream=True
+# )
+
+# almTeam.print_response(
+#     "Optimize our asset allocation to maximize yield while maintaining regulatory liquidity buffers",
+#     stream=True
+# )
+
+# almTeam.print_response(
+#     "Project our liquidity position over the next 30 days including off-balance sheet commitments",
+#     stream=True
+# )
+
+# almTeam.print_response(
+#     "Monitor daily cash positions and recommend funding strategy for current liquidity shortfall",
+#     stream=True
+# )
+
+# almTeam.print_response(
+#     "Assess FX exposure and counterparty risk across our treasury operations",
+#     stream=True
+# )

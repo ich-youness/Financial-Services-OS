@@ -1,0 +1,114 @@
+{
+  "companies": [
+    {
+      "id": "COMP001",
+      "name": "GreenTech Manufacturing Ltd",
+      "industry": "Manufacturing",
+      "sector": "Industrial Goods",
+      "size": "Large",
+      "employees": 5000,
+      "revenue_2023": 850000000,
+      "market_cap": 3200000000,
+      "esg_rating": "AA",
+      "esg_maturity": "Advanced",
+      "headquarters": "Frankfurt, Germany",
+      "operations": ["Germany", "Netherlands", "Poland", "USA"],
+      "esg_focus_areas": ["Climate Action", "Circular Economy", "Social Responsibility"],
+      "net_zero_target": "2040",
+      "sustainability_goals": [
+        "Reduce Scope 1 & 2 emissions by 50% by 2030",
+        "Achieve 100% renewable energy by 2035",
+        "Zero waste to landfill by 2028",
+        "40% women in leadership by 2026"
+      ]
+    },
+    {
+      "id": "COMP002",
+      "name": "EcoFinance Bank AG",
+      "industry": "Financial Services",
+      "sector": "Banking",
+      "size": "Large",
+      "employees": 12000,
+      "revenue_2023": 2800000000,
+      "market_cap": 8500000000,
+      "esg_rating": "AAA",
+      "esg_maturity": "Leader",
+      "headquarters": "Zurich, Switzerland",
+      "operations": ["Switzerland", "Germany", "Austria", "UK", "USA"],
+      "esg_focus_areas": ["Sustainable Finance", "Climate Risk", "Social Impact"],
+      "net_zero_target": "2035",
+      "sustainability_goals": [
+        "100% green portfolio by 2030",
+        "€50B sustainable finance by 2025",
+        "Carbon neutral operations by 2025",
+        "Financial inclusion for 1M people by 2026"
+      ]
+    },
+    {
+      "id": "COMP003",
+      "name": "Sustainable Energy Corp",
+      "industry": "Energy",
+      "sector": "Renewable Energy",
+      "size": "Medium",
+      "employees": 2500,
+      "revenue_2023": 450000000,
+      "market_cap": 1800000000,
+      "esg_rating": "AA",
+      "esg_maturity": "Advanced",
+      "headquarters": "Copenhagen, Denmark",
+      "operations": ["Denmark", "Sweden", "Norway", "Germany"],
+      "esg_focus_areas": ["Clean Energy", "Biodiversity", "Community Engagement"],
+      "net_zero_target": "2025",
+      "sustainability_goals": [
+        "100% renewable energy generation",
+        "Net positive biodiversity impact",
+        "Community benefit sharing",
+        "Zero safety incidents"
+      ]
+    },
+    {
+      "id": "COMP004",
+      "name": "TechSolutions Inc",
+      "industry": "Technology",
+      "sector": "Software & Services",
+      "size": "Large",
+      "employees": 15000,
+      "revenue_2023": 4200000000,
+      "market_cap": 12500000000,
+      "esg_rating": "A",
+      "esg_maturity": "Intermediate",
+      "headquarters": "San Francisco, USA",
+      "operations": ["USA", "UK", "Germany", "India", "Singapore"],
+      "esg_focus_areas": ["Digital Inclusion", "Data Privacy", "Green Computing"],
+      "net_zero_target": "2045",
+      "sustainability_goals": [
+        "Carbon neutral cloud operations by 2030",
+        "100% renewable energy for data centers",
+        "Digital skills for 10M people by 2027",
+        "Zero data breaches"
+      ]
+    },
+    {
+      "id": "COMP005",
+      "name": "GreenRetail Group",
+      "industry": "Retail",
+      "sector": "Consumer Goods",
+      "size": "Medium",
+      "employees": 8000,
+      "revenue_2023": 1200000000,
+      "market_cap": 2800000000,
+      "esg_rating": "A",
+      "esg_maturity": "Intermediate",
+      "headquarters": "Amsterdam, Netherlands",
+      "operations": ["Netherlands", "Belgium", "Germany", "France"],
+      "esg_focus_areas": ["Sustainable Sourcing", "Circular Economy", "Fair Labor"],
+      "net_zero_target": "2040",
+      "sustainability_goals": [
+        "100% sustainable sourcing by 2028",
+        "Zero waste in operations by 2030",
+        "Living wage across supply chain by 2026",
+        "50% recycled materials in products by 2027"
+      ]
+    }
+  ]
+}

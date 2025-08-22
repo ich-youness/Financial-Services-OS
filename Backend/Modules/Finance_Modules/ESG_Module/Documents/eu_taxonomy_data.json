@@ -1,0 +1,358 @@
+{
+  "eu_taxonomy_data": {
+    "COMP001": {
+      "company_name": "GreenTech Manufacturing Ltd",
+      "reporting_period": "2023",
+      "economic_activities": [
+        {
+          "activity_id": "3.1",
+          "activity_name": "Manufacture of cement",
+          "nace_code": "23.51",
+          "revenue": {
+            "total": 850000000,
+            "eligible": 680000000,
+            "aligned": 510000000,
+            "eligible_percentage": 80.0,
+            "aligned_percentage": 60.0
+          },
+          "capex": {
+            "total": 85000000,
+            "eligible": 68000000,
+            "aligned": 51000000,
+            "eligible_percentage": 80.0,
+            "aligned_percentage": 60.0
+          },
+          "opex": {
+            "total": 42500000,
+            "eligible": 34000000,
+            "aligned": 25500000,
+            "eligible_percentage": 80.0,
+            "aligned_percentage": 60.0
+          },
+          "substantial_contribution": {
+            "climate_mitigation": true,
+            "climate_adaptation": false,
+            "water": false,
+            "circular_economy": true,
+            "pollution": true,
+            "biodiversity": false
+          },
+          "dnsh_criteria": {
+            "climate_mitigation": true,
+            "climate_adaptation": true,
+            "water": true,
+            "circular_economy": true,
+            "pollution": true,
+            "biodiversity": true
+          },
+          "minimum_safeguards": true,
+          "evidence": [
+            "Emissions reduction certificates",
+            "Energy efficiency audits",
+            "Waste management reports",
+            "Environmental permits"
+          ]
+        },
+        {
+          "activity_id": "3.2",
+          "activity_name": "Manufacture of iron and steel",
+          "nace_code": "24.10",
+          "revenue": {
+            "total": 170000000,
+            "eligible": 136000000,
+            "aligned": 102000000,
+            "eligible_percentage": 80.0,
+            "aligned_percentage": 60.0
+          },
+          "capex": {
+            "total": 17000000,
+            "eligible": 13600000,
+            "aligned": 10200000,
+            "eligible_percentage": 80.0,
+            "aligned_percentage": 60.0
+          },
+          "opex": {
+            "total": 8500000,
+            "eligible": 6800000,
+            "aligned": 5100000,
+            "eligible_percentage": 80.0,
+            "aligned_percentage": 60.0
+          },
+          "substantial_contribution": {
+            "climate_mitigation": true,
+            "climate_adaptation": false,
+            "water": false,
+            "circular_economy": true,
+            "pollution": true,
+            "biodiversity": false
+          },
+          "dnsh_criteria": {
+            "climate_mitigation": true,
+            "climate_adaptation": true,
+            "water": true,
+            "circular_economy": true,
+            "pollution": true,
+            "biodiversity": true
+          },
+          "minimum_safeguards": true,
+          "evidence": [
+            "Carbon capture technology certificates",
+            "Recycling rate reports",
+            "Emissions monitoring data",
+            "Social compliance audits"
+          ]
+        }
+      ],
+      "overall_taxonomy_performance": {
+        "revenue": {
+          "eligible_percentage": 80.0,
+          "aligned_percentage": 60.0
+        },
+        "capex": {
+          "eligible_percentage": 80.0,
+          "aligned_percentage": 60.0
+        },
+        "opex": {
+          "eligible_percentage": 80.0,
+          "aligned_percentage": 60.0
+        }
+      }
+    },
+    "COMP002": {
+      "company_name": "EcoFinance Bank AG",
+      "reporting_period": "2023",
+      "economic_activities": [
+        {
+          "activity_id": "6.1",
+          "activity_name": "Credit institutions",
+          "nace_code": "64.19",
+          "revenue": {
+            "total": 2800000000,
+            "eligible": 2240000000,
+            "aligned": 1680000000,
+            "eligible_percentage": 80.0,
+            "aligned_percentage": 60.0
+          },
+          "capex": {
+            "total": 280000000,
+            "eligible": 224000000,
+            "aligned": 168000000,
+            "eligible_percentage": 80.0,
+            "aligned_percentage": 60.0
+          },
+          "opex": {
+            "total": 140000000,
+            "eligible": 112000000,
+            "aligned": 84000000,
+            "eligible_percentage": 80.0,
+            "aligned_percentage": 60.0
+          },
+          "substantial_contribution": {
+            "climate_mitigation": true,
+            "climate_adaptation": true,
+            "water": false,
+            "circular_economy": false,
+            "pollution": false,
+            "biodiversity": false
+          },
+          "dnsh_criteria": {
+            "climate_mitigation": true,
+            "climate_adaptation": true,
+            "water": true,
+            "circular_economy": true,
+            "pollution": true,
+            "biodiversity": true
+          },
+          "minimum_safeguards": true,
+          "evidence": [
+            "Green loan portfolio data",
+            "ESG risk assessment reports",
+            "Sustainable finance certifications",
+            "Client ESG screening results"
+          ]
+        },
+        {
+          "activity_id": "6.2",
+          "activity_name": "Investment firms",
+          "nace_code": "66.11",
+          "revenue": {
+            "total": 700000000,
+            "eligible": 560000000,
+            "aligned": 420000000,
+            "eligible_percentage": 80.0,
+            "aligned_percentage": 60.0
+          },
+          "capex": {
+            "total": 70000000,
+            "eligible": 56000000,
+            "aligned": 42000000,
+            "eligible_percentage": 80.0,
+            "aligned_percentage": 60.0
+          },
+          "opex": {
+            "total": 35000000,
+            "eligible": 28000000,
+            "aligned": 21000000,
+            "eligible_percentage": 80.0,
+            "aligned_percentage": 60.0
+          },
+          "substantial_contribution": {
+            "climate_mitigation": true,
+            "climate_adaptation": true,
+            "water": false,
+            "circular_economy": false,
+            "pollution": false,
+            "biodiversity": false
+          },
+          "dnsh_criteria": {
+            "climate_mitigation": true,
+            "climate_adaptation": true,
+            "water": true,
+            "circular_economy": true,
+            "pollution": true,
+            "biodiversity": true
+          },
+          "minimum_safeguards": true,
+          "evidence": [
+            "ESG fund performance data",
+            "Portfolio alignment reports",
+            "Sustainable investment certifications",
+            "Client ESG preference surveys"
+          ]
+        }
+      ],
+      "overall_taxonomy_performance": {
+        "revenue": {
+          "eligible_percentage": 80.0,
+          "aligned_percentage": 60.0
+        },
+        "capex": {
+          "eligible_percentage": 80.0,
+          "aligned_percentage": 60.0
+        },
+        "opex": {
+          "eligible_percentage": 80.0,
+          "aligned_percentage": 60.0
+        }
+      }
+    },
+    "COMP003": {
+      "company_name": "Sustainable Energy Corp",
+      "reporting_period": "2023",
+      "economic_activities": [
+        {
+          "activity_id": "4.1",
+          "activity_name": "Electricity generation from solar photovoltaic energy",
+          "nace_code": "35.11",
+          "revenue": {
+            "total": 300000000,
+            "eligible": 300000000,
+            "aligned": 300000000,
+            "eligible_percentage": 100.0,
+            "aligned_percentage": 100.0
+          },
+          "capex": {
+            "total": 30000000,
+            "eligible": 30000000,
+            "aligned": 30000000,
+            "eligible_percentage": 100.0,
+            "aligned_percentage": 100.0
+          },
+          "opex": {
+            "total": 15000000,
+            "eligible": 15000000,
+            "aligned": 15000000,
+            "eligible_percentage": 100.0,
+            "aligned_percentage": 100.0
+          },
+          "substantial_contribution": {
+            "climate_mitigation": true,
+            "climate_adaptation": false,
+            "water": false,
+            "circular_economy": false,
+            "pollution": false,
+            "biodiversity": false
+          },
+          "dnsh_criteria": {
+            "climate_mitigation": true,
+            "climate_adaptation": true,
+            "water": true,
+            "circular_economy": true,
+            "pollution": true,
+            "biodiversity": true
+          },
+          "minimum_safeguards": true,
+          "evidence": [
+            "Solar panel efficiency certificates",
+            "Grid connection permits",
+            "Environmental impact assessments",
+            "Community consultation reports"
+          ]
+        },
+        {
+          "activity_id": "4.2",
+          "activity_name": "Electricity generation from wind power",
+          "nace_code": "35.11",
+          "revenue": {
+            "total": 150000000,
+            "eligible": 150000000,
+            "aligned": 150000000,
+            "eligible_percentage": 100.0,
+            "aligned_percentage": 100.0
+          },
+          "capex": {
+            "total": 15000000,
+            "eligible": 15000000,
+            "aligned": 15000000,
+            "eligible_percentage": 100.0,
+            "aligned_percentage": 100.0
+          },
+          "opex": {
+            "total": 7500000,
+            "eligible": 7500000,
+            "aligned": 7500000,
+            "eligible_percentage": 100.0,
+            "aligned_percentage": 100.0
+          },
+          "substantial_contribution": {
+            "climate_mitigation": true,
+            "climate_adaptation": false,
+            "water": false,
+            "circular_economy": false,
+            "pollution": false,
+            "biodiversity": false
+          },
+          "dnsh_criteria": {
+            "climate_mitigation": true,
+            "climate_adaptation": true,
+            "water": true,
+            "circular_economy": true,
+            "pollution": true,
+            "biodiversity": true
+          },
+          "minimum_safeguards": true,
+          "evidence": [
+            "Wind turbine performance data",
+            "Bird migration studies",
+            "Noise level assessments",
+            "Local community agreements"
+          ]
+        }
+      ],
+      "overall_taxonomy_performance": {
+        "revenue": {
+          "eligible_percentage": 100.0,
+          "aligned_percentage": 100.0
+        },
+        "capex": {
+          "eligible_percentage": 100.0,
+          "aligned_percentage": 100.0
+        },
+        "opex": {
+          "eligible_percentage": 100.0,
+          "aligned_percentage": 100.0
+        }
+      }
+    }
+  }
+}

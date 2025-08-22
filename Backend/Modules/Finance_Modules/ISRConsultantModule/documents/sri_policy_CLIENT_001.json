@@ -1,0 +1,198 @@
+{
+  "client_id": "CLIENT_001",
+  "policy_date": "2024-01-31",
+  "policy_version": "2.1",
+  "client_type": "institutional_investor",
+  "assets_under_management": 5000000000,
+  "currency": "EUR",
+  
+  "investment_philosophy": {
+    "mission_statement": "To achieve superior long-term financial returns while promoting environmental sustainability, social responsibility, and strong corporate governance through responsible investment practices.",
+    "core_values": [
+      "Environmental stewardship and climate action",
+      "Social responsibility and human rights",
+      "Strong corporate governance and ethics",
+      "Long-term value creation",
+      "Transparency and accountability"
+    ],
+    "investment_universe": "Global equities, fixed income, and alternative investments",
+    "risk_tolerance": "Moderate to high, with ESG risk considerations"
+  },
+  
+  "exclusion_criteria": {
+    "controversial_weapons": {
+      "status": "excluded",
+      "description": "Companies involved in production, distribution, or sale of cluster munitions, landmines, biological/chemical weapons",
+      "examples": ["Lockheed Martin", "Boeing Defense", "Raytheon"],
+      "review_frequency": "quarterly"
+    },
+    "tobacco": {
+      "status": "excluded",
+      "description": "Companies involved in tobacco production, distribution, or sale",
+      "examples": ["Philip Morris", "British American Tobacco", "Imperial Brands"],
+      "review_frequency": "quarterly"
+    },
+    "fossil_fuels": {
+      "status": "excluded",
+      "description": "Companies with >30% revenue from coal, oil sands, or Arctic drilling",
+      "examples": ["Peabody Energy", "Suncor Energy", "Shell Arctic"],
+      "review_frequency": "quarterly"
+    },
+    "gambling": {
+      "status": "excluded",
+      "description": "Companies with >20% revenue from gambling activities",
+      "examples": ["MGM Resorts", "Caesars Entertainment", "Wynn Resorts"],
+      "review_frequency": "quarterly"
+    },
+    "adult_entertainment": {
+      "status": "excluded",
+      "description": "Companies involved in adult content production or distribution",
+      "examples": ["Playboy Enterprises", "MindGeek"],
+      "review_frequency": "quarterly"
+    },
+    "animal_testing": {
+      "status": "excluded",
+      "description": "Companies conducting cosmetic animal testing",
+      "examples": ["L'Oreal", "Estee Lauder", "Procter & Gamble"],
+      "review_frequency": "quarterly"
+    }
+  },
+  
+  "inclusion_criteria": {
+    "best_in_class": {
+      "status": "included",
+      "description": "Top ESG performers within each sector (top 30%)",
+      "esg_threshold": "AA rating or equivalent",
+      "review_frequency": "monthly"
+    },
+    "thematic_investing": {
+      "renewable_energy": {
+        "status": "included",
+        "allocation_target": "15-20%",
+        "description": "Solar, wind, hydroelectric, geothermal energy companies"
+      },
+      "clean_technology": {
+        "status": "included",
+        "allocation_target": "10-15%",
+        "description": "Energy efficiency, electric vehicles, battery technology"
+      },
+      "social_housing": {
+        "status": "included",
+        "allocation_target": "5-10%",
+        "description": "Affordable housing, community development, social infrastructure"
+      }
+    },
+    "impact_investing": {
+      "status": "included",
+      "allocation_target": "20-25%",
+      "description": "Investments with measurable social and environmental benefits",
+      "impact_metrics": ["CO2 reduction", "jobs created", "communities served"]
+    },
+    "green_bonds": {
+      "status": "included",
+      "allocation_target": "15-20%",
+      "description": "Climate and environmental project financing",
+      "certification": "ICMA Green Bond Principles or CBI Climate Bond Standard"
+    },
+    "social_bonds": {
+      "status": "included",
+      "allocation_target": "10-15%",
+      "description": "Social project and initiative financing",
+      "certification": "ICMA Social Bond Principles"
+    }
+  },
+  
+  "integration_strategies": {
+    "esg_integration": {
+      "status": "implemented",
+      "description": "Systematic inclusion of ESG factors in investment analysis",
+      "methodology": "Materiality-weighted ESG scoring",
+      "integration_points": ["asset selection", "portfolio construction", "risk management"]
+    },
+    "sustainability_themed": {
+      "status": "implemented",
+      "description": "Focus on specific sustainability themes and sectors",
+      "themes": ["clean energy", "circular economy", "sustainable agriculture", "digital inclusion"]
+    },
+    "impact_first": {
+      "status": "implemented",
+      "description": "Prioritize measurable positive impact alongside financial returns",
+      "impact_measurement": "IRIS+ metrics and SROI analysis"
+    },
+    "esg_tilt": {
+      "status": "implemented",
+      "description": "Overweight companies with strong ESG performance",
+      "tilt_factor": "1.2x for ESG leaders, 0.8x for ESG laggards"
+    }
+  },
+  
+  "international_principles": {
+    "un_pri": {
+      "status": "signatory",
+      "signatory_date": "2020-03-15",
+      "reporting_frequency": "annual",
+      "last_report": "2023-12-31",
+      "compliance_status": "compliant"
+    },
+    "oecd_guidelines": {
+      "status": "implemented",
+      "implementation_date": "2020-06-01",
+      "focus_areas": ["human rights", "environment", "anti-corruption", "tax transparency"],
+      "compliance_status": "compliant"
+    },
+    "un_global_compact": {
+      "status": "participant",
+      "participation_date": "2020-09-01",
+      "focus_areas": ["human rights", "labor standards", "environment", "anti-corruption"],
+      "compliance_status": "compliant"
+    },
+    "sustainable_development_goals": {
+      "status": "aligned",
+      "primary_goals": ["SDG 7", "SDG 13", "SDG 15", "SDG 16"],
+      "alignment_methodology": "Impact mapping and contribution analysis",
+      "compliance_status": "aligned"
+    }
+  },
+  
+  "esg_thresholds": {
+    "minimum_esg_score": "B+ rating or equivalent",
+    "target_esg_score": "A rating or equivalent",
+    "carbon_intensity_target": "<200 tCO2e per $1M revenue",
+    "renewable_energy_target": ">50% of energy consumption",
+    "board_independence_target": ">75% independent directors",
+    "gender_diversity_target": ">40% women on board"
+  },
+  
+  "monitoring_and_review": {
+    "esg_performance_review": "monthly",
+    "policy_compliance_review": "quarterly",
+    "exclusion_list_review": "quarterly",
+    "inclusion_criteria_review": "semi-annually",
+    "full_policy_review": "annually",
+    "stakeholder_consultation": "annually"
+  },
+  
+  "reporting_requirements": {
+    "esg_performance_reporting": "quarterly",
+    "impact_measurement_reporting": "semi-annually",
+    "policy_compliance_reporting": "quarterly",
+    "stakeholder_engagement_reporting": "annually",
+    "regulatory_compliance_reporting": "as required"
+  },
+  
+  "stakeholder_engagement": {
+    "client_communication": "monthly updates, quarterly reviews",
+    "beneficiary_consultation": "annual surveys and focus groups",
+    "expert_advisory": "ESG advisory board with quarterly meetings",
+    "industry_participation": "Active participation in PRI, GSIA, and regional SIFs"
+  },
+  
+  "compliance_status": {
+    "overall_compliance": "compliant",
+    "policy_implementation": "complete",
+    "esg_integration": "complete",
+    "exclusion_management": "complete",
+    "inclusion_management": "complete",
+    "next_review_date": "2024-07-31"
+  }
+} 

@@ -17,8 +17,10 @@ from Modules.Finance_Modules.Reporting_Module.Agents import ReportingTeam
 from Modules.Finance_Modules.Consolidation_Module.Consolidation_Module import Consolidation_Manager_Agent
 from Modules.Finance_Modules.StructuralRiskAnalystModule.structural_risk_analyst_module import StructuralRiskAnalystTeam
 from Modules.Finance_Modules.TreasurerModule.TreasurerModule import manager_agent
-
-
+from Modules.Finance_Modules.AnalystFinReportingAndRefModule.AnalystFinReportingAndRef import manager_agent as analyst_reporting
+from Modules.Finance_Modules.CSRD_ConsultantModule.CSRD_Consultant import manager_agent as csrd_consultant
+from Modules.Finance_Modules.ESG_Module.ESG_module import ESG_Manager_Agent
+from Modules.Finance_Modules.ALM.Agents import almTeam
 
 from Modules.Reporting_Module.Agents import ReportingTeam
 
@@ -127,6 +129,39 @@ def get_module(request: ModuleRequest):
         response = manager_agent.run(f"""run the agent {request.agentId} with the prompt: {request.prompt}""")
         print("Response from Treasurer Module:", response.content)
         return response.content
+    
+    ####  tuesday::
+    elif request.moduleId == "analyst-reporting-manager":
+        print("Running Analyst Financial Reporting Module")
+        response = analyst_reporting.run(f"""run the agent {request.agentId} with the prompt: {request.prompt}""")
+        print("Response from Analyst Financial Reporting Module:", response.content)
+        return response.content
+    elif request.moduleId == "esg-module":
+        print("Running ESG Manager Module")
+        response = ESG_Manager_Agent.run(f"""run the agent {request.agentId} with the prompt: {request.prompt}""")
+        print("Response from ESG Manager Module:", response.content)
+        return response.content
+    elif request.moduleId == "alm-module":
+        print("Running Treasury Risk Management Module")
+        response = almTeam.run(f"""run the agent {request.agentId} with the prompt: {request.prompt}""")
+        print("Response from Treasury Risk Management Module:", response.content)
+        return response.content
+    ## ISR gave errors!!!!
+    
+    
+
+    #### Wednesday::
+    elif request.moduleId == "csrd-consultant":
+        print("Running CSRD Consultant Module")
+        response = csrd_consultant.run(f"""run the agent {request.agentId} with the prompt: {request.prompt}""")
+        print("Response from CSRD Consultant Module:", response.content)
+        return response.content
+    
+
+    
+    
+
+
     
     
 

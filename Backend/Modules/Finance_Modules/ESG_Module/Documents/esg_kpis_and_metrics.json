@@ -1,0 +1,371 @@
+{
+  "esg_kpis_and_metrics": {
+    "environmental_metrics": {
+      "climate_change": {
+        "ghg_emissions": {
+          "scope_1": {
+            "unit": "tCO2e",
+            "calculation_method": "GHG Protocol",
+            "data_source": "Energy consumption data, fuel records",
+            "reporting_frequency": "Quarterly",
+            "owner": "Sustainability Team",
+            "targets": {
+              "2025": "Reduce by 30% from 2020 baseline",
+              "2030": "Reduce by 50% from 2020 baseline",
+              "2050": "Net zero"
+            }
+          },
+          "scope_2": {
+            "unit": "tCO2e",
+            "calculation_method": "GHG Protocol (market-based)",
+            "data_source": "Electricity consumption, renewable energy certificates",
+            "reporting_frequency": "Quarterly",
+            "owner": "Sustainability Team",
+            "targets": {
+              "2025": "Reduce by 40% from 2020 baseline",
+              "2030": "Reduce by 70% from 2020 baseline",
+              "2035": "100% renewable energy"
+            }
+          },
+          "scope_3": {
+            "unit": "tCO2e",
+            "calculation_method": "GHG Protocol",
+            "data_source": "Supplier data, travel records, waste data",
+            "reporting_frequency": "Annually",
+            "owner": "Procurement Team",
+            "targets": {
+              "2025": "Reduce by 20% from 2020 baseline",
+              "2030": "Reduce by 40% from 2020 baseline"
+            }
+          }
+        },
+        "energy_consumption": {
+          "total_energy": {
+            "unit": "MWh",
+            "data_source": "Utility bills, energy management systems",
+            "reporting_frequency": "Monthly",
+            "owner": "Facilities Team"
+          },
+          "renewable_energy": {
+            "unit": "MWh",
+            "data_source": "Renewable energy certificates, on-site generation",
+            "reporting_frequency": "Monthly",
+            "owner": "Facilities Team",
+            "targets": {
+              "2025": "50% renewable energy",
+              "2030": "80% renewable energy",
+              "2035": "100% renewable energy"
+            }
+          },
+          "energy_intensity": {
+            "unit": "MWh per million revenue",
+            "calculation_method": "Total energy / Revenue",
+            "reporting_frequency": "Quarterly",
+            "owner": "Sustainability Team"
+          }
+        },
+        "climate_risk": {
+          "physical_risk_assessment": {
+            "unit": "Risk score (1-5)",
+            "data_source": "Climate models, historical data",
+            "reporting_frequency": "Annually",
+            "owner": "Risk Management Team"
+          },
+          "transition_risk_assessment": {
+            "unit": "Risk score (1-5)",
+            "data_source": "Policy analysis, market research",
+            "reporting_frequency": "Annually",
+            "owner": "Strategy Team"
+          }
+        }
+      },
+      "resource_management": {
+        "water_consumption": {
+          "total_water": {
+            "unit": "m³",
+            "data_source": "Water meters, utility bills",
+            "reporting_frequency": "Monthly",
+            "owner": "Facilities Team"
+          },
+          "water_intensity": {
+            "unit": "m³ per million revenue",
+            "calculation_method": "Total water / Revenue",
+            "reporting_frequency": "Quarterly",
+            "owner": "Sustainability Team"
+          },
+          "water_recycling": {
+            "unit": "Percentage",
+            "calculation_method": "Recycled water / Total water",
+            "reporting_frequency": "Quarterly",
+            "owner": "Facilities Team"
+          }
+        },
+        "waste_management": {
+          "total_waste": {
+            "unit": "tonnes",
+            "data_source": "Waste collection records",
+            "reporting_frequency": "Monthly",
+            "owner": "Facilities Team"
+          },
+          "waste_to_landfill": {
+            "unit": "tonnes",
+            "data_source": "Landfill disposal records",
+            "reporting_frequency": "Monthly",
+            "owner": "Facilities Team",
+            "targets": {
+              "2025": "Reduce by 50% from 2020 baseline",
+              "2028": "Zero waste to landfill"
+            }
+          },
+          "recycling_rate": {
+            "unit": "Percentage",
+            "calculation_method": "Recycled waste / Total waste",
+            "reporting_frequency": "Quarterly",
+            "owner": "Facilities Team",
+            "targets": {
+              "2025": "80% recycling rate",
+              "2030": "90% recycling rate"
+            }
+          }
+        },
+        "circular_economy": {
+          "recycled_materials": {
+            "unit": "Percentage",
+            "calculation_method": "Recycled content / Total materials",
+            "reporting_frequency": "Quarterly",
+            "owner": "Procurement Team"
+          },
+          "product_lifecycle": {
+            "unit": "Years",
+            "data_source": "Product design specifications",
+            "reporting_frequency": "Annually",
+            "owner": "Product Development Team"
+          }
+        }
+      },
+      "biodiversity": {
+        "land_use_change": {
+          "unit": "Hectares",
+          "data_source": "Land use surveys, satellite imagery",
+          "reporting_frequency": "Annually",
+          "owner": "Environmental Team"
+        },
+        "protected_areas": {
+          "unit": "Hectares",
+          "data_source": "Conservation area mapping",
+          "reporting_frequency": "Annually",
+          "owner": "Environmental Team"
+        },
+        "species_impact": {
+          "unit": "Number of species",
+          "data_source": "Biodiversity surveys",
+          "reporting_frequency": "Annually",
+          "owner": "Environmental Team"
+        }
+      }
+    },
+    "social_metrics": {
+      "workforce": {
+        "diversity_inclusion": {
+          "gender_diversity": {
+            "unit": "Percentage",
+            "calculation_method": "Women / Total employees",
+            "data_source": "HR records",
+            "reporting_frequency": "Quarterly",
+            "owner": "HR Team",
+            "targets": {
+              "2025": "45% women in workforce",
+              "2026": "40% women in leadership"
+            }
+          },
+          "ethnic_diversity": {
+            "unit": "Percentage",
+            "calculation_method": "Ethnic minorities / Total employees",
+            "data_source": "HR records",
+            "reporting_frequency": "Quarterly",
+            "owner": "HR Team"
+          },
+          "age_diversity": {
+            "unit": "Age distribution",
+            "data_source": "HR records",
+            "reporting_frequency": "Quarterly",
+            "owner": "HR Team"
+          }
+        },
+        "employee_development": {
+          "training_hours": {
+            "unit": "Hours per employee",
+            "data_source": "Learning management system",
+            "reporting_frequency": "Quarterly",
+            "owner": "HR Team"
+          },
+          "career_progression": {
+            "unit": "Percentage",
+            "calculation_method": "Promotions / Total employees",
+            "data_source": "HR records",
+            "reporting_frequency": "Annually",
+            "owner": "HR Team"
+          }
+        },
+        "health_safety": {
+          "lost_time_injuries": {
+            "unit": "Number",
+            "data_source": "Safety incident reports",
+            "reporting_frequency": "Monthly",
+            "owner": "Health & Safety Team"
+          },
+          "safety_training": {
+            "unit": "Percentage",
+            "calculation_method": "Trained employees / Total employees",
+            "data_source": "Training records",
+            "reporting_frequency": "Quarterly",
+            "owner": "Health & Safety Team"
+          }
+        }
+      },
+      "supply_chain": {
+        "supplier_assessment": {
+          "esg_screened_suppliers": {
+            "unit": "Percentage",
+            "calculation_method": "ESG assessed suppliers / Total suppliers",
+            "data_source": "Supplier database",
+            "reporting_frequency": "Quarterly",
+            "owner": "Procurement Team"
+          },
+          "supplier_audits": {
+            "unit": "Number",
+            "data_source": "Audit reports",
+            "reporting_frequency": "Annually",
+            "owner": "Procurement Team"
+          }
+        },
+        "living_wage": {
+          "unit": "Percentage",
+            "calculation_method": "Suppliers paying living wage / Total suppliers",
+            "data_source": "Supplier surveys",
+            "reporting_frequency": "Annually",
+            "owner": "Procurement Team"
+          }
+      },
+      "community": {
+        "community_investment": {
+          "unit": "Currency amount",
+          "data_source": "Community relations records",
+          "reporting_frequency": "Annually",
+          "owner": "Community Relations Team"
+        },
+        "stakeholder_engagement": {
+          "unit": "Number of engagements",
+          "data_source": "Stakeholder meeting records",
+          "reporting_frequency": "Quarterly",
+          "owner": "Stakeholder Relations Team"
+        }
+      }
+    },
+    "governance_metrics": {
+      "board_governance": {
+        "board_independence": {
+          "unit": "Percentage",
+          "calculation_method": "Independent directors / Total directors",
+          "data_source": "Board composition records",
+          "reporting_frequency": "Annually",
+          "owner": "Corporate Secretary"
+        },
+        "board_diversity": {
+          "unit": "Percentage",
+          "calculation_method": "Diverse directors / Total directors",
+          "data_source": "Board composition records",
+          "reporting_frequency": "Annually",
+          "owner": "Corporate Secretary"
+        },
+        "esg_board_oversight": {
+          "unit": "Yes/No",
+          "data_source": "Board committee charters",
+          "reporting_frequency": "Annually",
+          "owner": "Corporate Secretary"
+        }
+      },
+      "ethics_compliance": {
+        "code_of_conduct": {
+          "unit": "Percentage",
+          "calculation_method": "Employees trained / Total employees",
+          "data_source": "Training records",
+          "reporting_frequency": "Quarterly",
+          "owner": "Compliance Team"
+        },
+        "whistleblower_reports": {
+          "unit": "Number",
+          "data_source": "Whistleblower system",
+          "reporting_frequency": "Quarterly",
+          "owner": "Compliance Team"
+        },
+        "corruption_incidents": {
+          "unit": "Number",
+          "data_source": "Incident reports",
+          "reporting_frequency": "Quarterly",
+          "owner": "Compliance Team"
+        }
+      },
+      "risk_management": {
+        "esg_risk_assessment": {
+          "unit": "Risk score (1-5)",
+          "data_source": "Risk assessment reports",
+          "reporting_frequency": "Quarterly",
+          "owner": "Risk Management Team"
+        },
+        "esg_risk_mitigation": {
+          "unit": "Percentage",
+          "calculation_method": "Mitigated risks / Total risks",
+          "data_source": "Risk management reports",
+          "reporting_frequency": "Quarterly",
+          "owner": "Risk Management Team"
+        }
+      }
+    },
+    "financial_metrics": {
+      "sustainable_finance": {
+        "green_bonds": {
+          "unit": "Currency amount",
+          "data_source": "Treasury records",
+          "reporting_frequency": "Quarterly",
+          "owner": "Treasury Team"
+        },
+        "sustainability_linked_loans": {
+          "unit": "Currency amount",
+          "data_source": "Treasury records",
+          "reporting_frequency": "Quarterly",
+          "owner": "Treasury Team"
+        }
+      },
+      "esg_investment": {
+        "esg_integrated_investments": {
+          "unit": "Percentage",
+          "calculation_method": "ESG integrated investments / Total investments",
+          "data_source": "Investment portfolio",
+          "reporting_frequency": "Quarterly",
+          "owner": "Investment Team"
+        }
+      }
+    },
+    "data_quality_metrics": {
+      "completeness": {
+        "unit": "Percentage",
+        "calculation_method": "Complete data points / Total required data points",
+        "reporting_frequency": "Monthly",
+        "owner": "Data Management Team"
+      },
+      "accuracy": {
+        "unit": "Percentage",
+        "calculation_method": "Accurate data points / Total data points",
+        "reporting_frequency": "Monthly",
+        "owner": "Data Management Team"
+      },
+      "timeliness": {
+        "unit": "Days",
+        "calculation_method": "Data collection date - Reporting date",
+        "reporting_frequency": "Monthly",
+        "owner": "Data Management Team"
+      }
+    }
+  }
+}

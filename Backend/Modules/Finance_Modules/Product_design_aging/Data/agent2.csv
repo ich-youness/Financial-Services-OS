@@ -1,0 +1,7 @@
+ProductID,ProductName,Category,TargetAgeRange,PremiumType,Coverage,OptionalRiders,Notes
+P001,Lifetime Pension Plan,Pension,55-75,Fixed,Guaranteed lifetime income,None,Designed for retirees seeking stable income
+P002,Deferred Income Annuity,Annuity,45-65,Variable,Payments start at 65,Inflation Protection,Useful for mid-career individuals
+P003,Immediate Annuity,Annuity,60-80,Lump Sum,Immediate lifetime income,Joint Survivor,Popular among retirees with savings
+P004,Comprehensive LTC Insurance,Long-Term Care,50-75,Annual,Home care + nursing + assisted living,Waiver of Premium,Addresses rising long-term care costs
+P005,Hybrid Life + LTC,Hybrid,40-70,Flexible,Life insurance with LTC benefits,Accelerated Death Benefit,Combines protection and care needs
+P006,Wellness-Linked Plan,Innovative,35-65,Usage-Based,Retirement income with premium discounts,Fitness Tracker Discount,Encourages healthy aging

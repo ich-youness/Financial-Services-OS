@@ -1,0 +1,10 @@
+Metric,Category,Reported Value,Unit,Business Unit,ERP Integrated,Validation Rules Applied,Process Owner,Notes
+Carbon Emissions,Environmental,45000,tonnes CO2,Operations,No,No,ESG Manager,Scope 1 + 2 included; financed emissions not fully integrated
+Energy Consumption,Environmental,1200000,kWh,Operations,No,No,ESG Manager,No breakdown by renewable vs non-renewable
+Water Usage,Environmental,35000,m3,Operations,No,No,ESG Manager,Minimal reporting on operational water use
+Waste Generated,Environmental,500,tonnes,Operations,No,Partial,ESG Manager,Only hazardous and electronic waste reported
+Gender Diversity,Social,35,%,HR,Yes,Yes,HR Director,Percentage of women in senior management and board
+Employee Training Hours,Social,8500,hours,HR + Training,Partial,Partial,HR Director,No breakdown by training type or ESG focus
+Supply Chain Audits,Governance,25,number,Supplier Management,No,No,Supply Chain Head,Only top-tier suppliers audited
+Anti-Corruption Policies,Governance,Yes,N/A,Legal + Compliance,Yes,Yes,Compliance Officer,Policy documented but not fully enforced
+Sustainability Targets,Governance,5,number,Strategy + ESG,Partial,Partial,ESG Officer,Targets exist but not linked to KPIs

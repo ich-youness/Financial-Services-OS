@@ -1,0 +1,345 @@
+{
+  "decarbonization_pathways": {
+    "COMP001": {
+      "company_name": "GreenTech Manufacturing Ltd",
+      "baseline_year": 2020,
+      "target_year": 2050,
+      "net_zero_target": "2040",
+      "baseline_emissions": {
+        "scope_1": 125000,
+        "scope_2": 180000,
+        "scope_3": 450000,
+        "total": 755000
+      },
+      "target_emissions": {
+        "2030": {
+          "scope_1": 62500,
+          "scope_2": 90000,
+          "scope_3": 360000,
+          "total": 512500
+        },
+        "2040": {
+          "scope_1": 0,
+          "scope_2": 0,
+          "scope_3": 225000,
+          "total": 225000
+        },
+        "2050": {
+          "scope_1": 0,
+          "scope_2": 0,
+          "scope_3": 0,
+          "total": 0
+        }
+      },
+      "abatement_levers": [
+        {
+          "lever_id": "L001",
+          "lever_name": "Energy Efficiency Improvements",
+          "category": "Operational Efficiency",
+          "abatement_potential": {
+            "2025": 15000,
+            "2030": 25000,
+            "2035": 30000,
+            "2040": 35000
+          },
+          "abatement_cost": {
+            "euro_per_tonne": 25,
+            "total_investment": 875000,
+            "payback_period": "3.5 years"
+          },
+          "implementation_timeline": {
+            "start_date": "2024",
+            "completion_date": "2027",
+            "phases": [
+              "Phase 1: Lighting upgrades (2024-2025)",
+              "Phase 2: HVAC optimization (2025-2026)",
+              "Phase 3: Process efficiency (2026-2027)"
+            ]
+          },
+          "dependencies": ["Capital approval", "Technical expertise", "Employee training"],
+          "risks": ["Technology obsolescence", "Implementation delays", "Performance uncertainty"]
+        },
+        {
+          "lever_id": "L002",
+          "lever_name": "Renewable Energy Procurement",
+          "category": "Energy Supply",
+          "abatement_potential": {
+            "2025": 20000,
+            "2030": 45000,
+            "2035": 90000,
+            "2040": 140000
+          },
+          "abatement_cost": {
+            "euro_per_tonne": 15,
+            "total_investment": 2100000,
+            "payback_period": "5.2 years"
+          },
+          "implementation_timeline": {
+            "start_date": "2024",
+            "completion_date": "2035",
+            "phases": [
+              "Phase 1: Power purchase agreements (2024-2026)",
+              "Phase 2: On-site solar installation (2026-2029)",
+              "Phase 3: Grid decarbonization (2029-2035)"
+            ]
+          },
+          "dependencies": ["Grid infrastructure", "Regulatory approval", "Energy market access"],
+          "risks": ["Grid stability", "Regulatory changes", "Energy price volatility"]
+        },
+        {
+          "lever_id": "L003",
+          "lever_name": "Electrification of Fleet",
+          "category": "Transportation",
+          "abatement_potential": {
+            "2025": 5000,
+            "2030": 15000,
+            "2035": 20000,
+            "2040": 22000
+          },
+          "abatement_cost": {
+            "euro_per_tonne": 45,
+            "total_investment": 990000,
+            "payback_period": "6.8 years"
+          },
+          "implementation_timeline": {
+            "start_date": "2025",
+            "completion_date": "2032",
+            "phases": [
+              "Phase 1: Light vehicle electrification (2025-2027)",
+              "Phase 2: Heavy vehicle electrification (2027-2030)",
+              "Phase 3: Charging infrastructure (2030-2032)"
+            ]
+          },
+          "dependencies": ["Charging infrastructure", "Vehicle availability", "Battery technology"],
+          "risks": ["Battery cost uncertainty", "Infrastructure gaps", "Range limitations"]
+        },
+        {
+          "lever_id": "L004",
+          "lever_name": "Circular Economy Practices",
+          "category": "Resource Management",
+          "abatement_potential": {
+            "2025": 8000,
+            "2030": 15000,
+            "2035": 20000,
+            "2040": 25000
+          },
+          "abatement_cost": {
+            "euro_per_tonne": 35,
+            "total_investment": 875000,
+            "payback_period": "4.2 years"
+          },
+          "implementation_timeline": {
+            "start_date": "2024",
+            "completion_date": "2029",
+            "phases": [
+              "Phase 1: Waste reduction (2024-2026)",
+              "Phase 2: Material recycling (2026-2028)",
+              "Phase 3: Product redesign (2028-2029)"
+            ]
+          },
+          "dependencies": ["Supplier collaboration", "Technology innovation", "Market demand"],
+          "risks": ["Quality standards", "Market acceptance", "Supply chain disruption"]
+        },
+        {
+          "lever_id": "L005",
+          "lever_name": "Carbon Capture and Storage",
+          "category": "Technology Innovation",
+          "abatement_potential": {
+            "2025": 0,
+            "2030": 10000,
+            "2035": 25000,
+            "2040": 40000
+          },
+          "abatement_cost": {
+            "euro_per_tonne": 80,
+            "total_investment": 3200000,
+            "payback_period": "8.0 years"
+          },
+          "implementation_timeline": {
+            "start_date": "2028",
+            "completion_date": "2038",
+            "phases": [
+              "Phase 1: Technology assessment (2028-2030)",
+              "Phase 2: Pilot installation (2030-2033)",
+              "Phase 3: Full-scale deployment (2033-2038)"
+            ]
+          },
+          "dependencies": ["Technology maturity", "Infrastructure development", "Regulatory framework"],
+          "risks": ["Technology risk", "High capital cost", "Regulatory uncertainty"]
+        }
+      ],
+      "marginal_abatement_cost_curve": {
+        "2025": [
+          {"abatement": 5000, "cost": 15, "lever": "Renewable Energy"},
+          {"abatement": 8000, "cost": 25, "lever": "Energy Efficiency"},
+          {"abatement": 5000, "cost": 35, "lever": "Circular Economy"},
+          {"abatement": 5000, "cost": 45, "lever": "Fleet Electrification"}
+        ],
+        "2030": [
+          {"abatement": 10000, "cost": 15, "lever": "Renewable Energy"},
+          {"abatement": 15000, "cost": 25, "lever": "Energy Efficiency"},
+          {"abatement": 10000, "cost": 35, "lever": "Circular Economy"},
+          {"abatement": 15000, "cost": 45, "lever": "Fleet Electrification"},
+          {"abatement": 10000, "cost": 80, "lever": "Carbon Capture"}
+        ],
+        "2035": [
+          {"abatement": 15000, "cost": 15, "lever": "Renewable Energy"},
+          {"abatement": 20000, "cost": 25, "lever": "Energy Efficiency"},
+          {"abatement": 15000, "cost": 35, "lever": "Circular Economy"},
+          {"abatement": 20000, "cost": 45, "lever": "Fleet Electrification"},
+          {"abatement": 25000, "cost": 80, "lever": "Carbon Capture"}
+        ]
+      },
+      "investment_requirements": {
+        "total_investment": 8040000,
+        "annual_investment": {
+          "2024": 800000,
+          "2025": 1200000,
+          "2026": 1500000,
+          "2027": 1200000,
+          "2028": 800000,
+          "2029": 600000,
+          "2030": 500000,
+          "2031": 400000,
+          "2032": 300000,
+          "2033": 200000,
+          "2034": 150000,
+          "2035": 100000
+        },
+        "funding_sources": {
+          "internal_capital": "60%",
+          "green_bonds": "25%",
+          "sustainability_linked_loans": "15%"
+        }
+      },
+      "scenario_analysis": {
+        "business_as_usual": {
+          "description": "No additional climate action beyond current policies",
+          "emissions_2050": 600000,
+          "temperature_alignment": "3.5°C",
+          "financial_impact": "High transition risks, potential stranded assets"
+        },
+        "current_policies": {
+          "description": "Implementation of announced policies and commitments",
+          "emissions_2050": 300000,
+          "temperature_alignment": "2.8°C",
+          "financial_impact": "Moderate transition risks, some stranded assets"
+        },
+        "net_zero_2040": {
+          "description": "Achievement of net-zero emissions by 2040",
+          "emissions_2050": 0,
+          "temperature_alignment": "1.5°C",
+          "financial_impact": "Low transition risks, competitive advantage"
+        }
+      }
+    },
+    "COMP002": {
+      "company_name": "EcoFinance Bank AG",
+      "baseline_year": 2020,
+      "target_year": 2050,
+      "net_zero_target": "2035",
+      "baseline_emissions": {
+        "scope_1": 8500,
+        "scope_2": 25000,
+        "scope_3": 8500000,
+        "total": 8525500
+      },
+      "target_emissions": {
+        "2030": {
+          "scope_1": 0,
+          "scope_2": 0,
+          "scope_3": 4250000,
+          "total": 4250000
+        },
+        "2035": {
+          "scope_1": 0,
+          "scope_2": 0,
+          "scope_3": 0,
+          "total": 0
+        },
+        "2050": {
+          "scope_1": 0,
+          "scope_2": 0,
+          "scope_3": 0,
+          "total": 0
+        }
+      },
+      "abatement_levers": [
+        {
+          "lever_id": "L001",
+          "lever_name": "Green Portfolio Transition",
+          "category": "Portfolio Management",
+          "abatement_potential": {
+            "2025": 1000000,
+            "2030": 2500000,
+            "2035": 4250000,
+            "2040": 4250000
+          },
+          "abatement_cost": {
+            "euro_per_tonne": 5,
+            "total_investment": 21250000,
+            "payback_period": "4.2 years"
+          },
+          "implementation_timeline": {
+            "start_date": "2024",
+            "completion_date": "2035",
+            "phases": [
+              "Phase 1: High-carbon exposure reduction (2024-2027)",
+              "Phase 2: Green investment scaling (2027-2030)",
+              "Phase 3: Portfolio decarbonization (2030-2035)"
+            ]
+          },
+          "dependencies": ["Client engagement", "Market availability", "Regulatory support"],
+          "risks": ["Market volatility", "Client retention", "Regulatory changes"]
+        },
+        {
+          "lever_id": "L002",
+          "lever_name": "Operational Decarbonization",
+          "category": "Internal Operations",
+          "abatement_potential": {
+            "2025": 5000,
+            "2030": 15000,
+            "2035": 25000,
+            "2040": 25000
+          },
+          "abatement_cost": {
+            "euro_per_tonne": 30,
+            "total_investment": 750000,
+            "payback_period": "3.8 years"
+          },
+          "implementation_timeline": {
+            "start_date": "2024",
+            "completion_date": "2028",
+            "phases": [
+              "Phase 1: Building efficiency (2024-2026)",
+              "Phase 2: Renewable energy (2026-2027)",
+              "Phase 3: Fleet electrification (2027-2028)"
+            ]
+          },
+          "dependencies": ["Building ownership", "Energy market access", "Infrastructure"],
+          "risks": ["Technology costs", "Implementation delays", "Performance uncertainty"]
+        }
+      ],
+      "investment_requirements": {
+        "total_investment": 22000000,
+        "annual_investment": {
+          "2024": 3000000,
+          "2025": 4000000,
+          "2026": 4000000,
+          "2027": 3000000,
+          "2028": 2000000,
+          "2029": 2000000,
+          "2030": 2000000,
+          "2031": 1500000,
+          "2032": 1000000,
+          "2033": 500000
+        },
+        "funding_sources": {
+          "internal_capital": "40%",
+          "green_bonds": "35%",
+          "sustainability_linked_loans": "25%"
+        }
+      }
+    }
+  }
+}

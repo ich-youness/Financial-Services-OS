@@ -1,0 +1,271 @@
+{
+  "portfolio_id": "PORTFOLIO_001",
+  "analysis_date": "2024-01-31",
+  "portfolio_type": "sustainable_equity",
+  "total_value": 2500000000,
+  "currency": "EUR",
+  "number_of_holdings": 150,
+  
+  "esg_screening_results": {
+    "negative_screening": {
+      "excluded_companies": 25,
+      "exclusion_reasons": {
+        "controversial_weapons": 8,
+        "tobacco": 5,
+        "fossil_fuels": 7,
+        "gambling": 3,
+        "human_rights_violations": 2
+      },
+      "excluded_value": 180000000,
+      "exclusion_rate": "6.7%"
+    },
+    "positive_screening": {
+      "included_companies": 125,
+      "inclusion_criteria": {
+        "best_in_class": 85,
+        "thematic_investing": 25,
+        "impact_investing": 15
+      },
+      "included_value": 2320000000,
+      "inclusion_rate": "92.8%"
+    },
+    "norms_based_screening": {
+      "un_global_compact_violations": 0,
+      "oecd_guidelines_violations": 0,
+      "human_rights_violations": 2,
+      "environmental_violations": 1,
+      "corruption_violations": 0
+    }
+  },
+  
+  "esg_ratings_distribution": {
+    "rating_agency": "MSCI ESG Ratings",
+    "rating_distribution": {
+      "AAA": {
+        "count": 25,
+        "value": 450000000,
+        "percentage": "18.0%"
+      },
+      "AA": {
+        "count": 45,
+        "value": 800000000,
+        "percentage": "32.0%"
+      },
+      "A": {
+        "count": 35,
+        "value": 600000000,
+        "percentage": "24.0%"
+      },
+      "BBB": {
+        "count": 15,
+        "value": 300000000,
+        "percentage": "12.0%"
+      },
+      "BB": {
+        "count": 5,
+        "value": 150000000,
+        "percentage": "6.0%"
+      }
+    },
+    "average_esg_rating": "AA",
+    "esg_rating_score": 8.7
+  },
+  
+  "esg_scoring_methodology": {
+    "environmental_weight": 0.35,
+    "social_weight": 0.35,
+    "governance_weight": 0.30,
+    "scoring_factors": {
+      "environmental": {
+        "climate_change": 0.15,
+        "natural_resources": 0.10,
+        "pollution_waste": 0.10
+      },
+      "social": {
+        "human_capital": 0.15,
+        "product_liability": 0.10,
+        "stakeholder_opposition": 0.10
+      },
+      "governance": {
+        "corporate_governance": 0.15,
+        "business_ethics": 0.10,
+        "corporate_behavior": 0.05
+      }
+    },
+    "industry_adjustment": "applied",
+    "materiality_focus": "enabled"
+  },
+  
+  "impact_measurement": {
+    "environmental_impact": {
+      "carbon_footprint": {
+        "portfolio_carbon_intensity": "180 tCO2e per $1M revenue",
+        "benchmark_carbon_intensity": "250 tCO2e per $1M revenue",
+        "carbon_reduction": "28.0%",
+        "carbon_avoided": "175000 tCO2e annually"
+      },
+      "renewable_energy": {
+        "renewable_energy_consumption": "65%",
+        "benchmark_renewable_energy": "25%",
+        "renewable_energy_generation": "850 MW",
+        "households_powered": "425000"
+      },
+      "water_management": {
+        "water_efficiency": "35% improvement",
+        "water_conservation": "2.5 million m3 annually",
+        "water_quality_projects": 15
+      },
+      "biodiversity": {
+        "protected_areas": "125000 hectares",
+        "reforestation_projects": 8,
+        "species_conservation": 45
+      }
+    },
+    "social_impact": {
+      "community_development": {
+        "jobs_created": 8500,
+        "communities_served": 125,
+        "local_investment": 45000000,
+        "skills_training": 3200
+      },
+      "education": {
+        "students_supported": 15000,
+        "schools_built": 12,
+        "scholarships_provided": 850,
+        "digital_literacy": 25000
+      },
+      "healthcare": {
+        "patients_served": 45000,
+        "healthcare_facilities": 8,
+        "medical_research_projects": 25,
+        "preventive_care": 125000
+      },
+      "financial_inclusion": {
+        "unbanked_individuals": 35000,
+        "microfinance_loans": 12500,
+        "financial_education": 18000,
+        "banking_access": 45000
+      }
+    },
+    "impact_metrics": {
+      "output_metrics": "tracked monthly",
+      "outcome_metrics": "tracked quarterly",
+      "impact_metrics": "tracked annually",
+      "reporting_framework": "IRIS+ and GRI Standards"
+    }
+  },
+  
+  "esg_risk_management": {
+    "climate_risk": {
+      "physical_risk": {
+        "high_risk_companies": 8,
+        "medium_risk_companies": 25,
+        "low_risk_companies": 117,
+        "risk_mitigation": "climate adaptation strategies implemented"
+      },
+      "transition_risk": {
+        "high_risk_companies": 12,
+        "medium_risk_companies": 35,
+        "low_risk_companies": 103,
+        "risk_mitigation": "renewable energy transition plans"
+      }
+    },
+    "social_risk": {
+      "human_rights": {
+        "high_risk_companies": 3,
+        "medium_risk_companies": 18,
+        "low_risk_companies": 129,
+        "risk_mitigation": "human rights due diligence processes"
+      },
+      "labor_standards": {
+        "high_risk_companies": 5,
+        "medium_risk_companies": 22,
+        "low_risk_companies": 123,
+        "risk_mitigation": "labor standards monitoring"
+      },
+      "community_relations": {
+        "high_risk_companies": 4,
+        "medium_risk_companies": 20,
+        "low_risk_companies": 126,
+        "risk_mitigation": "community engagement programs"
+      }
+    },
+    "governance_risk": {
+      "corporate_governance": {
+        "high_risk_companies": 6,
+        "medium_risk_companies": 28,
+        "low_risk_companies": 116,
+        "risk_mitigation": "governance improvement programs"
+      },
+      "business_ethics": {
+        "high_risk_companies": 2,
+        "medium_risk_companies": 15,
+        "low_risk_companies": 133,
+        "risk_mitigation": "ethics training and monitoring"
+      },
+      "regulatory_compliance": {
+        "high_risk_companies": 3,
+        "medium_risk_companies": 20,
+        "low_risk_companies": 127,
+        "risk_mitigation": "compliance monitoring systems"
+      }
+    },
+    "reputational_risk": {
+      "high_risk_companies": 4,
+      "medium_risk_companies": 22,
+      "low_risk_companies": 124,
+      "risk_mitigation": "reputation monitoring and crisis management"
+    }
+  },
+  
+  "esg_performance_monitoring": {
+    "monthly_reviews": {
+      "esg_score_changes": "tracked",
+      "controversy_alerts": "monitored",
+      "rating_updates": "reviewed",
+      "risk_assessment": "updated"
+    },
+    "quarterly_reviews": {
+      "impact_measurement": "updated",
+      "risk_mitigation": "assessed",
+      "performance_attribution": "analyzed",
+      "benchmark_comparison": "conducted"
+    },
+    "annual_reviews": {
+      "policy_compliance": "verified",
+      "stakeholder_engagement": "evaluated",
+      "impact_assessment": "comprehensive review",
+      "strategy_adjustment": "implemented"
+    }
+  },
+  
+  "benchmark_comparison": {
+    "msci_world_esg_leaders": {
+      "portfolio_performance": "+2.3%",
+      "esg_score_difference": "+0.8",
+      "carbon_intensity_difference": "-28%",
+      "diversification_difference": "+15%"
+    },
+    "msci_world": {
+      "portfolio_performance": "+1.8%",
+      "esg_score_difference": "+2.1",
+      "carbon_intensity_difference": "-45%",
+      "diversification_difference": "+8%"
+    },
+    "sustainable_peer_group": {
+      "portfolio_performance": "+1.2%",
+      "esg_score_difference": "+0.5",
+      "carbon_intensity_difference": "-15%",
+      "diversification_difference": "+12%"
+    }
+  },
+  
+  "compliance_status": {
+    "overall_esg_compliance": "compliant",
+    "screening_compliance": "compliant",
+    "impact_measurement": "compliant",
+    "risk_management": "compliant",
+    "performance_monitoring": "compliant",
+    "next_review_date": "2024-04-30"
+  }
+} 

@@ -1,0 +1,295 @@
+{
+  "business_processes": {
+    "COMP001": {
+      "company_name": "GreenTech Manufacturing Ltd",
+      "esg_process_architecture": {
+        "overview": "Integrated ESG management system with automated data collection, validation, and reporting",
+        "system_components": [
+          "ERP System (SAP S/4HANA)",
+          "ESG Data Management Platform",
+          "Business Intelligence Dashboard",
+          "Document Management System",
+          "Workflow Automation Platform"
+        ],
+        "integration_points": [
+          "Finance and Accounting Systems",
+          "HR Management Systems",
+          "Supply Chain Management",
+          "Quality Management Systems",
+          "Environmental Management Systems"
+        ]
+      },
+      "data_collection_processes": {
+        "environmental_data": {
+          "energy_consumption": {
+            "process_owner": "Facilities Manager",
+            "data_sources": ["Utility meters", "Energy management systems", "Building automation"],
+            "collection_frequency": "Daily",
+            "collection_method": "Automated via IoT sensors and SCADA systems",
+            "validation_rules": [
+              "Data completeness check (>95%)",
+              "Range validation (0-100,000 MWh)",
+              "Consistency with historical patterns",
+              "Cross-reference with billing data"
+            ],
+            "escalation_path": "Facilities Manager → Sustainability Team → ESG Director",
+            "system_integration": "Direct integration with ESG Data Platform"
+          },
+          "emissions_data": {
+            "process_owner": "Sustainability Manager",
+            "data_sources": ["Energy consumption", "Fuel records", "Activity data"],
+            "collection_frequency": "Monthly",
+            "collection_method": "Automated calculation from source data",
+            "validation_rules": [
+              "Calculation accuracy verification",
+              "Emission factor validation",
+              "Scope classification accuracy",
+              "Historical trend analysis"
+            ],
+            "escalation_path": "Sustainability Manager → ESG Director → CFO",
+            "system_integration": "Integrated with ERP and ESG platforms"
+          },
+          "waste_data": {
+            "process_owner": "Operations Manager",
+            "data_sources": ["Waste collection records", "Recycling facility reports"],
+            "collection_frequency": "Weekly",
+            "collection_method": "Manual entry with digital forms",
+            "validation_rules": [
+              "Weight verification with disposal receipts",
+              "Category classification accuracy",
+              "Recycling rate calculation",
+              "Cost validation"
+            ],
+            "escalation_path": "Operations Manager → Sustainability Manager → ESG Director",
+            "system_integration": "Mobile app integration with central database"
+          }
+        },
+        "social_data": {
+          "workforce_data": {
+            "process_owner": "HR Director",
+            "data_sources": ["HRIS system", "Payroll system", "Training records"],
+            "collection_frequency": "Monthly",
+            "collection_method": "Automated extraction from HR systems",
+            "validation_rules": [
+              "Employee count accuracy",
+              "Diversity data completeness",
+              "Training hours validation",
+              "Safety incident verification"
+            ],
+            "escalation_path": "HR Director → ESG Director → CEO",
+            "system_integration": "Direct integration with ESG platform"
+          },
+          "supply_chain_data": {
+            "process_owner": "Procurement Director",
+            "data_sources": ["Supplier database", "Audit reports", "Self-assessments"],
+            "collection_frequency": "Quarterly",
+            "collection_method": "Structured supplier surveys and audits",
+            "validation_rules": [
+              "Supplier response rate (>80%)",
+              "Data consistency across periods",
+              "Audit finding verification",
+              "Risk assessment accuracy"
+            ],
+            "escalation_path": "Procurement Director → Sustainability Manager → ESG Director",
+            "system_integration": "Supplier portal integration"
+          }
+        },
+        "governance_data": {
+          "compliance_data": {
+            "process_owner": "Compliance Manager",
+            "data_sources": ["Regulatory databases", "Internal audit reports", "Policy documents"],
+            "collection_frequency": "Monthly",
+            "collection_method": "Automated monitoring and manual review",
+            "validation_rules": [
+              "Regulatory update tracking",
+              "Compliance status accuracy",
+              "Policy alignment verification",
+              "Risk assessment completeness"
+            ],
+            "escalation_path": "Compliance Manager → Legal Director → ESG Director",
+            "system_integration": "Regulatory monitoring platform integration"
+          }
+        }
+      },
+      "data_validation_processes": {
+        "automated_validation": {
+          "real_time_checks": [
+            "Data type validation",
+            "Range checks",
+            "Format validation",
+            "Duplicate detection"
+          ],
+          "batch_validation": [
+            "Cross-reference validation",
+            "Statistical outlier detection",
+            "Trend analysis",
+            "Completeness checks"
+          ]
+        },
+        "manual_validation": {
+          "review_frequency": "Monthly",
+          "reviewers": ["Data Owners", "Sustainability Team", "Internal Audit"],
+          "validation_criteria": [
+            "Business logic verification",
+            "Contextual accuracy",
+            "Documentation completeness",
+            "Evidence verification"
+          ]
+        },
+        "quality_metrics": {
+          "completeness_target": ">95%",
+          "accuracy_target": ">98%",
+          "timeliness_target": "<5 days",
+          "consistency_target": ">90%"
+        }
+      },
+      "reporting_processes": {
+        "internal_reporting": {
+          "monthly_dashboards": {
+            "audience": "Management Team",
+            "content": ["KPI performance", "Trend analysis", "Risk indicators"],
+            "delivery_method": "Web-based dashboard",
+            "approval_required": "ESG Director"
+          },
+          "quarterly_reports": {
+            "audience": "Board of Directors",
+            "content": ["Comprehensive ESG performance", "Strategy updates", "Risk assessment"],
+            "delivery_method": "Board portal + presentation",
+            "approval_required": "CEO + Board ESG Committee"
+          }
+        },
+        "external_reporting": {
+          "annual_sustainability_report": {
+            "framework": "GRI Standards + CSRD/ESRS",
+            "assurance": "Limited assurance by Big 4 firm",
+            "publication": "Company website + regulatory platforms",
+            "approval_required": "Board of Directors"
+          },
+          "regulatory_reporting": {
+            "eu_taxonomy": "Annual submission to national authorities",
+            "csrd_esrs": "Annual submission to ESMA",
+            "tcfd": "Annual disclosure in financial reports",
+            "approval_required": "CFO + ESG Director"
+          }
+        }
+      },
+      "workflow_automation": {
+        "esg_approval_workflows": {
+          "data_approval": {
+            "trigger": "Data validation completion",
+            "steps": [
+              "Data Owner Review",
+              "Sustainability Manager Review",
+              "ESG Director Approval"
+            ],
+            "escalation": "Automatic escalation after 3 days",
+            "system": "Workflow automation platform"
+          },
+          "report_approval": {
+            "trigger": "Report generation completion",
+            "steps": [
+              "ESG Team Review",
+              "Legal Review",
+              "CFO Approval",
+              "CEO Final Approval"
+            ],
+            "escalation": "Automatic escalation after 5 days",
+            "system": "Document management system"
+          }
+        },
+        "notification_systems": {
+          "data_collection_reminders": "Automated emails 3 days before deadline",
+          "validation_alerts": "Real-time notifications for data quality issues",
+          "approval_reminders": "Daily reminders for pending approvals",
+          "compliance_alerts": "Weekly regulatory update notifications"
+        }
+      },
+      "performance_monitoring": {
+        "kpi_dashboards": {
+          "executive_dashboard": {
+            "metrics": ["ESG Rating", "Key Performance Indicators", "Risk Status"],
+            "update_frequency": "Real-time",
+            "access_level": "C-Suite + Board"
+          },
+          "operational_dashboard": {
+            "metrics": ["Data Quality", "Process Efficiency", "Compliance Status"],
+            "update_frequency": "Daily",
+            "access_level": "ESG Team + Data Owners"
+          }
+        },
+        "continuous_improvement": {
+          "process_audits": "Quarterly internal audits",
+          "stakeholder_feedback": "Annual stakeholder surveys",
+          "benchmarking": "Industry benchmarking every 2 years",
+          "technology_updates": "Annual technology assessment"
+        }
+      }
+    },
+    "COMP002": {
+      "company_name": "EcoFinance Bank AG",
+      "esg_process_architecture": {
+        "overview": "ESG-integrated financial services platform with portfolio management and risk assessment",
+        "system_components": [
+          "Core Banking System",
+          "ESG Portfolio Management Platform",
+          "Risk Management System",
+          "Client Relationship Management",
+          "ESG Data Analytics Platform"
+        ],
+        "integration_points": [
+          "Trading Systems",
+          "Risk Management Systems",
+          "Client Portals",
+          "Regulatory Reporting Systems",
+          "Market Data Providers"
+        ]
+      },
+      "portfolio_esg_processes": {
+        "esg_screening": {
+          "process_owner": "ESG Portfolio Manager",
+          "data_sources": ["ESG rating providers", "Company disclosures", "News monitoring"],
+          "collection_frequency": "Real-time",
+          "collection_method": "Automated data feeds and AI-powered monitoring",
+          "validation_rules": [
+            "Rating consistency across providers",
+            "Data freshness verification",
+            "Controversy detection accuracy",
+            "Regulatory compliance check"
+          ],
+          "escalation_path": "ESG Portfolio Manager → Chief Risk Officer → ESG Director",
+          "system_integration": "Direct integration with portfolio management system"
+        },
+        "climate_risk_assessment": {
+          "process_owner": "Climate Risk Manager",
+          "data_sources": ["Climate models", "Company emissions data", "Regulatory scenarios"],
+          "collection_frequency": "Monthly",
+          "collection_method": "Automated climate risk modeling",
+          "validation_rules": [
+            "Model accuracy verification",
+            "Scenario completeness",
+            "Data quality assessment",
+            "Regulatory alignment"
+          ],
+          "escalation_path": "Climate Risk Manager → Chief Risk Officer → Board Risk Committee",
+          "system_integration": "Integrated with enterprise risk management system"
+        }
+      },
+      "client_esg_processes": {
+        "esg_preference_assessment": {
+          "process_owner": "Client Relationship Manager",
+          "data_sources": ["Client surveys", "Investment preferences", "Risk tolerance"],
+          "collection_frequency": "Annually",
+          "collection_method": "Structured client interviews and surveys",
+          "validation_rules": [
+            "Preference clarity verification",
+            "Risk tolerance consistency",
+            "Investment horizon alignment",
+            "Regulatory suitability"
+          ],
+          "escalation_path": "Client Relationship Manager → ESG Portfolio Manager → ESG Director",
+          "system_integration": "Client portal and CRM integration"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+Metric,Category,Reported Value,Unit,Data Source,Current Disclosure Level,Audit Ready,Notes
+Carbon Emissions,Environmental,45000,tonnes CO2,Operations + Finance,partial,No,Scope 1 + 2 included; financed emissions not fully covered
+Energy Consumption,Environmental,1200000,kWh,Operations,partial,No,No breakdown by renewable vs non-renewable
+Water Usage,Environmental,35000,m3,Operations,none,No,Minimal reporting on operational water use
+Waste Generated,Environmental,500,tonnes,Operations,partial,No,Only hazardous and electronic waste reported
+Gender Diversity,Social,35,%,HR,partial,No,Percentage of women in senior management and board
+Employee Training Hours,Social,8500,hours,HR + Training System,partial,No,No breakdown by training type or ESG focus
+Supply Chain Audits,Governance,25,number,Supplier Management,none,No,Only top-tier suppliers audited
+Anti-Corruption Policies,Governance,Yes,N/A,Legal + Compliance,easy,Yes,Policy documented but not fully enforced
+Sustainability Targets,Governance,5,number,Strategy + ESG Office,partial,No,Targets exist but not linked to KPIs

@@ -1,0 +1,17 @@
+ProductID,ProductName,Metric,Year,Value
+101,Deferred Annuity,LossRatio,2020,0.45
+101,Deferred Annuity,LossRatio,2021,0.47
+101,Deferred Annuity,PersistencyRate,2020,0.92
+101,Deferred Annuity,PersistencyRate,2021,0.90
+102,Immediate Life Annuity,LossRatio,2020,0.52
+102,Immediate Life Annuity,LossRatio,2021,0.50
+102,Immediate Life Annuity,PersistencyRate,2020,0.88
+102,Immediate Life Annuity,PersistencyRate,2021,0.87
+103,LTC Insurance,ClaimsFrequency,2020,0.05
+103,LTC Insurance,ClaimsFrequency,2021,0.06
+103,LTC Insurance,ClaimsSeverity,2020,12000
+103,LTC Insurance,ClaimsSeverity,2021,12500
+104,Variable Annuity,LossRatio,2020,0.48
+104,Variable Annuity,LossRatio,2021,0.49
+104,Variable Annuity,PersistencyRate,2020,0.91
+104,Variable Annuity,PersistencyRate,2021,0.90

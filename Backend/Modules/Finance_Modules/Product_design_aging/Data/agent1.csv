@@ -1,0 +1,13 @@
+Country,Year,Population_65plus,LifeExpectancy,OldAgeDependencyRatio,PensionCoverageRate
+Japan,2020,28.4,84.6,48,0.85
+Japan,2050,38.0,87.7,81,0.75
+Germany,2020,22.0,81.3,34,0.83
+Germany,2050,30.0,85.1,59,0.76
+USA,2020,16.0,78.9,28,0.72
+USA,2050,22.0,82.3,47,0.65
+Brazil,2020,9.5,76.6,14,0.62
+Brazil,2050,19.0,81.0,36,0.55
+China,2020,12.6,77.3,18,0.70
+China,2050,26.1,82.2,44,0.60
+India,2020,6.8,70.9,10,0.55
+India,2050,14.2,77.5,25,0.48

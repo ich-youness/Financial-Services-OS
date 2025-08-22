@@ -9,7 +9,8 @@ import {
   FileText,
   FolderArchive,
   ShieldAlert,
-  Banknote
+  Banknote,
+  BarChart3
 } from "lucide-react";
 
 export interface Agent {
@@ -1631,9 +1632,987 @@ export const modules: Module[] = [
       ]
     }
   ]
-}
+},
 
 
+// # Tuesday
+{
+  id: "analyst-reporting-manager",
+  title: "Analyst Reporting & Financial Management Module",
+  description: "Supports financial reporting, performance analysis, strategic alignment, and presentation of insights for executive decision-making.",
+  icon: BarChart3,
+  colorClass: "module-card-analyst",
+  agents: [
+    {
+      id: "fin-data-strategy",
+      name: "Financial Data for Strategic Decision-Making",
+      description: "Compiles, validates, and consolidates financial data (Actual, Budget, Forecast) into standardized reporting packages for executives, ensuring compliance with policies and consistency across reporting periods.",
+      inputs: {
+        text: "Upload financial data files (CSV, Excel) with Actual, Budget, and Forecast figures.",
+        fileUploads: true
+      },
+      config: {
+        reportingFrequency: {
+          type: 'dropdown',
+          label: 'Reporting Frequency',
+          options: ['Monthly', 'Quarterly', 'Yearly'],
+          default: 'Monthly'
+        },
+        validationLevel: {
+          type: 'slider',
+          label: 'Validation Rigor',
+          min: 1,
+          max: 5,
+          default: 3
+        },
+        varianceThreshold: {
+          type: 'slider',
+          label: 'Variance Alert (%)',
+          min: 5,
+          max: 25,
+          default: 10
+        }
+      },
+      outputs: [
+        'Validated Consolidated Dataset',
+        'Compliance & Anomaly Report',
+        'Standardized Reporting Package (PDF/Excel)',
+        'Variance Analysis (Actual vs Budget vs Forecast)',
+        'Executive Summary Report'
+      ]
+    },
+    {
+      id: "fin-performance-analysis",
+      name: "Analyzing Financial Performance",
+      description: "Calculates KPIs, evaluates portfolio and activity-level profitability, performs variance analysis, and provides management commentary for performance evaluation.",
+      inputs: {
+        text: "Upload performance datasets (CSV, Excel) containing financial results.",
+        fileUploads: true
+      },
+      config: {
+        kpiSelection: {
+          type: 'dropdown',
+          label: 'KPI Focus',
+          options: ['ROI', 'ROE', 'Cost-to-Income Ratio', 'Net Interest Margin', 'All'],
+          default: 'All'
+        },
+        varianceThreshold: {
+          type: 'slider',
+          label: 'Variance Alert (%)',
+          min: 5,
+          max: 25,
+          default: 10
+        },
+        activityCosting: {
+          type: 'dropdown',
+          label: 'Activity-Based Costing',
+          options: ['Enabled', 'Disabled'],
+          default: 'Enabled'
+        }
+      },
+      outputs: [
+        'KPI Dashboard',
+        'Portfolio Performance Report',
+        'Activity-Level Profitability Analysis',
+        'Variance Analysis with Commentary',
+        'Management Recommendations'
+      ]
+    },
+    {
+      id: "strategic-alignment",
+      name: "Strategic Alignment Assessment",
+      description: "Assesses alignment of business units and portfolios with corporate strategy, recommends resource allocation, and measures risk-adjusted performance metrics.",
+      inputs: {
+        text: "Upload portfolio performance datasets (CSV, Excel) with strategic targets.",
+        fileUploads: true
+      },
+      config: {
+        alignmentCriteria: {
+          type: 'dropdown',
+          label: 'Strategic Fit Criteria',
+          options: ['Revenue Growth', 'Profitability', 'Risk-Adjusted Return', 'Market Position'],
+          default: 'Profitability'
+        },
+        riskMetric: {
+          type: 'dropdown',
+          label: 'Risk-Adjusted Metric',
+          options: ['RAROC', 'EVA', 'Sharpe Ratio'],
+          default: 'RAROC'
+        },
+        resourceAllocation: {
+          type: 'dropdown',
+          label: 'Resource Allocation Priority',
+          options: ['High-Return Activities', 'Strategic Fit Units', 'Balanced Approach'],
+          default: 'Balanced Approach'
+        }
+      },
+      outputs: [
+        'Strategic Fit Assessment',
+        'Risk-Adjusted Performance Analysis',
+        'Resource Allocation Recommendations',
+        'Strategic Alignment Report',
+        'Executive Commentary'
+      ]
+    },
+    {
+      id: "financial-insights",
+      name: "Presenting Financial Insights",
+      description: "Transforms financial data and analyses into dashboards, presentations, and narratives for executives and stakeholders with scenario and sensitivity modeling.",
+      inputs: {
+        text: "Provide financial analysis outputs, datasets, or executive reporting needs.",
+        fileUploads: true
+      },
+      config: {
+        dashboardType: {
+          type: 'dropdown',
+          label: 'Dashboard Format',
+          options: ['KPI Overview', 'Variance Analysis', 'Scenario Planning'],
+          default: 'KPI Overview'
+        },
+        scenarioAnalysis: {
+          type: 'dropdown',
+          label: 'Scenario Type',
+          options: ['Base Case', 'Optimistic', 'Stress Test'],
+          default: 'Base Case'
+        },
+        reportingStyle: {
+          type: 'dropdown',
+          label: 'Reporting Style',
+          options: ['Data-Heavy', 'Visual & Narrative', 'Balanced'],
+          default: 'Balanced'
+        }
+      },
+      outputs: [
+        'Executive Dashboards (interactive/static)',
+        'Board & Management Reports',
+        'Scenario & Sensitivity Analysis',
+        'Narrative Storytelling with Data',
+        'Decision-Ready Insights Package'
+      ]
+    }
+  ]
+},
+{
+  id: "esg-module",
+  title: "ESG Compliance & Reporting Module",
+  description: "Helps financial institutions and corporates manage ESG compliance, align with global frameworks, produce CSRD/ESRS-compliant reports, and monitor regulatory updates.",
+  icon: FileText,
+  colorClass: "module-card-esg",
+  agents: [
+    {
+      id: "framework-analysis",
+      name: "Framework Analysis",
+      description: "Interprets CSRD and ESRS requirements, maps to ESG frameworks (EU Taxonomy, SFDR, TCFD, GRI, ISSB), and provides gap analyses and implementation roadmaps.",
+      inputs: {
+        text: "Upload ESG or sustainability data (CSV, Excel) and policy/report documents.",
+        fileUploads: true
+      },
+      config: {
+        frameworkFocus: {
+          type: "dropdown",
+          label: "Framework Focus",
+          options: ["CSRD", "ESRS", "EU Taxonomy", "GRI", "ISSB", "All"],
+          default: "CSRD"
+        },
+        analysisDepth: {
+          type: "slider",
+          label: "Gap Analysis Depth",
+          min: 1,
+          max: 5,
+          default: 3
+        },
+        roadmapHorizon: {
+          type: "dropdown",
+          label: "Roadmap Horizon",
+          options: ["Short-Term", "Medium-Term", "Long-Term"],
+          default: "Medium-Term"
+        }
+      },
+      outputs: [
+        "CSRD/ESRS Gap Analysis",
+        "Compliance Readiness Report",
+        "Framework Mapping Summary",
+        "Phased Implementation Roadmap",
+        "Executive Recommendations"
+      ]
+    },
+    {
+      id: "new-regulations-compliance",
+      name: "New Regulations Compliance",
+      description: "Supports materiality assessments, defines ESG data requirements, and ensures audit readiness for CSRD/ESRS compliance.",
+      inputs: {
+        text: "Upload ESG datasets (CSV, Excel) and internal compliance documents.",
+        fileUploads: true
+      },
+      config: {
+        materialityScope: {
+          type: "dropdown",
+          label: "Materiality Scope",
+          options: ["Financial Materiality", "Impact Materiality", "Double Materiality"],
+          default: "Double Materiality"
+        },
+        auditReadinessLevel: {
+          type: "slider",
+          label: "Audit Readiness Level",
+          min: 1,
+          max: 5,
+          default: 3
+        },
+        dataCoverage: {
+          type: "dropdown",
+          label: "Data Coverage Focus",
+          options: ["Environmental", "Social", "Governance", "Full ESG"],
+          default: "Full ESG"
+        }
+      },
+      outputs: [
+        "Materiality Assessment Report",
+        "Data Requirement Mapping",
+        "Audit Readiness Evaluation",
+        "Compliance Action Plan",
+        "Gap Closure Recommendations"
+      ]
+    },
+    {
+      id: "reporting-process-design",
+      name: "Designing Reporting Processes",
+      description: "Designs ESG reporting workflows, standardizes data collection, integrates systems, and strengthens governance for CSRD/ESRS compliance.",
+      inputs: {
+        text: "Upload ESG reporting data (CSV, Excel) and governance/policy documentation.",
+        fileUploads: true
+      },
+      config: {
+        workflowFocus: {
+          type: "dropdown",
+          label: "Workflow Focus",
+          options: ["Data Collection", "Validation Controls", "Governance", "Integration"],
+          default: "Integration"
+        },
+        automationLevel: {
+          type: "slider",
+          label: "Automation Level",
+          min: 1,
+          max: 5,
+          default: 2
+        },
+        governanceStrength: {
+          type: "slider",
+          label: "Governance Maturity Level",
+          min: 1,
+          max: 5,
+          default: 3
+        }
+      },
+      outputs: [
+        "Process Workflow Blueprint",
+        "Data Collection & Validation Framework",
+        "Governance & Control Recommendations",
+        "System Integration Map",
+        "Process Optimization Report"
+      ]
+    },
+    {
+      id: "compliant-report-production",
+      name: "Producing Compliant Reports",
+      description: "Structures CSRD-compliant reports with narrative and quantitative disclosures, reconciles ESG metrics with financials, and ensures audit-ready machine-readable outputs.",
+      inputs: {
+        text: "Upload ESG data (CSV, Excel) and financial statements or narratives.",
+        fileUploads: true
+      },
+      config: {
+        disclosureFormat: {
+          type: "dropdown",
+          label: "Disclosure Format",
+          options: ["Narrative", "Quantitative", "Combined"],
+          default: "Combined"
+        },
+        reconciliationFocus: {
+          type: "dropdown",
+          label: "Reconciliation Focus",
+          options: ["ESG with Financials", "KPIs Only", "Full Integration"],
+          default: "Full Integration"
+        },
+        outputFormat: {
+          type: "dropdown",
+          label: "Report Format",
+          options: ["PDF", "Excel", "XHTML/ESEF"],
+          default: "XHTML/ESEF"
+        }
+      },
+      outputs: [
+        "CSRD-Compliant Draft Report",
+        "Narrative & KPI Disclosures",
+        "Financial Reconciliation Summary",
+        "Audit-Ready Report Package",
+        "Regulatory Submission File (ESEF/XHTML)"
+      ]
+    },
+    {
+      id: "continuous-monitoring",
+      name: "Continuous Monitoring",
+      description: "Tracks ESG regulatory updates, classifies impact, and recommends actions with compliance logs and training recommendations.",
+      inputs: {
+        text: "Upload regulatory update logs (CSV, Excel) or compliance notes.",
+        fileUploads: true
+      },
+      config: {
+        updateScope: {
+          type: "dropdown",
+          label: "Update Scope",
+          options: ["CSRD", "ESRS", "ISSB", "SEC", "All"],
+          default: "All"
+        },
+        urgencyThreshold: {
+          type: "slider",
+          label: "Urgency Threshold (days)",
+          min: 7,
+          max: 90,
+          default: 30
+        },
+        trainingFocus: {
+          type: "dropdown",
+          label: "Training Focus",
+          options: ["Regulation Awareness", "Process Adoption", "Audit Preparation"],
+          default: "Regulation Awareness"
+        }
+      },
+      outputs: [
+        "Regulatory Update Tracker",
+        "Compliance Impact Assessment",
+        "Action & Deadline Log",
+        "Training Recommendation Summary",
+        "Executive Monitoring Report"
+      ]
+    }
+  ]
+},
+{
+  id: "isr-module",
+  title: "ISR Consulting Module",
+  description: "Supports institutions and investors with socially responsible investment strategies, ESG integration, portfolio optimization, regulatory compliance, and continuous monitoring of ethical standards.",
+  icon: FileText,
+  colorClass: "module-card-isr",
+  agents: [
+    {
+      id: "ethical-investment-strategy",
+      name: "Ethical & Sustainable Investment Strategy",
+      description: "Advises on ethical and sustainable investment strategies, develops SRI policies, defines ESG exclusion/inclusion criteria, and aligns portfolios with client values.",
+      inputs: {
+        text: "Upload investment guidelines, ESG preferences, or sustainability policies.",
+        fileUploads: true
+      },
+      config: {
+        policyFocus: {
+          type: "dropdown",
+          label: "Policy Focus",
+          options: ["Exclusionary", "Best-in-Class", "Thematic", "Impact Investing", "Blended"],
+          default: "Exclusionary"
+        },
+        alignmentLevel: {
+          type: "slider",
+          label: "Client Value Alignment Level",
+          min: 1,
+          max: 5,
+          default: 3
+        },
+        esgCriteria: {
+          type: "dropdown",
+          label: "Primary ESG Criteria",
+          options: ["Environmental", "Social", "Governance", "Full ESG"],
+          default: "Full ESG"
+        }
+      },
+      outputs: [
+        "SRI Policy Framework",
+        "Ethical Investment Guidelines",
+        "Exclusion/Inclusion Criteria Map",
+        "Values Alignment Assessment",
+        "Strategic Investment Roadmap"
+      ]
+    },
+    {
+      id: "esg-integration",
+      name: "ESG Integration",
+      description: "Applies ESG screening, impact measurement frameworks, and risk management into investment decisions.",
+      inputs: {
+        text: "Upload ESG scoring data, investment universe, or risk reports.",
+        fileUploads: true
+      },
+      config: {
+        screeningMethod: {
+          type: "dropdown",
+          label: "Screening Method",
+          options: ["Negative Screening", "Positive Screening", "Best-in-Class", "Thematic"],
+          default: "Negative Screening"
+        },
+        impactDepth: {
+          type: "slider",
+          label: "Impact Measurement Depth",
+          min: 1,
+          max: 5,
+          default: 3
+        },
+        riskFocus: {
+          type: "dropdown",
+          label: "Risk Management Focus",
+          options: ["Climate Risk", "Governance Risk", "Social Risk", "Comprehensive ESG"],
+          default: "Comprehensive ESG"
+        }
+      },
+      outputs: [
+        "ESG Screening Results",
+        "Impact Measurement Framework",
+        "Risk Exposure Report",
+        "Portfolio ESG Scorecard",
+        "Integration Recommendations"
+      ]
+    },
+    {
+      id: "portfolio-optimization",
+      name: "Portfolio Construction & Optimization",
+      description: "Designs optimized portfolios balancing financial performance and ESG alignment.",
+      inputs: {
+        text: "Upload portfolio holdings (CSV, Excel) and ESG target metrics.",
+        fileUploads: true
+      },
+      config: {
+        optimizationGoal: {
+          type: "dropdown",
+          label: "Optimization Goal",
+          options: ["Maximize Returns", "Minimize Risk", "Balance ESG & Returns", "Impact Priority"],
+          default: "Balance ESG & Returns"
+        },
+        diversificationLevel: {
+          type: "slider",
+          label: "Diversification Level",
+          min: 1,
+          max: 5,
+          default: 3
+        },
+        esgWeighting: {
+          type: "slider",
+          label: "ESG Weighting (%)",
+          min: 0,
+          max: 100,
+          default: 50
+        }
+      },
+      outputs: [
+        "Optimized Portfolio Allocation",
+        "Risk/Return Analysis",
+        "ESG Alignment Report",
+        "Diversification Assessment",
+        "Strategic Optimization Roadmap"
+      ]
+    },
+    {
+      id: "regulatory-compliance",
+      name: "ISR Regulatory Compliance",
+      description: "Ensures compliance with SRI/ESG investment regulations, reporting standards, and audit requirements.",
+      inputs: {
+        text: "Upload compliance policies, audit reports, or regulatory documentation.",
+        fileUploads: true
+      },
+      config: {
+        regulationFocus: {
+          type: "dropdown",
+          label: "Regulation Focus",
+          options: ["EU SFDR", "EU Taxonomy", "CSRD", "UN PRI", "All"],
+          default: "All"
+        },
+        auditLevel: {
+          type: "slider",
+          label: "Audit Readiness Level",
+          min: 1,
+          max: 5,
+          default: 3
+        },
+        reportingFormat: {
+          type: "dropdown",
+          label: "Reporting Format",
+          options: ["PDF", "Excel", "XHTML/ESEF"],
+          default: "PDF"
+        }
+      },
+      outputs: [
+        "Regulatory Compliance Report",
+        "Audit Readiness Evaluation",
+        "Data Requirement Checklist",
+        "Compliance Action Plan",
+        "Submission-Ready Documentation"
+      ]
+    },
+    {
+      id: "continuous-ethical-monitoring",
+      name: "Continuous Ethical Monitoring",
+      description: "Monitors ongoing regulatory, ethical, and sustainability updates with alerts and training recommendations.",
+      inputs: {
+        text: "Upload monitoring logs, regulatory updates, or ESG alerts.",
+        fileUploads: true
+      },
+      config: {
+        monitoringScope: {
+          type: "dropdown",
+          label: "Monitoring Scope",
+          options: ["ESG Updates", "Regulatory Changes", "Market News", "All"],
+          default: "All"
+        },
+        alertThreshold: {
+          type: "slider",
+          label: "Alert Urgency Threshold (days)",
+          min: 7,
+          max: 90,
+          default: 30
+        },
+        trainingType: {
+          type: "dropdown",
+          label: "Training Focus",
+          options: ["Ethical Investing Awareness", "Regulatory Compliance", "Portfolio Management Best Practices"],
+          default: "Ethical Investing Awareness"
+        }
+      },
+      outputs: [
+        "Ethical Update Tracker",
+        "Compliance Impact Log",
+        "Urgency-Based Action Plan",
+        "Training Recommendation Report",
+        "Executive Monitoring Dashboard"
+      ]
+    }
+  ]
+},
+{
+  id: "alm-module",
+  title: "Asset Liability Management Module",
+  description: "Comprehensive ALM solution for liquidity risk assessment, interest rate risk management, capital optimization, profitability enhancement, risk modeling, and treasury operations control.",
+  icon: BarChart3,
+  colorClass: "module-card-alm",
+  agents: [
+    {
+      id: "liquidity-interest-rate-risk",
+      name: "Liquidity & Interest Rate Risk Assessor",
+      description: "Evaluates institution's liquidity position and interest rate risk exposure, monitors short-term and long-term liquidity, identifies cash flow maturity gaps, and measures balance sheet sensitivity to interest rate shocks.",
+      inputs: {
+        text: "Upload balance sheet data, asset/liability cash flows, maturity schedules, and rate shock scenarios.",
+        fileUploads: true
+      },
+      config: {
+        timeBuckets: {
+          type: "text",
+          label: "Time Buckets (days)",
+          placeholder: "0,30,90,180,360,730",
+          default: "0,30,180,365"
+        },
+        rateShocks: {
+          type: "text",
+          label: "Rate Shock Scenarios (%)",
+          placeholder: "0.01,-0.01,0.02",
+          default: "0.01,-0.01"
+        },
+        riskTolerance: {
+          type: "slider",
+          label: "Risk Tolerance Level",
+          min: 1,
+          max: 5,
+          default: 3
+        }
+      },
+      outputs: [
+        "Liquidity Gap Analysis Report",
+        "EVE Sensitivity Analysis",
+        "NII Sensitivity Projections",
+        "Risk Exposure Assessment",
+        "Mitigation Recommendations"
+      ]
+    },
+    {
+      id: "solvency-capital-strategist",
+      name: "Solvency & Capital Strategist",
+      description: "Ensures institution maintains adequate capital buffers and liquidity reserves to remain solvent under normal and stress conditions, optimizing asset-liability mix.",
+      inputs: {
+        text: "Upload capital levels, cash flow projections, asset/liability mix with yields and costs.",
+        fileUploads: true
+      },
+      config: {
+        liquidityBuffer: {
+          type: "number",
+          label: "Liquidity Buffer Amount",
+          placeholder: "200",
+          default: 200
+        },
+        maxAssetShare: {
+          type: "slider",
+          label: "Max Asset Share (%)",
+          min: 10,
+          max: 50,
+          default: 25
+        },
+        fundingThreshold: {
+          type: "slider",
+          label: "Contingency Funding Threshold (%)",
+          min: 5,
+          max: 20,
+          default: 10
+        }
+      },
+      outputs: [
+        "Capital Adequacy Assessment",
+        "Contingency Funding Analysis",
+        "Balance Sheet Optimization Plan",
+        "Regulatory Compliance Check",
+        "Capital Management Strategy"
+      ]
+    },
+    {
+      id: "profitability-optimizer",
+      name: "Profitability Optimizer",
+      description: "Maximizes institution's return on assets and minimizes funding costs while staying compliant with regulatory and internal ALM rules.",
+      inputs: {
+        text: "Upload asset allocation, liability mix, investment options with yields and risks.",
+        fileUploads: true
+      },
+      config: {
+        liquidityBufferPct: {
+          type: "slider",
+          label: "Minimum Liquidity Buffer (%)",
+          min: 5,
+          max: 20,
+          default: 10
+        },
+        shortTermThreshold: {
+          type: "slider",
+          label: "Short-term Funding Limit (%)",
+          min: 10,
+          max: 30,
+          default: 15
+        },
+        riskLimit: {
+          type: "slider",
+          label: "Investment Risk Limit (%)",
+          min: 10,
+          max: 40,
+          default: 25
+        }
+      },
+      outputs: [
+        "Yield Optimization Strategy",
+        "Funding Cost Reduction Plan",
+        "ALM Investment Allocation",
+        "Profitability Improvement Forecast",
+        "Risk-Adjusted Return Analysis"
+      ]
+    },
+    {
+      id: "risk-model-builder",
+      name: "Risk Model Builder",
+      description: "Creates analytical tools for measuring and monitoring financial risks including liquidity projections and interest rate risk in the banking book.",
+      inputs: {
+        text: "Upload cash flows, portfolio data with rates/durations, off-balance-sheet commitments.",
+        fileUploads: true
+      },
+      config: {
+        stressFactor: {
+          type: "slider",
+          label: "Stress Factor Multiplier",
+          min: 1.0,
+          max: 2.0,
+          step: 0.1,
+          default: 1.2
+        },
+        rateShiftRange: {
+          type: "text",
+          label: "Rate Shift Range (%)",
+          placeholder: "0.01,-0.01,0.02",
+          default: "0.01,-0.01"
+        },
+        projectionPeriod: {
+          type: "dropdown",
+          label: "Projection Period",
+          options: ["7 days", "30 days", "90 days", "1 year"],
+          default: "30 days"
+        }
+      },
+      outputs: [
+        "Liquidity Projection Model",
+        "Interest Rate Sensitivity Analysis",
+        "Risk Exposure Dashboard",
+        "Stress Testing Results",
+        "Model Validation Report"
+      ]
+    },
+    {
+      id: "liquidity-operations-manager",
+      name: "Liquidity Operations Manager",
+      description: "Oversees daily liquidity management, funding strategy execution, and activation of contingency measures during stress events.",
+      inputs: {
+        text: "Upload daily cash positions, funding options with costs, currency allocations.",
+        fileUploads: true
+      },
+      config: {
+        currencyFocus: {
+          type: "dropdown",
+          label: "Primary Currency",
+          options: ["USD", "EUR", "GBP", "JPY", "Multi-currency"],
+          default: "USD"
+        },
+        fundingPriority: {
+          type: "dropdown",
+          label: "Funding Priority",
+          options: ["Cost Minimization", "Risk Diversification", "Speed of Access", "Regulatory Compliance"],
+          default: "Cost Minimization"
+        },
+        reportingFrequency: {
+          type: "dropdown",
+          label: "Reporting Frequency",
+          options: ["Daily", "Weekly", "Monthly", "Real-time"],
+          default: "Daily"
+        }
+      },
+      outputs: [
+        "Daily Liquidity Dashboard",
+        "Optimal Funding Allocation",
+        "Contingency Plan Activation",
+        "Operational Compliance Report",
+        "Management Action Recommendations"
+      ]
+    },
+    {
+      id: "treasury-alm-controller",
+      name: "Treasury & ALM Risk Controller",
+      description: "Oversees treasury operations and asset-liability management to maintain financial stability, assessing FX and counterparty risks.",
+      inputs: {
+        text: "Upload cash positions, FX rates, counterparty limits, balance sheet data.",
+        fileUploads: true
+      },
+      config: {
+        baseCurrency: {
+          type: "dropdown",
+          label: "Base Currency",
+          options: ["USD", "EUR", "GBP", "JPY"],
+          default: "USD"
+        },
+        counterpartyRiskTolerance: {
+          type: "slider",
+          label: "Counterparty Risk Tolerance",
+          min: 1,
+          max: 5,
+          default: 3
+        },
+        almPolicyStrictness: {
+          type: "slider",
+          label: "ALM Policy Strictness",
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        "FX & Counterparty Risk Assessment",
+        "ALM Metrics Dashboard",
+        "Policy Compliance Evaluation",
+        "Risk Concentration Analysis",
+        "Financial Equilibrium Recommendations"
+      ]
+    }
+  ]
+},
+
+
+// ## wednesday
+{
+  id: "csrd-consultant",
+  title: "CSRD & ESG Compliance Module",
+  description: "Guides banks, insurers, and large corporations through CSRD/ESRS compliance, ESG reporting processes, report production, and continuous monitoring of regulatory developments.",
+  icon: FileText,
+  colorClass: "module-card-csrd",
+  agents: [
+    {
+      id: "framework-analysis",
+      name: "Framework Analysis",
+      description: "Interprets CSRD and ESRS requirements, maps to ESG frameworks (EU Taxonomy, SFDR, TCFD, GRI, ISSB), and provides gap analyses and implementation roadmaps.",
+      inputs: {
+        text: "Upload ESG or sustainability data (CSV, Excel) and policy/report documents.",
+        fileUploads: true
+      },
+      config: {
+        frameworkFocus: {
+          type: 'dropdown',
+          label: 'Framework Focus',
+          options: ['CSRD', 'ESRS', 'EU Taxonomy', 'GRI', 'ISSB', 'All'],
+          default: 'CSRD'
+        },
+        analysisDepth: {
+          type: 'slider',
+          label: 'Gap Analysis Depth',
+          min: 1,
+          max: 5,
+          default: 3
+        },
+        roadmapHorizon: {
+          type: 'dropdown',
+          label: 'Roadmap Horizon',
+          options: ['Short-Term', 'Medium-Term', 'Long-Term'],
+          default: 'Medium-Term'
+        }
+      },
+      outputs: [
+        'CSRD/ESRS Gap Analysis',
+        'Compliance Readiness Report',
+        'Framework Mapping Summary',
+        'Phased Implementation Roadmap',
+        'Executive Recommendations'
+      ]
+    },
+    {
+      id: "new-regulations-compliance",
+      name: "New Regulations Compliance",
+      description: "Supports materiality assessments, defines ESG data requirements, and ensures audit readiness for CSRD/ESRS compliance.",
+      inputs: {
+        text: "Upload ESG datasets (CSV, Excel) and internal compliance documents.",
+        fileUploads: true
+      },
+      config: {
+        materialityScope: {
+          type: 'dropdown',
+          label: 'Materiality Scope',
+          options: ['Financial Materiality', 'Impact Materiality', 'Double Materiality'],
+          default: 'Double Materiality'
+        },
+        auditReadinessLevel: {
+          type: 'slider',
+          label: 'Audit Readiness Level',
+          min: 1,
+          max: 5,
+          default: 3
+        },
+        dataCoverage: {
+          type: 'dropdown',
+          label: 'Data Coverage Focus',
+          options: ['Environmental', 'Social', 'Governance', 'Full ESG'],
+          default: 'Full ESG'
+        }
+      },
+      outputs: [
+        'Materiality Assessment Report',
+        'Data Requirement Mapping',
+        'Audit Readiness Evaluation',
+        'Compliance Action Plan',
+        'Gap Closure Recommendations'
+      ]
+    },
+    {
+      id: "reporting-process-design",
+      name: "Designing Reporting Processes",
+      description: "Designs ESG reporting workflows, standardizes data collection, integrates systems, and strengthens governance for CSRD/ESRS compliance.",
+      inputs: {
+        text: "Upload ESG reporting data (CSV, Excel) and governance/policy documentation.",
+        fileUploads: true
+      },
+      config: {
+        workflowFocus: {
+          type: 'dropdown',
+          label: 'Workflow Focus',
+          options: ['Data Collection', 'Validation Controls', 'Governance', 'Integration'],
+          default: 'Integration'
+        },
+        automationLevel: {
+          type: 'slider',
+          label: 'Automation Level',
+          min: 1,
+          max: 5,
+          default: 2
+        },
+        governanceStrength: {
+          type: 'slider',
+          label: 'Governance Maturity Level',
+          min: 1,
+          max: 5,
+          default: 3
+        }
+      },
+      outputs: [
+        'Process Workflow Blueprint',
+        'Data Collection & Validation Framework',
+        'Governance & Control Recommendations',
+        'System Integration Map',
+        'Process Optimization Report'
+      ]
+    },
+    {
+      id: "compliant-report-production",
+      name: "Producing Compliant Reports",
+      description: "Structures CSRD-compliant reports with narrative and quantitative disclosures, reconciles ESG metrics with financials, and ensures audit-ready machine-readable outputs.",
+      inputs: {
+        text: "Upload ESG data (CSV, Excel) and financial statements or narratives.",
+        fileUploads: true
+      },
+      config: {
+        disclosureFormat: {
+          type: 'dropdown',
+          label: 'Disclosure Format',
+          options: ['Narrative', 'Quantitative', 'Combined'],
+          default: 'Combined'
+        },
+        reconciliationFocus: {
+          type: 'dropdown',
+          label: 'Reconciliation Focus',
+          options: ['ESG with Financials', 'KPIs Only', 'Full Integration'],
+          default: 'Full Integration'
+        },
+        outputFormat: {
+          type: 'dropdown',
+          label: 'Report Format',
+          options: ['PDF', 'Excel', 'XHTML/ESEF'],
+          default: 'XHTML/ESEF'
+        }
+      },
+      outputs: [
+        'CSRD-Compliant Draft Report',
+        'Narrative & KPI Disclosures',
+        'Financial Reconciliation Summary',
+        'Audit-Ready Report Package',
+        'Regulatory Submission File (ESEF/XHTML)'
+      ]
+    },
+    {
+      id: "continuous-monitoring",
+      name: "Continuous Monitoring",
+      description: "Tracks ESG regulatory updates, classifies impact, and recommends actions with compliance logs and training recommendations.",
+      inputs: {
+        text: "Upload regulatory update logs (CSV, Excel) or compliance notes.",
+        fileUploads: true
+      },
+      config: {
+        updateScope: {
+          type: 'dropdown',
+          label: 'Update Scope',
+          options: ['CSRD', 'ESRS', 'ISSB', 'SEC', 'All'],
+          default: 'All'
+        },
+        urgencyThreshold: {
+          type: 'slider',
+          label: 'Urgency Threshold (days)',
+          min: 7,
+          max: 90,
+          default: 30
+        },
+        trainingFocus: {
+          type: 'dropdown',
+          label: 'Training Focus',
+          options: ['Regulation Awareness', 'Process Adoption', 'Audit Preparation'],
+          default: 'Regulation Awareness'
+        }
+      },
+      outputs: [
+        'Regulatory Update Tracker',
+        'Compliance Impact Assessment',
+        'Action & Deadline Log',
+        'Training Recommendation Summary',
+        'Executive Monitoring Report'
+      ]
+    }
+  ]
+},
 
 
 

@@ -1,0 +1,297 @@
+{
+  "portfolio_id": "PORTFOLIO_001",
+  "optimization_date": "2024-01-31",
+  "portfolio_type": "sustainable_balanced",
+  "total_value": 2500000000,
+  "currency": "EUR",
+  "target_allocation": "60% equities, 30% bonds, 10% alternatives",
+  
+  "asset_selection": {
+    "equities": {
+      "total_allocation": 1500000000,
+      "percentage": "60.0%",
+      "holdings": 120,
+      "esg_criteria": {
+        "minimum_rating": "A",
+        "average_rating": "AA",
+        "exclusion_compliance": "100%",
+        "thematic_alignment": "85%"
+      },
+      "sector_allocation": {
+        "technology": {
+          "allocation": 300000000,
+          "percentage": "20.0%",
+          "esg_rating": "AA",
+          "sustainability_focus": "clean technology, digital inclusion"
+        },
+        "healthcare": {
+          "allocation": 225000000,
+          "percentage": "15.0%",
+          "esg_rating": "AA",
+          "sustainability_focus": "medical innovation, healthcare access"
+        },
+        "financials": {
+          "allocation": 225000000,
+          "percentage": "15.0%",
+          "esg_rating": "A",
+          "sustainability_focus": "sustainable finance, financial inclusion"
+        },
+        "consumer_discretionary": {
+          "allocation": 180000000,
+          "percentage": "12.0%",
+          "esg_rating": "A",
+          "sustainability_focus": "sustainable consumption, ethical retail"
+        },
+        "industrials": {
+          "allocation": 180000000,
+          "percentage": "12.0%",
+          "esg_rating": "A",
+          "sustainability_focus": "clean energy, sustainable infrastructure"
+        },
+        "utilities": {
+          "allocation": 150000000,
+          "percentage": "10.0%",
+          "esg_rating": "AA",
+          "sustainability_focus": "renewable energy, energy efficiency"
+        },
+        "materials": {
+          "allocation": 120000000,
+          "percentage": "8.0%",
+          "esg_rating": "A",
+          "sustainability_focus": "sustainable materials, circular economy"
+        },
+        "communication_services": {
+          "allocation": 120000000,
+          "percentage": "8.0%",
+          "esg_rating": "A",
+          "sustainability_focus": "digital inclusion, media responsibility"
+        }
+      }
+    },
+    
+    "bonds": {
+      "total_allocation": 750000000,
+      "percentage": "30.0%",
+      "holdings": 25,
+      "esg_criteria": {
+        "minimum_rating": "A",
+        "average_rating": "AA",
+        "green_bond_percentage": "60%",
+        "social_bond_percentage": "25%"
+      },
+      "bond_types": {
+        "green_bonds": {
+          "allocation": 450000000,
+          "percentage": "60.0%",
+          "projects": ["renewable energy", "energy efficiency", "clean transport", "sustainable buildings"],
+          "certification": "ICMA Green Bond Principles"
+        },
+        "social_bonds": {
+          "allocation": 187500000,
+          "percentage": "25.0%",
+          "projects": ["affordable housing", "education", "healthcare", "financial inclusion"],
+          "certification": "ICMA Social Bond Principles"
+        },
+        "sustainability_linked_bonds": {
+          "allocation": 75000000,
+          "percentage": "10.0%",
+          "targets": ["carbon reduction", "renewable energy", "diversity inclusion"],
+          "mechanism": "coupon adjustment based on performance"
+        },
+        "conventional_esg_bonds": {
+          "allocation": 37500000,
+          "percentage": "5.0%",
+          "criteria": "ESG leaders in bond issuer universe"
+        }
+      }
+    },
+    
+    "alternatives": {
+      "total_allocation": 250000000,
+      "percentage": "10.0%",
+      "holdings": 15,
+      "esg_criteria": {
+        "minimum_rating": "A",
+        "average_rating": "AA",
+        "impact_focus": "100%",
+        "measurable_outcomes": "required"
+      },
+      "alternative_types": {
+        "renewable_energy": {
+          "allocation": 100000000,
+          "percentage": "40.0%",
+          "projects": ["solar farms", "wind farms", "energy storage"],
+          "impact_metrics": ["MW generated", "CO2 avoided", "households powered"]
+        },
+        "sustainable_real_estate": {
+          "allocation": 75000000,
+          "percentage": "30.0%",
+          "projects": ["green buildings", "affordable housing", "community centers"],
+          "impact_metrics": ["energy efficiency", "housing units", "community spaces"]
+        },
+        "impact_investments": {
+          "allocation": 50000000,
+          "percentage": "20.0%",
+          "projects": ["microfinance", "social enterprises", "education technology"],
+          "impact_metrics": ["jobs created", "lives improved", "communities served"]
+        },
+        "sustainable_infrastructure": {
+          "allocation": 25000000,
+          "percentage": "10.0%",
+          "projects": ["clean transport", "water infrastructure", "digital inclusion"],
+          "impact_metrics": ["transport efficiency", "water access", "digital connectivity"]
+        }
+      }
+    }
+  },
+  
+  "strategic_asset_allocation": {
+    "risk_return_optimization": {
+      "target_return": "6.5% annually",
+      "risk_tolerance": "moderate",
+      "volatility_target": "12.0%",
+      "sharpe_ratio_target": "0.54"
+    },
+    "esg_thresholds": {
+      "minimum_esg_score": "A rating",
+      "target_esg_score": "AA rating",
+      "carbon_intensity_target": "<200 tCO2e per $1M revenue",
+      "renewable_energy_target": ">50% of energy consumption"
+    },
+    "diversification_targets": {
+      "sector_diversification": "max 20% per sector",
+      "geographic_diversification": "max 40% per region",
+      "currency_diversification": "max 30% per currency",
+      "esg_rating_diversification": "min 20% in each rating tier"
+    },
+    "liquidity_management": {
+      "liquid_assets": "85%",
+      "illiquid_assets": "15%",
+      "cash_reserves": "5%",
+      "rebalancing_frequency": "monthly"
+    }
+  },
+  
+  "performance_attribution": {
+    "financial_performance": {
+      "total_return": "8.2%",
+      "benchmark_return": "6.8%",
+      "excess_return": "1.4%",
+      "risk_adjusted_return": "7.1%",
+      "volatility": "11.8%",
+      "sharpe_ratio": "0.60"
+    },
+    "esg_performance": {
+      "esg_score_contribution": "+0.8%",
+      "carbon_reduction_contribution": "+0.4%",
+      "sustainability_theme_contribution": "+0.2%",
+      "total_esg_contribution": "+1.4%"
+    },
+    "benchmark_comparison": {
+      "msci_world_esg_leaders": {
+        "performance_difference": "+1.4%",
+        "esg_score_difference": "+0.8",
+        "carbon_intensity_difference": "-28%",
+        "volatility_difference": "-0.5%"
+      },
+      "msci_world": {
+        "performance_difference": "+1.4%",
+        "esg_score_difference": "+2.1",
+        "carbon_intensity_difference": "-45%",
+        "volatility_difference": "-1.2%"
+      },
+      "sustainable_peer_group": {
+        "performance_difference": "+0.8%",
+        "esg_score_difference": "+0.5",
+        "carbon_intensity_difference": "-15%",
+        "volatility_difference": "-0.8%"
+      }
+    },
+    "factor_attribution": {
+      "equity_factor": "+3.2%",
+      "bond_factor": "+2.1%",
+      "alternative_factor": "+1.8%",
+      "currency_factor": "+0.3%",
+      "esg_factor": "+0.8%"
+    }
+  },
+  
+  "rebalancing_strategies": {
+    "esg_drift_management": {
+      "esg_score_monitoring": "daily",
+      "drift_threshold": "0.2 rating change",
+      "rebalancing_trigger": "monthly or threshold breach",
+      "esg_score_target": "maintain AA average"
+    },
+    "opportunity_capture": {
+      "new_esg_opportunities": "continuously monitored",
+      "addition_criteria": "meets ESG thresholds and financial criteria",
+      "replacement_strategy": "replace lowest ESG performers",
+      "allocation_adjustment": "within target ranges"
+    },
+    "risk_management": {
+      "esg_risk_monitoring": "weekly",
+      "risk_threshold": "max 15% in high ESG risk",
+      "risk_mitigation": "reduce exposure to high-risk positions",
+      "diversification_maintenance": "ensure sector and geographic balance"
+    },
+    "regulatory_compliance": {
+      "compliance_monitoring": "continuous",
+      "regulatory_updates": "monthly review",
+      "compliance_adjustments": "implement within 30 days",
+      "reporting_requirements": "quarterly updates"
+    }
+  },
+  
+  "sustainability_metrics": {
+    "portfolio_level": {
+      "overall_esg_score": "AA",
+      "carbon_intensity": "180 tCO2e per $1M revenue",
+      "renewable_energy_exposure": "65%",
+      "water_efficiency": "35% improvement",
+      "biodiversity_impact": "125000 hectares protected"
+    },
+    "impact_measurement": {
+      "environmental_impact": "175000 tCO2e avoided annually",
+      "social_impact": "8500 jobs created, 125 communities served",
+      "economic_impact": "€45M local investment, €2.5B sustainable financing",
+      "governance_impact": "100% board independence, 40% gender diversity"
+    },
+    "sustainability_alignment": {
+      "sdg_alignment": "85% alignment with primary SDGs",
+      "paris_agreement": "2°C pathway compatible",
+      "circular_economy": "60% circular economy exposure",
+      "just_transition": "75% just transition alignment"
+    }
+  },
+  
+  "monitoring_and_reporting": {
+    "performance_monitoring": {
+      "financial_performance": "daily",
+      "esg_performance": "weekly",
+      "risk_metrics": "weekly",
+      "sustainability_metrics": "monthly"
+    },
+    "reporting_frequency": {
+      "client_reports": "monthly",
+      "esg_reports": "quarterly",
+      "impact_reports": "semi-annually",
+      "regulatory_reports": "as required"
+    },
+    "stakeholder_communication": {
+      "client_updates": "monthly calls, quarterly reviews",
+      "beneficiary_reports": "annual impact reports",
+      "regulator_communication": "quarterly compliance updates",
+      "industry_participation": "annual sustainability reporting"
+    }
+  },
+  
+  "compliance_status": {
+    "overall_compliance": "compliant",
+    "asset_selection": "compliant",
+    "strategic_allocation": "compliant",
+    "performance_attribution": "compliant",
+    "rebalancing_strategies": "compliant",
+    "next_review_date": "2024-04-30"
+  }
+} 

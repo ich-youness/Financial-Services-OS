@@ -1,0 +1,272 @@
+{
+  "regulatory_requirements": {
+    "eu_regulations": {
+      "csrd_esrs": {
+        "regulation_name": "Corporate Sustainability Reporting Directive (CSRD) / European Sustainability Reporting Standards (ESRS)",
+        "effective_date": "2024-01-01",
+        "first_reporting": "2025",
+        "scope": "Large companies and listed SMEs",
+        "reporting_frequency": "Annual",
+        "key_requirements": [
+          "Double materiality assessment",
+          "ESG strategy and governance",
+          "ESG targets and progress",
+          "ESG risks and opportunities",
+          "ESG policies and due diligence",
+          "ESG performance metrics"
+        ],
+        "reporting_frameworks": [
+          "ESRS 1 - General Requirements",
+          "ESRS 2 - General Disclosures",
+          "ESRS E1 - Climate Change",
+          "ESRS E2 - Pollution",
+          "ESRS E3 - Water and Marine Resources",
+          "ESRS E4 - Biodiversity and Ecosystems",
+          "ESRS E5 - Resource Use and Circular Economy",
+          "ESRS S1 - Own Workforce",
+          "ESRS S2 - Workers in the Value Chain",
+          "ESRS S3 - Affected Communities",
+          "ESRS S4 - Consumers and End-Users",
+          "ESRS G1 - Business Conduct"
+        ],
+        "compliance_deadlines": {
+          "large_companies": "2025",
+          "large_non_eu_companies": "2026",
+          "listed_smes": "2026",
+          "non_eu_smes": "2027"
+        }
+      },
+      "eu_taxonomy": {
+        "regulation_name": "EU Taxonomy Regulation",
+        "effective_date": "2020-07-12",
+        "first_reporting": "2022",
+        "scope": "Large companies under CSRD",
+        "reporting_frequency": "Annual",
+        "key_requirements": [
+          "Taxonomy eligibility assessment",
+          "Taxonomy alignment calculation",
+          "Substantial contribution criteria",
+          "Do No Significant Harm (DNSH) criteria",
+          "Minimum safeguards compliance",
+          "Revenue, CAPEX, and OPEX alignment percentages"
+        ],
+        "environmental_objectives": [
+          "Climate change mitigation",
+          "Climate change adaptation",
+          "Sustainable use and protection of water and marine resources",
+          "Transition to a circular economy",
+          "Pollution prevention and control",
+          "Protection and restoration of biodiversity and ecosystems"
+        ],
+        "delegated_acts": {
+          "climate_delegated_act": "2021-12-09",
+          "environmental_delegated_act": "2023-06-27",
+          "social_delegated_act": "Expected 2024"
+        }
+      },
+      "sfdr": {
+        "regulation_name": "Sustainable Finance Disclosure Regulation (SFDR)",
+        "effective_date": "2021-03-10",
+        "first_reporting": "2021",
+        "scope": "Financial market participants and advisers",
+        "reporting_frequency": "Annual",
+        "key_requirements": [
+          "Sustainability risk policies",
+          "Adverse sustainability impacts",
+          "Sustainability characteristics",
+          "Sustainability risk integration",
+          "Remuneration policies",
+          "Product-level disclosures"
+        ],
+        "product_categories": [
+          "Article 6 - No sustainability focus",
+          "Article 8 - Environmental or social characteristics",
+          "Article 9 - Sustainable investment objective"
+        ]
+      }
+    },
+    "international_frameworks": {
+      "tcfd": {
+        "framework_name": "Task Force on Climate-related Financial Disclosures (TCFD)",
+        "launch_date": "2017-06-29",
+        "scope": "Financial and non-financial companies",
+        "reporting_frequency": "Annual",
+        "key_requirements": [
+          "Governance - Board oversight and management role",
+          "Strategy - Climate-related risks and opportunities",
+          "Risk Management - Risk identification and assessment",
+          "Metrics and Targets - KPIs and targets"
+        ],
+        "adoption_status": "Widely adopted globally",
+        "regulatory_requirements": {
+          "uk": "Mandatory for large companies from 2022",
+          "eu": "Integrated into CSRD/ESRS",
+          "usa": "Proposed SEC rule",
+          "canada": "Mandatory for financial institutions from 2024"
+        }
+      },
+      "issb": {
+        "framework_name": "International Sustainability Standards Board (ISSB)",
+        "launch_date": "2021-11-03",
+        "first_standards": "2023-06-26",
+        "scope": "Global companies",
+        "reporting_frequency": "Annual",
+        "standards": [
+          "IFRS S1 - General Requirements for Disclosure of Sustainability-related Financial Information",
+          "IFRS S2 - Climate-related Disclosures"
+        ],
+        "adoption_status": "Voluntary, but expected to become mandatory in many jurisdictions",
+        "key_features": [
+          "Single materiality approach",
+          "Financial materiality focus",
+          "Compatibility with existing frameworks",
+          "Global baseline for sustainability reporting"
+        ]
+      },
+      "gri": {
+        "framework_name": "Global Reporting Initiative (GRI)",
+        "latest_version": "GRI Standards 2021",
+        "scope": "All organizations",
+        "reporting_frequency": "Annual",
+        "standards_structure": [
+          "GRI 1 - Foundation",
+          "GRI 2 - General Disclosures",
+          "GRI 3 - Material Topics",
+          "GRI 200 - Economic Standards",
+          "GRI 300 - Environmental Standards",
+          "GRI 400 - Social Standards"
+        ],
+        "key_features": [
+          "Multi-stakeholder approach",
+          "Comprehensive coverage of ESG topics",
+          "Materiality principle",
+          "Stakeholder inclusiveness",
+          "Sustainability context"
+        ]
+      }
+    },
+    "national_regulations": {
+      "uk": {
+        "tcfd_mandatory": {
+          "regulation": "TCFD-aligned disclosures",
+          "effective_date": "2022-04-06",
+          "scope": "Large companies and financial institutions",
+          "deadlines": {
+            "2022": "Premium listed companies",
+            "2023": "Large private companies",
+            "2024": "Large LLPs and partnerships"
+          }
+        },
+        "sustainability_disclosure": {
+          "regulation": "Sustainability Disclosure Requirements (SDR)",
+          "expected_effective": "2024",
+          "scope": "Financial services firms",
+          "key_requirements": [
+            "Sustainability labels for investment products",
+            "Consumer-facing disclosures",
+            "Sustainability reporting"
+          ]
+        }
+      },
+      "usa": {
+        "sec_climate_rule": {
+          "regulation": "Proposed SEC Climate Disclosure Rule",
+          "proposal_date": "2022-03-21",
+          "expected_effective": "2024",
+          "scope": "Public companies",
+          "key_requirements": [
+            "Climate-related risk disclosures",
+            "Greenhouse gas emissions (Scope 1 and 2)",
+            "Climate-related financial metrics",
+            "Climate-related governance and strategy"
+          ]
+        },
+        "california_climate": {
+          "regulation": "California Climate Corporate Data Accountability Act (SB 253)",
+          "effective_date": "2024-01-01",
+          "scope": "Companies with >$1B revenue doing business in California",
+          "reporting_deadlines": {
+            "scope_1_2": "2026",
+            "scope_3": "2027"
+          }
+        }
+      },
+      "switzerland": {
+        "swiss_climate": {
+          "regulation": "Swiss Climate and Transparency Ordinance",
+          "effective_date": "2024-01-01",
+          "scope": "Large companies and financial institutions",
+          "key_requirements": [
+            "Climate reporting",
+            "Climate risk assessment",
+            "Climate targets and progress",
+            "Climate strategy"
+          ]
+        }
+      }
+    },
+    "compliance_calendar": {
+      "2024": [
+        {
+          "quarter": "Q1",
+          "deadlines": [
+            "EU CSRD/ESRS first reporting for large companies",
+            "Swiss Climate Ordinance compliance",
+            "UK TCFD reporting for large private companies"
+          ]
+        },
+        {
+          "quarter": "Q2",
+          "deadlines": [
+            "EU Taxonomy reporting for 2023",
+            "SFDR annual reporting"
+          ]
+        },
+        {
+          "quarter": "Q3",
+          "deadlines": [
+            "TCFD annual reporting",
+            "GRI annual reporting"
+          ]
+        },
+        {
+          "quarter": "Q4",
+          "deadlines": [
+            "Preparation for 2025 CSRD reporting",
+            "Year-end ESG data collection"
+          ]
+        }
+      ],
+      "2025": [
+        {
+          "quarter": "Q1",
+          "deadlines": [
+            "CSRD/ESRS reporting for 2024",
+            "EU Taxonomy reporting for 2024"
+          ]
+        },
+        {
+          "quarter": "Q2",
+          "deadlines": [
+            "SFDR annual reporting",
+            "ISSB reporting (if adopted)"
+          ]
+        },
+        {
+          "quarter": "Q3",
+          "deadlines": [
+            "TCFD annual reporting",
+            "GRI annual reporting"
+          ]
+        },
+        {
+          "quarter": "Q4",
+          "deadlines": [
+            "Preparation for 2026 reporting",
+            "Year-end ESG data collection"
+          ]
+        }
+      ]
+    }
+  }
+}
