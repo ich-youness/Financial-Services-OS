@@ -1,0 +1,276 @@
+{
+  "product_design_id": "PD_001",
+  "design_date": "2024-01-31",
+  "product_family": "comprehensive_life_insurance",
+  "target_segment": "families_with_children",
+  "design_status": "finalized",
+  
+  "term_life_insurance": {
+    "product_name": "FamilyGuard Term Life",
+    "product_code": "TL-FG-001",
+    "target_customers": "Families with children, mortgage holders, income earners",
+    "key_features": {
+      "coverage_amounts": ["€100,000", "€250,000", "€500,000", "€750,000", "€1,000,000"],
+      "policy_terms": ["10 years", "15 years", "20 years", "25 years", "30 years"],
+      "premium_structure": "Level premiums throughout policy term",
+      "underwriting": "Simplified underwriting for standard risks"
+    },
+    
+    "policy_options": {
+      "level_term": {
+        "description": "Fixed death benefit throughout policy term",
+        "premium_stability": "Level premiums guaranteed",
+        "suitable_for": "Long-term protection needs"
+      },
+      "decreasing_term": {
+        "description": "Death benefit decreases over time",
+        "premium_stability": "Level premiums guaranteed",
+        "suitable_for": "Mortgage protection, debt coverage"
+      },
+      "renewable_term": {
+        "description": "Option to renew without medical underwriting",
+        "renewal_terms": "5-year renewable periods",
+        "premium_adjustment": "Age-based premium increases"
+      },
+      "convertible_term": {
+        "description": "Option to convert to permanent coverage",
+        "conversion_period": "Up to 5 years before policy expiry",
+        "conversion_options": ["Whole life", "Universal life", "Endowment"]
+      }
+    },
+    
+    "riders": {
+      "critical_illness": {
+        "coverage_amounts": ["€25,000", "€50,000", "€100,000"],
+        "illness_categories": ["Cancer", "Heart attack", "Stroke", "Kidney failure", "Major organ transplant"],
+        "waiting_period": "90 days",
+        "survival_period": "30 days"
+      },
+      "accidental_death": {
+        "coverage_multiplier": "2x base death benefit",
+        "accident_definition": "Death within 90 days of accident",
+        "exclusions": ["Suicide", "War", "Aviation (non-commercial)"]
+      },
+      "waiver_of_premium": {
+        "trigger": "Total disability for 6 months",
+        "benefit": "Premium waiver during disability",
+        "maximum_duration": "To age 65"
+      },
+      "child_rider": {
+        "coverage_amount": "€10,000 per child",
+        "maximum_children": "4 children",
+        "age_limit": "Up to age 25",
+        "convertible": "Yes, to individual policy"
+      }
+    },
+    
+    "underwriting_guidelines": {
+      "standard_risk": {
+        "age_range": "18-65",
+        "health_requirements": "Standard medical examination",
+        "occupation": "Office-based, low-risk occupations",
+        "lifestyle": "Non-smoker, moderate alcohol consumption"
+      },
+      "preferred_risk": {
+        "age_range": "18-55",
+        "health_requirements": "Excellent health, no chronic conditions",
+        "occupation": "Professional, low-risk occupations",
+        "lifestyle": "Non-smoker, healthy lifestyle, regular exercise"
+      },
+      "simplified_issue": {
+        "age_range": "18-50",
+        "coverage_limit": "€250,000",
+        "health_questions": "Limited health questionnaire",
+        "medical_exam": "No medical examination required"
+      }
+    }
+  },
+  
+  "whole_life_insurance": {
+    "product_name": "LegacyBuilder Whole Life",
+    "product_code": "WL-LB-001",
+    "target_customers": "Wealth builders, estate planners, long-term savers",
+    "key_features": {
+      "coverage_amounts": ["€25,000", "€50,000", "€100,000", "€250,000", "€500,000"],
+      "premium_structure": "Fixed premiums for life",
+      "cash_value": "Guaranteed cash value accumulation",
+      "dividends": "Participating policy with dividend options"
+    },
+    
+    "cash_value_features": {
+      "guaranteed_cash_value": "Minimum guaranteed cash value growth",
+      "dividend_cash_value": "Additional cash value from dividends",
+      "policy_loans": "Borrow against cash value at competitive rates",
+      "partial_surrender": "Withdraw portion of cash value",
+      "paid_up_additions": "Use dividends to purchase additional coverage"
+    },
+    
+    "dividend_options": {
+      "cash_payment": "Receive dividends in cash",
+      "reduction_of_premiums": "Reduce premium payments",
+      "paid_up_additions": "Purchase additional coverage",
+      "accumulation": "Leave dividends to earn interest",
+      "one_year_term": "Purchase one-year term coverage"
+    },
+    
+    "policy_loan_features": {
+      "loan_availability": "Available after 3 years",
+      "interest_rate": "5.5% fixed rate",
+      "loan_limit": "90% of cash value",
+      "repayment": "Flexible repayment options",
+      "tax_advantages": "Tax-free loans"
+    }
+  },
+  
+  "endowment_insurance": {
+    "product_name": "FutureSecure Endowment",
+    "product_code": "EN-FS-001",
+    "target_customers": "Education planners, retirement savers, wealth accumulators",
+    "key_features": {
+      "coverage_amounts": ["€50,000", "€100,000", "€250,000", "€500,000"],
+      "policy_terms": ["15 years", "20 years", "25 years", "30 years"],
+      "maturity_benefit": "Guaranteed maturity benefit if insured survives",
+      "death_benefit": "Full coverage amount if death occurs during term"
+    },
+    
+    "savings_component": {
+      "premium_allocation": "Portion allocated to savings, portion to protection",
+      "interest_crediting": "Guaranteed minimum interest rate",
+      "bonus_crediting": "Additional interest based on company performance",
+      "cash_value": "Accumulating cash value throughout policy term"
+    },
+    
+    "maturity_options": {
+      "lump_sum": "Receive full maturity benefit in cash",
+      "installments": "Receive maturity benefit in monthly installments",
+      "annuity": "Convert maturity benefit to lifetime income",
+      "rollover": "Roll over to new policy or investment product"
+    },
+    
+    "use_cases": {
+      "education_funding": "University tuition and expenses",
+      "retirement_supplement": "Additional retirement income",
+      "wealth_transfer": "Legacy planning and wealth transfer",
+      "major_purchase": "Home down payment, business investment"
+    }
+  },
+  
+  "unit_linked_insurance": {
+    "product_name": "GrowthLink Investment Life",
+    "product_code": "UL-GL-001",
+    "target_customers": "Investment-oriented customers, wealth builders, tax-conscious investors",
+    "key_features": {
+      "coverage_amounts": ["€100,000", "€250,000", "€500,000", "€1,000,000"],
+      "premium_flexibility": "Flexible premium payments",
+      "investment_options": "Wide range of investment funds",
+      "death_benefit": "Higher of sum assured or fund value"
+    },
+    
+    "investment_funds": {
+      "equity_funds": {
+        "aggressive_growth": "High-risk, high-return equity portfolio",
+        "balanced_growth": "Moderate-risk equity and bond mix",
+        "conservative_growth": "Low-risk equity and bond mix"
+      },
+      "bond_funds": {
+        "government_bonds": "Low-risk government bond portfolio",
+        "corporate_bonds": "Medium-risk corporate bond portfolio",
+        "high_yield_bonds": "High-risk, high-yield bond portfolio"
+      },
+      "specialized_funds": {
+        "esg_funds": "Environmental, social, and governance focused",
+        "technology_funds": "Technology sector focused",
+        "international_funds": "Global and emerging market exposure"
+      }
+    },
+    
+    "premium_features": {
+      "regular_premiums": "Scheduled premium payments",
+      "top_up_premiums": "Additional premium payments",
+      "premium_holidays": "Skip premium payments when needed",
+      "premium_reduction": "Reduce premium payments",
+      "premium_increase": "Increase premium payments"
+    },
+    
+    "fund_management": {
+      "fund_switching": "Switch between investment funds",
+      "rebalancing": "Automatic portfolio rebalancing",
+      "dollar_cost_averaging": "Systematic investment approach",
+      "fund_performance": "Regular fund performance reporting"
+    }
+  },
+  
+  "product_customization": {
+    "coverage_customization": {
+      "death_benefit_options": ["Level", "Increasing", "Decreasing"],
+      "premium_frequency": ["Monthly", "Quarterly", "Semi-annual", "Annual"],
+      "policy_terms": ["10 years", "15 years", "20 years", "25 years", "30 years", "Whole life"],
+      "rider_combinations": ["Critical illness", "Accidental death", "Disability", "Waiver of premium"]
+    },
+    
+    "pricing_tiers": {
+      "standard_tier": "Standard pricing for average risks",
+      "preferred_tier": "Reduced pricing for excellent health",
+      "super_preferred_tier": "Lowest pricing for exceptional health",
+      "simplified_tier": "Streamlined underwriting with higher pricing"
+    },
+    
+    "payment_options": {
+      "direct_debit": "Automatic bank account deduction",
+      "credit_card": "Credit card payment processing",
+      "bank_transfer": "Manual bank transfer",
+      "mobile_payment": "Mobile app and digital wallet payments"
+    }
+  },
+  
+  "digital_features": {
+    "online_application": "Complete application process online",
+    "digital_underwriting": "AI-assisted risk assessment",
+    "policy_management": "Online policy administration and updates",
+    "claims_processing": "Digital claims submission and tracking",
+    "customer_portal": "Comprehensive customer self-service platform",
+    "mobile_app": "Mobile application for policy management"
+  },
+  
+  "compliance_features": {
+    "regulatory_compliance": {
+      "ifrs_17": "IFRS 17 compliant product design",
+      "solvency_ii": "Solvency II capital requirements met",
+      "consumer_protection": "IDD and PRIIPs compliance",
+      "local_regulations": "Local regulatory requirements met"
+    },
+    
+    "disclosure_requirements": {
+      "key_information_document": "PRIIPs KID provided",
+      "policy_illustrations": "Clear benefit and premium illustrations",
+      "terms_and_conditions": "Comprehensive policy documentation",
+      "customer_education": "Product education and training materials"
+    }
+  },
+  
+  "distribution_strategy": {
+    "distribution_channels": {
+      "direct": "Company website and call center",
+      "agents": "Independent and captive agents",
+      "brokers": "Insurance brokers and intermediaries",
+      "bancassurance": "Bank partnerships and distribution",
+      "digital_partners": "Insurtech and digital platforms"
+    },
+    
+    "sales_support": {
+      "product_training": "Comprehensive product training programs",
+      "sales_materials": "Marketing and sales support materials",
+      "illustration_tools": "Premium and benefit calculation tools",
+      "underwriting_guidelines": "Clear underwriting and risk assessment guidelines"
+    }
+  },
+  
+  "design_status": {
+    "overall_status": "finalized",
+    "product_specifications": "completed",
+    "pricing_structure": "completed",
+    "regulatory_compliance": "completed",
+    "operational_requirements": "completed",
+    "next_steps": "Implementation and launch preparation"
+  }
+} 

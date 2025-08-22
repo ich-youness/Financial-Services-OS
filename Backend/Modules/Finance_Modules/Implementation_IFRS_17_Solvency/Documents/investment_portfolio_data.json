@@ -1,0 +1,188 @@
+{
+  "investment_portfolio": {
+    "total_portfolio_value": 500000000,
+    "total_market_value": 495000000,
+    "unrealized_gains_losses": -5000000,
+    "asset_allocation": {
+      "fixed_income": {
+        "total_value": 250000000,
+        "percentage": 0.50,
+        "duration": 5.2,
+        "yield_to_maturity": 0.045,
+        "credit_quality": {
+          "AAA": 0.20,
+          "AA": 0.30,
+          "A": 0.35,
+          "BBB": 0.15
+        },
+        "breakdown": {
+          "government_bonds": {
+            "value": 100000000,
+            "percentage": 0.40,
+            "duration": 6.5,
+            "yield": 0.035
+          },
+          "corporate_bonds": {
+            "value": 100000000,
+            "percentage": 0.40,
+            "duration": 4.8,
+            "yield": 0.055
+          },
+          "mortgage_backed_securities": {
+            "value": 50000000,
+            "percentage": 0.20,
+            "duration": 4.2,
+            "yield": 0.050
+          }
+        }
+      },
+      "equities": {
+        "total_value": 150000000,
+        "percentage": 0.30,
+        "beta": 1.1,
+        "dividend_yield": 0.025,
+        "sector_allocation": {
+          "financial_services": 0.25,
+          "technology": 0.20,
+          "healthcare": 0.18,
+          "consumer_goods": 0.15,
+          "energy": 0.12,
+          "utilities": 0.10
+        },
+        "geographic_allocation": {
+          "domestic": 0.60,
+          "developed_markets": 0.30,
+          "emerging_markets": 0.10
+        }
+      },
+      "real_estate": {
+        "total_value": 50000000,
+        "percentage": 0.10,
+        "property_types": {
+          "commercial": 0.60,
+          "residential": 0.25,
+          "industrial": 0.15
+        },
+        "geographic_concentration": {
+          "primary_markets": 0.70,
+          "secondary_markets": 0.30
+        },
+        "yield": 0.055
+      },
+      "cash_and_equivalents": {
+        "total_value": 30000000,
+        "percentage": 0.06,
+        "yield": 0.025,
+        "liquidity": "High"
+      },
+      "alternative_investments": {
+        "total_value": 20000000,
+        "percentage": 0.04,
+        "types": {
+          "private_equity": 0.50,
+          "hedge_funds": 0.30,
+          "infrastructure": 0.20
+        }
+      }
+    },
+    "risk_metrics": {
+      "portfolio_volatility": 0.12,
+      "var_95_percent": 25000000,
+      "var_99_percent": 35000000,
+      "expected_shortfall": 40000000,
+      "sharpe_ratio": 0.85,
+      "information_ratio": 0.45,
+      "tracking_error": 0.08
+    },
+    "interest_rate_sensitivity": {
+      "duration": 4.8,
+      "convexity": 0.25,
+      "key_rate_durations": {
+        "2_year": 0.8,
+        "5_year": 1.2,
+        "10_year": 1.8,
+        "30_year": 1.0
+      },
+      "parallel_shift_impact": {
+        "100_bp_up": -24000000,
+        "100_bp_down": 24000000
+      }
+    },
+    "credit_risk": {
+      "average_credit_spread": 0.015,
+      "credit_spread_duration": 3.2,
+      "default_probability": 0.002,
+      "recovery_rate": 0.40,
+      "credit_rating_migration": {
+        "upgrade_probability": 0.15,
+        "downgrade_probability": 0.10,
+        "default_probability": 0.002
+      }
+    },
+    "liquidity_risk": {
+      "liquid_assets_ratio": 0.36,
+      "illiquid_assets_ratio": 0.64,
+      "liquidity_horizon": {
+        "immediate": 0.06,
+        "1_month": 0.15,
+        "3_months": 0.25,
+        "1_year": 0.45,
+        "3_years": 0.09
+      }
+    },
+    "currency_risk": {
+      "currency_exposure": {
+        "EUR": 0.70,
+        "USD": 0.20,
+        "GBP": 0.10
+      },
+      "hedging_ratio": 0.30,
+      "unhedged_exposure": 35000000
+    },
+    "performance_metrics": {
+      "total_return_ytd": 0.045,
+      "total_return_1y": 0.052,
+      "total_return_3y": 0.048,
+      "total_return_5y": 0.051,
+      "benchmark_relative": {
+        "ytd": 0.005,
+        "1y": 0.008,
+        "3y": 0.012,
+        "5y": 0.015
+      }
+    },
+    "stress_testing": {
+      "market_crash_scenario": {
+        "equity_decline": -0.30,
+        "bond_spread_widening": 0.02,
+        "portfolio_impact": -75000000
+      },
+      "interest_rate_shock": {
+        "parallel_shift": 0.02,
+        "portfolio_impact": -48000000
+      },
+      "credit_crisis_scenario": {
+        "spread_widening": 0.05,
+        "default_rate_increase": 0.01,
+        "portfolio_impact": -60000000
+      }
+    }
+  },
+  "regulatory_compliance": {
+    "solvency_ii_requirements": {
+      "eligible_own_funds": 450000000,
+      "capital_adequacy_ratio": 1.8,
+      "investment_risk_charge": 35000000
+    },
+    "ifrs_17_requirements": {
+      "fair_value_measurement": "Available",
+      "impairment_assessment": "Completed",
+      "hedge_accounting": "Eligible"
+    }
+  },
+  "metadata": {
+    "valuation_date": "2024-12-19T10:00:00Z",
+    "data_version": "1.0",
+    "description": "Comprehensive prototype data for investment portfolio testing and development"
+  }
+}

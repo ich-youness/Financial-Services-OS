@@ -1,0 +1,16 @@
+Metric_Name,Period,Current_Value,Previous_Value,Baseline_Value,Target_Value,Threshold_Alert,Trend_Direction,Performance_Status,Owner,Action_Required,Model_Drift_Detected,Drift_Percentage,Last_Updated
+Reserve_Adequacy_Ratio,2024-01,1.15,1.12,1.10,1.20,No,Improving,Good,Actuarial_Team,None,No,0.00,2024-01-15
+Loss_Ratio,2024-01,0.62,0.65,0.60,0.70,No,Improving,Good,Underwriting_Team,None,No,0.00,2024-01-15
+Expense_Ratio,2024-01,0.18,0.19,0.20,0.18,No,Improving,Good,Operations_Team,None,No,0.00,2024-01-15
+Combined_Ratio,2024-01,0.80,0.84,0.80,0.85,No,Improving,Good,Management_Team,None,No,0.00,2024-01-15
+Model_Accuracy_MAE,2024-01,0.045,0.048,0.050,0.040,No,Improving,Good,Model_Team,None,No,0.00,2024-01-15
+Claims_Processing_Time,2024-01,12.5,14.2,15.0,10.0,No,Improving,Good,Claims_Team,None,No,0.00,2024-01-15
+Data_Quality_Score,2024-01,0.92,0.89,0.85,0.90,No,Improving,Good,Data_Team,None,No,0.00,2024-01-15
+Regulatory_Compliance_Score,2024-01,0.95,0.93,0.90,0.95,No,Improving,Good,Compliance_Team,None,No,0.00,2024-01-15
+Customer_Satisfaction_Score,2024-01,4.2,4.0,3.8,4.5,No,Improving,Good,Customer_Service,None,No,0.00,2024-01-15
+Process_Efficiency_Index,2024-01,0.88,0.85,0.80,0.90,No,Improving,Good,Operations_Team,None,No,0.00,2024-01-15
+Reserve_Development_Accuracy,2024-01,0.94,0.91,0.90,0.95,No,Improving,Good,Actuarial_Team,None,No,0.00,2024-01-15
+Model_Performance_AUC,2024-01,0.87,0.85,0.83,0.90,No,Improving,Good,Model_Team,None,No,0.00,2024-01-15
+Risk_Margin_Adequacy,2024-01,1.08,1.05,1.00,1.10,No,Improving,Good,Risk_Team,None,No,0.00,2024-01-15
+Capital_Efficiency_Ratio,2024-01,0.75,0.72,0.70,0.80,No,Improving,Good,Finance_Team,None,No,0.00,2024-01-15
+Operational_Excellence_Score,2024-01,0.91,0.88,0.85,0.95,No,Improving,Good,Management_Team,None,No,0.00,2024-01-15

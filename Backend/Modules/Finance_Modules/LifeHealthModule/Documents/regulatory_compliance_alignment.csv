@@ -1,0 +1,7 @@
+PolicyID,ProductType,ContractDurationYears,CoverageAmount,Premium,MortalityRisk,MorbidityRisk,CatastropheRisk,DisclosureComplete,CoPaymentInfo
+301,Term Life,10,100000,500,0.002,,0.0001,True,True
+302,Whole Life,30,150000,750,0.003,,0.0002,True,True
+303,Endowment,20,50000,200,0.0015,,0.0001,False,True
+304,ULIP,25,70000,300,0.0022,,0.00015,True,True
+305,Hospitalization,2,60000,400,,0.01,0.0003,True,False
+306,Critical Illness,1,80000,450,,0.015,0.00025,False,True

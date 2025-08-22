@@ -1,0 +1,7 @@
+CustomerID,ProductType,Age,Gender,LifestyleRisk,PreExistingCondition,ClaimsHistory,DistributionChannel
+101,Term Life,35,M,Low,,1200,Bancassurance
+102,Whole Life,42,F,Medium,,1600,Bancassurance
+103,Endowment,28,M,Low,,500,Broker
+104,ULIP,32,F,Medium,,600,Digital
+105,Hospitalization,67,F,,Hypertension,3000,Corporate
+106,Critical Illness,70,M,,Diabetes,2800,Corporate

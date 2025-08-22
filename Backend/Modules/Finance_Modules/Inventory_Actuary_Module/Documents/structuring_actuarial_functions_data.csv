@@ -1,0 +1,11 @@
+Process_Step,Owner,Status,Due_Date,Control_Type,Control_Description,Control_Status,Review_Required,Documentation_Status,Audit_Readiness,Regulatory_Requirement,Risk_Level,Action_Required
+Data_Cutoff,Data_Team,Complete,2024-01-01,Automated,Data quality checks completed,OK,No,Complete,Yes,IFRS_17,Low,None
+DQ_Checks_Complete,Quality_Team,Complete,2024-01-02,Manual,Data validation and reconciliation,OK,No,Complete,Yes,Solvency_II,Low,None
+Reserving_Lock,Actuarial_Team,Complete,2024-01-04,Automated,Reserve calculations locked,OK,No,Complete,Yes,IFRS_17,Medium,None
+Margin_Review,Risk_Team,Complete,2024-01-06,Manual,Risk margin validation,OK,No,Complete,Yes,Solvency_II,High,None
+Management_Signoff,Management,Complete,2024-01-08,Manual,Executive approval obtained,OK,No,Complete,Yes,Regulatory,High,None
+Pack_Assembled,Compliance_Team,Complete,2024-01-09,Manual,Regulatory pack prepared,OK,No,Complete,Yes,Regulatory,Medium,None
+Model_Validation,Model_Team,In_Progress,2024-01-15,Automated,Model performance monitoring,In_Progress,Yes,Partial,Partial,Model_Governance,Medium,Complete validation
+Assumption_Review,Actuarial_Team,Pending,2024-01-20,Manual,Key assumption validation,Pending,Yes,Not_Started,No,IFRS_17,High,Review assumptions
+Stress_Testing,Risk_Team,Pending,2024-01-25,Automated,Scenario analysis completion,Pending,Yes,Not_Started,No,Solvency_II,High,Complete scenarios
+Regulatory_Reporting,Compliance_Team,Pending,2024-01-30,Manual,QRT preparation and submission,Pending,Yes,Not_Started,No,Regulatory,High,Prepare reports

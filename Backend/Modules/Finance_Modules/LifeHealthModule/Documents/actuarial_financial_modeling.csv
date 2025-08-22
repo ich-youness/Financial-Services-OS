@@ -1,0 +1,9 @@
+PolicyID,CustomerID,ProductType,Age,Gender,CoverageAmount,ClaimsLastYear,ExistingPremium
+201,101,Term Life,35,M,100000,1200,500
+202,102,Whole Life,42,F,150000,1600,750
+203,103,Endowment,28,M,50000,500,200
+204,104,ULIP,32,F,70000,600,300
+205,105,Hospitalization,67,F,60000,3000,400
+206,106,Critical Illness,70,M,80000,2800,450
+207,107,Combo Plan,45,F,120000,2500,600
+208,108,Health-Linked Life,38,M,90000,1800,550

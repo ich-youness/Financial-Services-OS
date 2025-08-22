@@ -1,0 +1,195 @@
+{
+  "regulatory_reporting": {
+    "ifrs_17_reporting": {
+      "contract_groups_summary": {
+        "total_contract_groups": 5,
+        "total_liability": 495000000,
+        "total_csrm": 12000000,
+        "measurement_models": {
+          "building_block_approach": 4,
+          "premium_allocation_approach": 1
+        }
+      },
+      "liability_measurement": {
+        "fulfillment_cash_flows": {
+          "expected_payments": 248000000,
+          "expected_receipts": 277000000,
+          "risk_adjustment": 12000000,
+          "discount_effect": 8000000
+        },
+        "csrm_development": {
+          "opening_balance": 10000000,
+          "acquisition_costs": 8000000,
+          "releases": 6000000,
+          "closing_balance": 12000000
+        }
+      },
+      "transition_effects": {
+        "transition_date": "2023-01-01",
+        "opening_balance_adjustment": 15000000,
+        "cumulative_adjustment": 20000000,
+        "retrospective_application": "Not Applied"
+      },
+      "disclosures": {
+        "risk_exposures": "Comprehensive",
+        "sensitivity_analysis": "Completed",
+        "reconciliation": "Available",
+        "assumptions": "Documented"
+      }
+    },
+    "solvency_ii_reporting": {
+      "solvency_capital_requirement": {
+        "bscr": 150000000,
+        "adjustments": 15000000,
+        "total_scr": 135000000,
+        "risk_modules": {
+          "market_risk": 85000000,
+          "counterparty_default_risk": 20000000,
+          "life_underwriting_risk": 33000000,
+          "non_life_underwriting_risk": 75000000,
+          "health_underwriting_risk": 15000000,
+          "operational_risk": 10000000
+        },
+        "diversification_effects": -45000000
+      },
+      "minimum_capital_requirement": {
+        "mcr": 75000000,
+        "mcr_ratio": 0.5,
+        "mcr_components": {
+          "technical_provisions": 60000000,
+          "operational_expenses": 15000000
+        }
+      },
+      "own_funds": {
+        "basic_own_funds": 200000000,
+        "ancillary_own_funds": 25000000,
+        "total_own_funds": 225000000,
+        "eligible_own_funds": 200000000,
+        "solvency_ratio": 1.48,
+        "mcr_ratio": 2.67
+      }
+    },
+    "quarterly_reporting": {
+      "q1_2024": {
+        "reporting_date": "2024-03-31",
+        "solvency_ratio": 1.52,
+        "mcr_ratio": 2.80,
+        "key_metrics": {
+          "total_assets": 520000000,
+          "total_liabilities": 495000000,
+          "own_funds": 25000000
+        }
+      },
+      "q2_2024": {
+        "reporting_date": "2024-06-30",
+        "solvency_ratio": 1.49,
+        "mcr_ratio": 2.73,
+        "key_metrics": {
+          "total_assets": 515000000,
+          "total_liabilities": 490000000,
+          "own_funds": 25000000
+        }
+      },
+      "q3_2024": {
+        "reporting_date": "2024-09-30",
+        "solvency_ratio": 1.46,
+        "mcr_ratio": 2.65,
+        "key_metrics": {
+          "total_assets": 510000000,
+          "total_liabilities": 485000000,
+          "own_funds": 25000000
+        }
+      },
+      "q4_2024": {
+        "reporting_date": "2024-12-31",
+        "solvency_ratio": 1.48,
+        "mcr_ratio": 2.67,
+        "key_metrics": {
+          "total_assets": 520000000,
+          "total_liabilities": 495000000,
+          "own_funds": 25000000
+        }
+      }
+    },
+    "annual_reporting": {
+      "2023": {
+        "reporting_period": "2023-01-01 to 2023-12-31",
+        "annual_solvency_report": "Submitted",
+        "audit_opinion": "Unqualified",
+        "regulatory_findings": "No Material Issues",
+        "key_developments": [
+          "IFRS 17 implementation completed",
+          "Solvency II compliance maintained",
+          "Risk management framework enhanced"
+        ]
+      },
+      "2024": {
+        "reporting_period": "2024-01-01 to 2024-12-31",
+        "annual_solvency_report": "In Progress",
+        "audit_opinion": "Pending",
+        "regulatory_findings": "Pending",
+        "key_developments": [
+          "Enhanced stress testing implemented",
+          "Climate risk assessment initiated",
+          "Digital transformation continued"
+        ]
+      }
+    },
+    "stress_testing": {
+      "regulatory_stress_tests": {
+        "eiopa_stress_test": {
+          "participation": "Yes",
+          "results": "Within tolerance",
+          "capital_impact": -30000000
+        },
+        "national_stress_test": {
+          "participation": "Yes",
+          "results": "Within tolerance",
+          "capital_impact": -25000000
+        }
+      },
+      "internal_stress_tests": {
+        "market_risk_scenarios": {
+          "interest_rate_shock": -40000000,
+          "equity_market_crash": -60000000,
+          "credit_spread_widening": -30000000
+        },
+        "insurance_risk_scenarios": {
+          "catastrophe_event": -50000000,
+          "mortality_shock": -20000000,
+          "longevity_improvement": -15000000
+        }
+      }
+    },
+    "compliance_monitoring": {
+      "regulatory_requirements": {
+        "ifrs_17_compliance": "Compliant",
+        "solvency_ii_compliance": "Compliant",
+        "local_regulations": "Compliant"
+      },
+      "reporting_deadlines": {
+        "quarterly_reports": "Met",
+        "annual_reports": "Met",
+        "stress_test_reports": "Met"
+      },
+      "audit_findings": {
+        "external_audit": "Clean opinion",
+        "internal_audit": "Minor findings",
+        "regulatory_inspections": "No issues"
+      }
+    }
+  },
+  "data_quality": {
+    "completeness": 0.98,
+    "accuracy": 0.95,
+    "timeliness": 0.99,
+    "consistency": 0.97,
+    "validation_status": "Passed",
+    "last_validation_date": "2024-12-19T10:00:00Z"
+  },
+  "metadata": {
+    "reporting_date": "2024-12-19T10:00:00Z",
+    "data_version": "1.0",
+    "description": "Comprehensive prototype data for regulatory reporting testing and development"
+  }
+}

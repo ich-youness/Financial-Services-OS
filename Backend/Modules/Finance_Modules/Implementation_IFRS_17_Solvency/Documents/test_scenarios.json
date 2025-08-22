@@ -1,0 +1,268 @@
+{
+  "test_scenarios": {
+    "ifrs_17_test_cases": {
+      "contract_boundary_tests": [
+        {
+          "test_id": "CB001",
+          "test_name": "Initial Recognition Boundary",
+          "scenario": "New contract with upfront premium",
+          "input_data": {
+            "contract_start_date": "2024-01-01",
+            "premium_received_date": "2024-01-01",
+            "coverage_start_date": "2024-01-01",
+            "expected_claims_date": "2024-06-15"
+          },
+          "expected_result": "Contract recognized on 2024-01-01",
+          "validation_criteria": "Boundary correctly identified",
+          "complexity": "Low"
+        },
+        {
+          "test_id": "CB002",
+          "test_name": "Modification Boundary",
+          "scenario": "Contract modification with premium adjustment",
+          "input_data": {
+            "original_contract_date": "2024-01-01",
+            "modification_date": "2024-06-01",
+            "premium_change": 10000,
+            "coverage_change": "Extended by 6 months"
+          },
+          "expected_result": "New contract group created",
+          "validation_criteria": "Modification properly handled",
+          "complexity": "Medium"
+        }
+      ],
+      "measurement_model_tests": [
+        {
+          "test_id": "MM001",
+          "test_name": "Building Block Approach",
+          "scenario": "Non-life insurance with complex cash flows",
+          "input_data": {
+            "expected_payments": 50000000,
+            "expected_receipts": 60000000,
+            "risk_adjustment": 3000000,
+            "discount_rate": 0.03
+          },
+          "expected_result": "Liability = 47,000,000",
+          "validation_criteria": "Calculation accuracy within 0.1%",
+          "complexity": "High"
+        },
+        {
+          "test_id": "MM002",
+          "test_name": "Premium Allocation Approach",
+          "scenario": "Short-term life insurance",
+          "input_data": {
+            "premium": 1000000,
+            "expected_claims": 800000,
+            "expenses": 150000,
+            "coverage_period": "1 year"
+          },
+          "expected_result": "Liability = 950,000",
+          "validation_criteria": "Calculation accuracy within 0.1%",
+          "complexity": "Medium"
+        }
+      ],
+      "csrm_tests": [
+        {
+          "test_id": "CSRM001",
+          "test_name": "CSRM Initial Recognition",
+          "scenario": "New contract group with acquisition costs",
+          "input_data": {
+            "deferrable_acquisition_costs": 1500000,
+            "non_deferrable_acquisition_costs": 500000,
+            "expected_profit": 2000000
+          },
+          "expected_result": "CSRM = 1,500,000",
+          "validation_criteria": "CSRM correctly calculated",
+          "complexity": "Medium"
+        },
+        {
+          "test_id": "CSRM002",
+          "test_name": "CSRM Release Pattern",
+          "scenario": "CSRM release over contract period",
+          "input_data": {
+            "initial_csrm": 1000000,
+            "contract_duration": "3 years",
+            "profit_emergence": "Linear"
+          },
+          "expected_result": "Annual release = 333,333",
+          "validation_criteria": "Release pattern correct",
+          "complexity": "Medium"
+        }
+      ]
+    },
+    "solvency_ii_test_cases": {
+      "scr_calculation_tests": [
+        {
+          "test_id": "SCR001",
+          "test_name": "Market Risk Module",
+          "scenario": "Interest rate shock scenario",
+          "input_data": {
+            "bond_portfolio_value": 200000000,
+            "duration": 5.2,
+            "interest_rate_shock": 0.02
+          },
+          "expected_result": "SCR = 20,800,000",
+          "validation_criteria": "Calculation accuracy within 0.1%",
+          "complexity": "High"
+        },
+        {
+          "test_id": "SCR002",
+          "test_name": "Underwriting Risk Module",
+          "scenario": "Premium and reserve risk",
+          "input_data": {
+            "written_premium": 300000000,
+            "technical_provisions": 180000000,
+            "loss_ratio": 0.75,
+            "volatility": 0.20
+          },
+          "expected_result": "SCR = 40,000,000",
+          "validation_criteria": "Calculation accuracy within 0.1%",
+          "complexity": "High"
+        }
+      ],
+      "diversification_tests": [
+        {
+          "test_id": "DIV001",
+          "test_name": "Risk Module Diversification",
+          "scenario": "Multiple risk modules with correlation",
+          "input_data": {
+            "market_risk_scr": 85000000,
+            "underwriting_risk_scr": 75000000,
+            "operational_risk_scr": 10000000,
+            "correlation_matrix": "Standard Solvency II"
+          },
+          "expected_result": "Diversification benefit = 45,000,000",
+          "validation_criteria": "Diversification correctly calculated",
+          "complexity": "High"
+        }
+      ]
+    },
+    "integration_test_cases": {
+      "ifrs17_solvency2_integration": [
+        {
+          "test_id": "INT001",
+          "test_name": "Technical Provisions Consistency",
+          "scenario": "IFRS 17 TP vs Solvency II TP",
+          "input_data": {
+            "ifrs17_technical_provisions": 495000000,
+            "solvency2_technical_provisions": 480000000,
+            "reconciliation_items": ["Risk margin", "Discount rates"]
+          },
+          "expected_result": "Reconciliation successful",
+          "validation_criteria": "Differences explained and documented",
+          "complexity": "High"
+        },
+        {
+          "test_id": "INT002",
+          "test_name": "Own Funds Calculation",
+          "scenario": "IFRS 17 equity vs Solvency II own funds",
+          "input_data": {
+            "ifrs17_equity": 25000000,
+            "solvency2_own_funds": 225000000,
+            "adjustments": ["Deferred taxes", "Intangible assets"]
+          },
+          "expected_result": "Reconciliation successful",
+          "validation_criteria": "Differences explained and documented",
+          "complexity": "High"
+        }
+      ]
+    },
+    "stress_testing_scenarios": {
+      "market_stress_tests": [
+        {
+          "test_id": "STR001",
+          "test_name": "Interest Rate Stress",
+          "scenario": "Parallel shift in yield curve",
+          "input_data": {
+            "base_scenario": "Current market conditions",
+            "stress_scenario": "+200 basis points",
+            "portfolio_duration": 4.8
+          },
+          "expected_result": "Capital impact = -48,000,000",
+          "validation_criteria": "Impact within acceptable range",
+          "complexity": "Medium"
+        },
+        {
+          "test_id": "STR002",
+          "test_name": "Equity Market Crash",
+          "scenario": "30% decline in equity markets",
+          "input_data": {
+            "equity_exposure": 150000000,
+            "market_decline": -0.30,
+            "correlation_effects": "Considered"
+          },
+          "expected_result": "Capital impact = -75,000,000",
+          "validation_criteria": "Impact within acceptable range",
+          "complexity": "Medium"
+        }
+      ],
+      "insurance_stress_tests": [
+        {
+          "test_id": "STR003",
+          "test_name": "Catastrophe Event",
+          "scenario": "Major natural disaster",
+          "input_data": {
+            "catastrophe_exposure": 250000000,
+            "event_frequency": "1 in 100 years",
+            "reinsurance_protection": "Available"
+          },
+          "expected_result": "Capital impact = -50,000,000",
+          "validation_criteria": "Impact within acceptable range",
+          "complexity": "High"
+        }
+      ]
+    },
+    "data_validation_tests": {
+      "data_quality_tests": [
+        {
+          "test_id": "VAL001",
+          "test_name": "Data Completeness",
+          "scenario": "Check for missing data fields",
+          "input_data": {
+            "required_fields": ["Contract ID", "Premium", "Claims", "Expenses"],
+            "data_source": "Core systems"
+          },
+          "expected_result": "Completeness > 95%",
+          "validation_criteria": "All required fields populated",
+          "complexity": "Low"
+        },
+        {
+          "test_id": "VAL002",
+          "test_name": "Data Consistency",
+          "scenario": "Cross-reference between systems",
+          "input_data": {
+            "ifrs17_data": "IFRS 17 system",
+            "solvency2_data": "Solvency II system",
+            "reference_data": "General ledger"
+          },
+          "expected_result": "Consistency > 98%",
+          "validation_criteria": "Data matches across systems",
+          "complexity": "Medium"
+        }
+      ]
+    }
+  },
+  "test_execution": {
+    "automated_tests": {
+      "unit_tests": 150,
+      "integration_tests": 75,
+      "regression_tests": 100,
+      "performance_tests": 25
+    },
+    "manual_tests": {
+      "user_acceptance_tests": 50,
+      "business_scenario_tests": 30,
+      "regulatory_compliance_tests": 20
+    },
+    "test_coverage": {
+      "code_coverage": 0.85,
+      "business_logic_coverage": 0.90,
+      "regulatory_requirement_coverage": 0.95
+    }
+  },
+  "metadata": {
+    "test_data_version": "1.0",
+    "created_date": "2024-12-19T10:00:00Z",
+    "description": "Comprehensive prototype test scenarios for IFRS 17 and Solvency 2 testing and development"
+  }
+}

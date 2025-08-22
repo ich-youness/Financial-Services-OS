@@ -1,0 +1,15 @@
+Assessment_Area,Gap_ID,Gap_Description,Current_State,Required_State,Priority,Complexity,Estimated_Effort_Days,Resource_Requirements,Remediation_Action,Target_Date
+Data_Quality,DQ_001,Missing cash flow projections,No structured cash flow data,Automated cash flow projections,High,High,45,"Actuarial + IT","Implement cash flow modeling system",2024-06-30
+Data_Quality,DQ_002,Inconsistent discount rates,Manual rate setting,Standardized rate framework,High,Medium,20,"Actuarial + Finance","Develop discount rate methodology",2024-05-31
+Systems,IT_001,No IFRS 17 calculation engine,Excel-based calculations,Integrated calculation engine,High,High,90,"IT + Actuarial","Implement Moody's AXIS or Prophet",2024-09-30
+Systems,IT_002,Manual data reconciliation,Spreadsheet-based,Automated reconciliation,Medium,Medium,30,"IT + Finance","Develop reconciliation tools",2024-07-31
+Processes,PROC_001,No contract grouping framework,Ad-hoc grouping,Standardized grouping rules,High,Medium,25,"Actuarial + Operations","Define grouping methodology",2024-05-31
+Processes,PROC_002,Manual risk margin calculation,Basic risk factors,Comprehensive risk model,High,High,60,"Actuarial + Risk","Develop risk adjustment model",2024-08-31
+Controls,CTRL_001,Missing validation controls,No automated checks,Comprehensive validation,Medium,Medium,35,"IT + Risk","Implement validation framework",2024-07-31
+Controls,CTRL_002,No audit trail,Basic logging,Full audit trail,Medium,Low,15,"IT + Compliance","Enhance logging system",2024-04-30
+Governance,GOV_001,No IFRS 17 steering committee,Ad-hoc meetings,Formal governance,High,Low,10,Management,"Establish steering committee",2024-03-31
+Governance,GOV_002,Missing policy framework,Basic policies,Comprehensive policies,Medium,Medium,40,"Compliance + Legal","Develop policy framework",2024-06-30
+Resources,RES_001,Insufficient actuarial staff,3 actuaries,5 actuaries,High,Medium,30,HR,"Recruit additional actuaries",2024-05-31
+Resources,RES_002,No dedicated project manager,Part-time PM,Full-time PM,High,Low,5,HR,"Assign dedicated PM",2024-03-31
+Timeline,TL_001,IFRS 17 deadline,2025-01-01,2025-01-01,Critical,High,0,"All teams","Meet regulatory deadline",2025-01-01
+Timeline,TL_002,Parallel run period,No parallel run,6-month parallel run,High,Medium,180,"All teams","Implement parallel run",2024-07-01

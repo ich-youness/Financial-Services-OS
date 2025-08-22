@@ -10,7 +10,8 @@ import {
   FolderArchive,
   ShieldAlert,
   Banknote,
-  BarChart3
+  BarChart3,
+  Calculator
 } from "lucide-react";
 
 export interface Agent {
@@ -2613,7 +2614,1366 @@ export const modules: Module[] = [
     }
   ]
 },
+{
+  id: "ifrs17-solvency2",
+  title: "IFRS 17 & Solvency II Module",
+  description: "Guides insurance companies through IFRS 17 and Solvency II compliance, including policy development, gap analysis, system design, financial modeling, and regulatory reporting.",
+  icon: FileText,
+  colorClass: "module-card-ifrs",
+  agents: [
+    {
+      id: "framework-analysis",
+      name: "Framework Analysis Agent",
+      description: "Analyzes IFRS 17 and Solvency II regulatory frameworks, develops policy packs, and creates reconciliation mapping between standards.",
+      inputs: {
+        text: "Upload regulatory data (CSV, Excel) and policy documents related to IFRS 17 and Solvency II requirements.",
+        fileUploads: true
+      },
+      config: {
+        frameworkFocus: {
+          type: 'dropdown',
+          label: 'Framework Focus',
+          options: ['IFRS 17 Only', 'Solvency II Only', 'Both Frameworks', 'Reconciliation Mapping'],
+          default: 'Both Frameworks'
+        },
+        measurementModel: {
+          type: 'dropdown',
+          label: 'Measurement Model',
+          options: ['GMM', 'PAA', 'VFA', 'All Models'],
+          default: 'All Models'
+        },
+        analysisDepth: {
+          type: 'slider',
+          label: 'Policy Analysis Depth',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'Regulatory Policy Packs',
+        'Measurement Model Guidelines',
+        'Reconciliation Framework',
+        'CSM Calculation Methodology',
+        'Compliance Requirements Summary'
+      ]
+    },
+    {
+      id: "gap-analysis-roadmap",
+      name: "Gap Analysis & Implementation Roadmap Agent",
+      description: "Conducts comprehensive gap analysis, creates gap registers, and develops detailed implementation roadmaps for IFRS 17 and Solvency II.",
+      inputs: {
+        text: "Upload gap analysis data (CSV, Excel) and current state assessment documents.",
+        fileUploads: true
+      },
+      config: {
+        gapCategory: {
+          type: 'dropdown',
+          label: 'Gap Category Focus',
+          options: ['Data', 'Systems', 'Processes', 'Controls', 'All Categories'],
+          default: 'All Categories'
+        },
+        implementationHorizon: {
+          type: 'dropdown',
+          label: 'Implementation Horizon',
+          options: ['Short-Term (0-6 months)', 'Medium-Term (6-18 months)', 'Long-Term (18+ months)'],
+          default: 'Medium-Term (6-18 months)'
+        },
+        priorityLevel: {
+          type: 'slider',
+          label: 'Priority Threshold',
+          min: 1,
+          max: 5,
+          default: 3
+        }
+      },
+      outputs: [
+        'Comprehensive Gap Register',
+        'Prioritized Remediation Plan',
+        'Implementation Roadmap',
+        'Workstream Definitions',
+        'Resource Allocation Plan'
+      ]
+    },
+    {
+      id: "data-systems-process",
+      name: "Data Systems & Process Design Agent",
+      description: "Designs data architecture, system integrations, and process workflows for IFRS 17 and Solvency II compliance.",
+      inputs: {
+        text: "Upload system requirements (CSV, Excel) and data architecture documentation.",
+        fileUploads: true
+      },
+      config: {
+        designFocus: {
+          type: 'dropdown',
+          label: 'Design Focus Area',
+          options: ['Data Architecture', 'System Integration', 'Process Workflows', 'All Areas'],
+          default: 'All Areas'
+        },
+        integrationComplexity: {
+          type: 'slider',
+          label: 'Integration Complexity',
+          min: 1,
+          max: 5,
+          default: 3
+        },
+        scalabilityLevel: {
+          type: 'slider',
+          label: 'Scalability Requirement',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'Data Model Design',
+        'System Architecture Blueprint',
+        'Process Workflow Diagrams',
+        'Integration Framework',
+        'Governance & Control Framework'
+      ]
+    },
+    {
+      id: "financial-risk-modeling",
+      name: "Financial & Risk Modeling Agent",
+      description: "Develops valuation models, capital calculation frameworks, and risk assessment methodologies for regulatory compliance.",
+      inputs: {
+        text: "Upload financial modeling data (CSV, Excel) and risk metrics documentation.",
+        fileUploads: true
+      },
+      config: {
+        modelingFocus: {
+          type: 'dropdown',
+          label: 'Modeling Focus',
+          options: ['Valuation Models', 'Capital Calculations', 'Risk Assessment', 'All Models'],
+          default: 'All Models'
+        },
+        modelComplexity: {
+          type: 'slider',
+          label: 'Model Complexity Level',
+          min: 1,
+          max: 5,
+          default: 4
+        },
+        validationLevel: {
+          type: 'slider',
+          label: 'Validation Rigor',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'Valuation Model Framework',
+        'Capital Calculation Models',
+        'Risk Assessment Methodology',
+        'Stress Testing Scenarios',
+        'Model Validation Framework'
+      ]
+    },
+    {
+      id: "reporting-compliance",
+      name: "Reporting & Compliance Delivery Agent",
+      description: "Ensures comprehensive regulatory reporting, financial statement preparation, and audit readiness for IFRS 17 and Solvency II.",
+      inputs: {
+        text: "Upload reporting data (CSV, Excel) and compliance documentation.",
+        fileUploads: true
+      },
+      config: {
+        reportingFocus: {
+          type: 'dropdown',
+          label: 'Reporting Focus',
+          options: ['Financial Statements', 'Regulatory Reports', 'Audit Support', 'All Reporting'],
+          default: 'All Reporting'
+        },
+        complianceLevel: {
+          type: 'slider',
+          label: 'Compliance Strictness',
+          min: 1,
+          max: 5,
+          default: 5
+        },
+        auditReadiness: {
+          type: 'slider',
+          label: 'Audit Readiness Level',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'IFRS 17 Financial Statements',
+        'Solvency II Regulatory Reports',
+        'Audit-Ready Documentation',
+        'Compliance Checklists',
+        'Disclosure Framework'
+      ]
+    }
+  ]
+},
+{
+  id: "product-design-life-insurance",
+  title: "Life Insurance Product Design Module",
+  description: "Guides insurance companies through comprehensive life insurance product design, from market research and actuarial modeling to regulatory compliance and operational implementation.",
+  icon: FileText,
+  colorClass: "module-card-life-insurance",
+  agents: [
+    {
+      id: "market-customer-insights",
+      name: "Market & Customer Insights Agent",
+      description: "Analyzes market demand drivers, customer segmentation, and behavioral insights for life insurance products.",
+      inputs: {
+        text: "Upload market research data, customer surveys, and competitor analysis (CSV, Excel, PDF).",
+        fileUploads: true
+      },
+      config: {
+        marketFocus: {
+          type: 'dropdown',
+          label: 'Market Focus',
+          options: ['Term Life', 'Whole Life', 'Endowment', 'ULIPs', 'All Products'],
+          default: 'All Products'
+        },
+        customerSegment: {
+          type: 'dropdown',
+          label: 'Customer Segment',
+          options: ['Young Professionals', 'Families', 'Retirees', 'High-Net-Worth', 'All Segments'],
+          default: 'All Segments'
+        },
+        analysisDepth: {
+          type: 'slider',
+          label: 'Analysis Depth',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'Market Demand Analysis',
+        'Customer Segmentation Report',
+        'Competitor Product Analysis',
+        'Behavioral Insights Summary',
+        'Market Positioning Strategy'
+      ]
+    },
+    {
+      id: "product-design",
+      name: "Product Design Agent",
+      description: "Designs comprehensive life insurance products including term life, whole life, endowment, ULIPs, and riders/add-ons.",
+      inputs: {
+        text: "Upload product specifications, design requirements, and competitor products (CSV, Excel, PDF).",
+        fileUploads: true
+      },
+      config: {
+        productType: {
+          type: 'dropdown',
+          label: 'Product Type Focus',
+          options: ['Term Life', 'Whole Life', 'Endowment', 'ULIPs', 'Riders & Add-Ons'],
+          default: 'Term Life'
+        },
+        coverageType: {
+          type: 'dropdown',
+          label: 'Coverage Type',
+          options: ['Pure Protection', 'Savings & Investment', 'Wealth Transfer', 'Retirement', 'All Types'],
+          default: 'Pure Protection'
+        },
+        complexityLevel: {
+          type: 'slider',
+          label: 'Product Complexity',
+          min: 1,
+          max: 5,
+          default: 3
+        }
+      },
+      outputs: [
+        'Product Design Specifications',
+        'Coverage Structure Design',
+        'Rider & Benefit Options',
+        'Premium Structure Design',
+        'Product Feature Summary'
+      ]
+    },
+    {
+      id: "actuarial-financial-modeling",
+      name: "Actuarial & Financial Modeling Agent",
+      description: "Develops actuarial models, pricing strategies, cash flow projections, and profitability analysis for life insurance products.",
+      inputs: {
+        text: "Upload actuarial data, mortality tables, and financial models (CSV, Excel).",
+        fileUploads: true
+      },
+      config: {
+        modelingFocus: {
+          type: 'dropdown',
+          label: 'Modeling Focus',
+          options: ['Pricing Models', 'Cash Flow Projections', 'Profitability Analysis', 'Stress Testing'],
+          default: 'Pricing Models'
+        },
+        riskLevel: {
+          type: 'slider',
+          label: 'Risk Assessment Level',
+          min: 1,
+          max: 5,
+          default: 4
+        },
+        validationRigor: {
+          type: 'slider',
+          label: 'Validation Rigor',
+          min: 1,
+          max: 5,
+          default: 5
+        }
+      },
+      outputs: [
+        'Premium Calculation Models',
+        'Cash Value Projections',
+        'Profitability Analysis',
+        'Embedded Value Calculations',
+        'Stress Test Results'
+      ]
+    },
+    {
+      id: "regulatory-compliance",
+      name: "Regulatory & Compliance Alignment Agent",
+      description: "Ensures life insurance products meet IFRS 17, Solvency II, consumer protection, and disclosure requirements.",
+      inputs: {
+        text: "Upload regulatory documents, compliance checklists, and reporting templates (PDF, DOCX).",
+        fileUploads: true
+      },
+      config: {
+        regulatoryFramework: {
+          type: 'dropdown',
+          label: 'Regulatory Framework',
+          options: ['IFRS 17', 'Solvency II', 'Consumer Protection', 'Disclosure Requirements', 'All Frameworks'],
+          default: 'All Frameworks'
+        },
+        complianceStrictness: {
+          type: 'slider',
+          label: 'Compliance Strictness',
+          min: 1,
+          max: 5,
+          default: 5
+        },
+        auditReadiness: {
+          type: 'slider',
+          label: 'Audit Readiness Level',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'Regulatory Compliance Checklist',
+        'IFRS 17 Measurement Framework',
+        'Solvency II Capital Requirements',
+        'Consumer Protection Guidelines',
+        'Disclosure Documentation'
+      ]
+    },
+    {
+      id: "operational-implementation",
+      name: "Operational Implementation Agent",
+      description: "Designs underwriting rules, policy administration systems, and distribution strategies for life insurance products.",
+      inputs: {
+        text: "Upload operational requirements, system specifications, and process documentation (CSV, Excel, PDF).",
+        fileUploads: true
+      },
+      config: {
+        implementationArea: {
+          type: 'dropdown',
+          label: 'Implementation Focus',
+          options: ['Underwriting Design', 'Policy Administration', 'Distribution Strategy', 'All Areas'],
+          default: 'All Areas'
+        },
+        automationLevel: {
+          type: 'slider',
+          label: 'Automation Level',
+          min: 1,
+          max: 5,
+          default: 3
+        },
+        scalabilityRequirement: {
+          type: 'slider',
+          label: 'Scalability Requirement',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'Underwriting Guidelines',
+        'Policy Administration Framework',
+        'Distribution Channel Strategy',
+        'Operational Workflow Design',
+        'Implementation Roadmap'
+      ]
+    },
+    {
+      id: "product-monitoring-innovation",
+      name: "Product Monitoring & Innovation Agent",
+      description: "Monitors product performance, drives innovation, and manages product lifecycle for life insurance portfolios.",
+      inputs: {
+        text: "Upload performance data, monitoring reports, and innovation research (CSV, Excel, PDF).",
+        fileUploads: true
+      },
+      config: {
+        monitoringFocus: {
+          type: 'dropdown',
+          label: 'Monitoring Focus',
+          options: ['Performance Tracking', 'Profitability Monitoring', 'Innovation Trends', 'Lifecycle Management'],
+          default: 'Performance Tracking'
+        },
+        innovationLevel: {
+          type: 'slider',
+          label: 'Innovation Focus',
+          min: 1,
+          max: 5,
+          default: 3
+        },
+        optimizationFrequency: {
+          type: 'slider',
+          label: 'Optimization Frequency',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'Performance Monitoring Framework',
+        'Profitability Analysis Report',
+        'Innovation Opportunity Assessment',
+        'Product Lifecycle Recommendations',
+        'Portfolio Optimization Strategy'
+      ]
+    }
+  ]
+},
 
+// ## Thursday::
+{
+  id: "life-health-insurance",
+  title: "Life & Health Insurance Module",
+  description: "Guides insurance companies through comprehensive life and health insurance product strategy, from market analysis and product design to actuarial modeling, regulatory compliance, and operational implementation.",
+  icon: FileText,
+  colorClass: "module-card-life-health",
+  agents: [
+    {
+      id: "market-customer-needs",
+      name: "Market & Customer Needs Analysis",
+      description: "Analyzes demographic trends, customer segmentation, behavioral insights, and market opportunities for life and health insurance.",
+      inputs: {
+        text: "Upload customer data, market research, and behavioral insights (CSV, Excel, PDF).",
+        fileUploads: true
+      },
+      config: {
+        analysisFocus: {
+          type: 'dropdown',
+          label: 'Analysis Focus',
+          options: ['Demographic Trends', 'Customer Segmentation', 'Behavioral Insights', 'Market Opportunities', 'All Areas'],
+          default: 'All Areas'
+        },
+        customerSegment: {
+          type: 'dropdown',
+          label: 'Customer Segment',
+          options: ['Families', 'Young Professionals', 'Retirees', 'Employers', 'All Segments'],
+          default: 'All Segments'
+        },
+        researchDepth: {
+          type: 'slider',
+          label: 'Research Depth',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'Market Research Highlights',
+        'Customer Segmentation Analysis',
+        'Behavioral Insights Report',
+        'Competitor Benchmarking',
+        'Strategic Recommendations'
+      ]
+    },
+    {
+      id: "life-health-product-design",
+      name: "Life & Health Product Design",
+      description: "Designs comprehensive life and health insurance products including coverage components, integrated plans, and rider options.",
+      inputs: {
+        text: "Upload product requirements, customer data, and design specifications (CSV, Excel, PDF).",
+        fileUploads: true
+      },
+      config: {
+        productCategory: {
+          type: 'dropdown',
+          label: 'Product Category',
+          options: ['Life Insurance', 'Health Insurance', 'Integrated Products', 'All Categories'],
+          default: 'All Categories'
+        },
+        coverageType: {
+          type: 'dropdown',
+          label: 'Coverage Type',
+          options: ['Term Life', 'Whole Life', 'Endowment', 'Unit-Linked', 'Hospitalization', 'Outpatient', 'Critical Illness', 'Disability', 'Preventive Care'],
+          default: 'Term Life'
+        },
+        integrationLevel: {
+          type: 'slider',
+          label: 'Integration Level',
+          min: 1,
+          max: 5,
+          default: 3
+        }
+      },
+      outputs: [
+        'Life Insurance Product Recommendations',
+        'Health Insurance Product Recommendations',
+        'Integrated Product Solutions',
+        'Rider & Benefit Options',
+        'Market Fit Assessment'
+      ]
+    },
+    {
+      id: "actuarial-financial-modeling",
+      name: "Actuarial & Financial Modeling",
+      description: "Develops pricing models, cash flow projections, profitability analysis, and risk assessments for life and health insurance products.",
+      inputs: {
+        text: "Upload actuarial data, mortality tables, and financial models (CSV, Excel).",
+        fileUploads: true
+      },
+      config: {
+        modelingType: {
+          type: 'dropdown',
+          label: 'Modeling Type',
+          options: ['Pricing & Underwriting', 'Cash Flow Projections', 'Profitability Analysis', 'Risk Assessment', 'All Types'],
+          default: 'Pricing & Underwriting'
+        },
+        riskCategory: {
+          type: 'dropdown',
+          label: 'Risk Category',
+          options: ['Mortality Risk', 'Morbidity Risk', 'Longevity Risk', 'Pandemic Risk', 'All Risks'],
+          default: 'All Risks'
+        },
+        calculationPrecision: {
+          type: 'slider',
+          label: 'Calculation Precision',
+          min: 1,
+          max: 5,
+          default: 5
+        }
+      },
+      outputs: [
+        'Pricing Recommendations',
+        'Cash Flow Projections',
+        'Embedded Value Calculations',
+        'Risk Assessment Report',
+        'Profitability Analysis'
+      ]
+    },
+    {
+      id: "regulatory-compliance",
+      name: "Regulatory & Compliance Alignment",
+      description: "Ensures compliance with IFRS 17, Solvency II, consumer protection, and disclosure requirements for life and health insurance.",
+      inputs: {
+        text: "Upload regulatory documents, policy data, and compliance requirements (PDF, DOCX, CSV).",
+        fileUploads: true
+      },
+      config: {
+        regulatoryStandard: {
+          type: 'dropdown',
+          label: 'Regulatory Standard',
+          options: ['IFRS 17', 'Solvency II', 'Consumer Protection', 'Disclosure Requirements', 'All Standards'],
+          default: 'All Standards'
+        },
+        complianceScope: {
+          type: 'dropdown',
+          label: 'Compliance Scope',
+          options: ['Accounting Standards', 'Capital Requirements', 'Consumer Protection', 'All Areas'],
+          default: 'All Areas'
+        },
+        auditReadiness: {
+          type: 'slider',
+          label: 'Audit Readiness Level',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'IFRS 17 Compliance Summary',
+        'Solvency II Capital Analysis',
+        'Consumer Protection Assessment',
+        'Regulatory Risk Report',
+        'Compliance Recommendations'
+      ]
+    },
+    {
+      id: "operational-implementation",
+      name: "Operational Implementation",
+      description: "Designs underwriting rules, policy administration systems, and distribution strategies for life and health insurance operations.",
+      inputs: {
+        text: "Upload operational data, system requirements, and process documentation (CSV, Excel, PDF).",
+        fileUploads: true
+      },
+      config: {
+        operationalArea: {
+          type: 'dropdown',
+          label: 'Operational Area',
+          options: ['Underwriting Design', 'Policy Administration', 'Distribution Strategy', 'All Areas'],
+          default: 'All Areas'
+        },
+        automationLevel: {
+          type: 'slider',
+          label: 'Automation Level',
+          min: 1,
+          max: 5,
+          default: 3
+        },
+        implementationSpeed: {
+          type: 'slider',
+          label: 'Implementation Speed',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'Underwriting Guidelines',
+        'Policy Administration Framework',
+        'Distribution Channel Strategy',
+        'Operational Workflow Design',
+        'Implementation Plan'
+      ]
+    },
+    {
+      id: "product-monitoring-innovation",
+      name: "Product Monitoring & Innovation",
+      description: "Monitors product performance, manages lifecycle adjustments, and drives innovation in life and health insurance offerings.",
+      inputs: {
+        text: "Upload performance data, market feedback, and innovation research (CSV, Excel, PDF).",
+        fileUploads: true
+      },
+      config: {
+        monitoringFocus: {
+          type: 'dropdown',
+          label: 'Monitoring Focus',
+          options: ['Performance Metrics', 'Lifecycle Management', 'Innovation Trends', 'All Areas'],
+          default: 'Performance Metrics'
+        },
+        innovationType: {
+          type: 'dropdown',
+          label: 'Innovation Type',
+          options: ['Wellness-Linked', 'ESG-Linked', 'Embedded Insurance', 'Microinsurance', 'All Types'],
+          default: 'Wellness-Linked'
+        },
+        optimizationFrequency: {
+          type: 'slider',
+          label: 'Optimization Frequency',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'Performance Monitoring Report',
+        'Lifecycle Adjustment Recommendations',
+        'Innovation Opportunity Assessment',
+        'Product Portfolio Analysis',
+        'Strategic Innovation Plan'
+      ]
+    }
+  ]
+},
+{
+  id: "insurance-product-aging",
+  title: "Aging Insurance Product Module",
+  description: "Guides insurance companies through designing, implementing, and monitoring insurance products for aging populations, including retirement income, annuities, long-term care, and hybrid products.",
+  icon: FileText,
+  colorClass: "module-card-aging-insurance",
+  agents: [
+    {
+      id: "market-demographic-analysis",
+      name: "Market & Demographic Analysis",
+      description: "Analyzes global aging population dynamics, retirement readiness, demographic projections, and behavioral economics insights.",
+      inputs: {
+        text: "Upload demographic data, market research, and population projections (CSV, Excel, PDF).",
+        fileUploads: true
+      },
+      config: {
+        demographicFocus: {
+          type: 'dropdown',
+          label: 'Demographic Focus',
+          options: ['Aging Trends', 'Retirement Readiness', 'Pension Gaps', 'Dependency Ratios', 'All Areas'],
+          default: 'All Areas'
+        },
+        geographicScope: {
+          type: 'dropdown',
+          label: 'Geographic Scope',
+          options: ['Global', 'Regional', 'Country-Specific', 'All Regions'],
+          default: 'Global'
+        },
+        projectionHorizon: {
+          type: 'slider',
+          label: 'Projection Horizon',
+          min: 5,
+          max: 30,
+          default: 10
+        }
+      },
+      outputs: [
+        'Demographic Projections Report',
+        'Market Demand Analysis',
+        'Retirement Readiness Assessment',
+        'Behavioral Economics Insights',
+        'Strategic Opportunities Report'
+      ]
+    },
+    {
+      id: "product-design-aging",
+      name: "Product Design for Aging Insurance",
+      description: "Designs retirement income products, annuities, long-term care insurance, hybrid products, and group plans for aging populations.",
+      inputs: {
+        text: "Upload product specifications, customer data, and design requirements (CSV, Excel, PDF).",
+        fileUploads: true
+      },
+      config: {
+        productType: {
+          type: 'dropdown',
+          label: 'Product Type',
+          options: ['Retirement Income', 'Annuities', 'Long-Term Care', 'Hybrid Products', 'Group Plans', 'All Types'],
+          default: 'Annuities'
+        },
+        customerSegment: {
+          type: 'dropdown',
+          label: 'Customer Segment',
+          options: ['Pre-Retirees', 'Retirees', 'Elderly with Health Issues', 'Group/Employer', 'All Segments'],
+          default: 'Retirees'
+        },
+        complexityLevel: {
+          type: 'slider',
+          label: 'Design Complexity',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'Product Blueprint Specifications',
+        'Coverage Structure Design',
+        'Benefit Triggers Framework',
+        'Premium Structure Design',
+        'Product Feature Summary'
+      ]
+    },
+    {
+      id: "actuarial-financial-modeling",
+      name: "Actuarial & Financial Modeling",
+      description: "Performs actuarial calculations, analyzes historical claims data, and generates financial projections for aging insurance products.",
+      inputs: {
+        text: "Upload actuarial data, mortality tables, and financial models (CSV, Excel).",
+        fileUploads: true
+      },
+      config: {
+        analysisType: {
+          type: 'dropdown',
+          label: 'Analysis Type',
+          options: ['Pricing Validation', 'Reserving Adequacy', 'Profitability Analysis', 'Risk Assessment', 'All Types'],
+          default: 'Pricing Validation'
+        },
+        metricFocus: {
+          type: 'dropdown',
+          label: 'Metric Focus',
+          options: ['Loss Ratios', 'Persistency Rates', 'Claims Severity', 'Claims Frequency', 'All Metrics'],
+          default: 'All Metrics'
+        },
+        calculationPrecision: {
+          type: 'slider',
+          label: 'Calculation Precision',
+          min: 1,
+          max: 5,
+          default: 5
+        }
+      },
+      outputs: [
+        'Actuarial Calculations Report',
+        'Financial Projections',
+        'Risk Assessment Analysis',
+        'Profitability Analysis',
+        'Reserving Recommendations'
+      ]
+    },
+    {
+      id: "regulatory-compliance",
+      name: "Regulatory & Compliance Alignment",
+      description: "Ensures compliance with IFRS 17, Solvency II, consumer protection, and disclosure requirements for aging insurance products.",
+      inputs: {
+        text: "Upload regulatory documents, policy data, and compliance requirements (PDF, DOCX, CSV).",
+        fileUploads: true
+      },
+      config: {
+        regulatoryFramework: {
+          type: 'dropdown',
+          label: 'Regulatory Framework',
+          options: ['IFRS 17', 'Solvency II', 'Consumer Protection', 'Disclosure Requirements', 'All Frameworks'],
+          default: 'All Frameworks'
+        },
+        complianceScope: {
+          type: 'dropdown',
+          label: 'Compliance Scope',
+          options: ['Accounting Standards', 'Capital Requirements', 'Consumer Protection', 'All Areas'],
+          default: 'All Areas'
+        },
+        auditReadiness: {
+          type: 'slider',
+          label: 'Audit Readiness Level',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'Compliance Assessment Report',
+        'IFRS 17 Alignment Summary',
+        'Solvency II Capital Analysis',
+        'Consumer Protection Evaluation',
+        'Regulatory Recommendations'
+      ]
+    },
+    {
+      id: "operational-implementation",
+      name: "Operational Implementation",
+      description: "Designs operational workflows for underwriting, policy administration, and distribution channels for aging insurance products.",
+      inputs: {
+        text: "Upload operational data, system requirements, and process documentation (CSV, Excel, PDF).",
+        fileUploads: true
+      },
+      config: {
+        implementationArea: {
+          type: 'dropdown',
+          label: 'Implementation Area',
+          options: ['Underwriting Design', 'Policy Administration', 'Distribution Strategy', 'All Areas'],
+          default: 'All Areas'
+        },
+        automationLevel: {
+          type: 'slider',
+          label: 'Automation Level',
+          min: 1,
+          max: 5,
+          default: 3
+        },
+        scalabilityRequirement: {
+          type: 'slider',
+          label: 'Scalability Requirement',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'Underwriting Guidelines',
+        'Policy Administration Framework',
+        'Distribution Channel Strategy',
+        'Operational Workflow Design',
+        'Implementation Roadmap'
+      ]
+    },
+    {
+      id: "product-monitoring-innovation",
+      name: "Product Monitoring & Innovation",
+      description: "Monitors product performance, identifies trends and deviations, and drives innovation in aging insurance offerings.",
+      inputs: {
+        text: "Upload performance data, market feedback, and innovation research (CSV, Excel, PDF).",
+        fileUploads: true
+      },
+      config: {
+        monitoringFocus: {
+          type: 'dropdown',
+          label: 'Monitoring Focus',
+          options: ['Performance Metrics', 'Trend Analysis', 'Deviation Detection', 'Innovation Opportunities', 'All Areas'],
+          default: 'Performance Metrics'
+        },
+        productCategory: {
+          type: 'dropdown',
+          label: 'Product Category',
+          options: ['Annuities', 'Long-Term Care', 'Pensions', 'Hybrid Products', 'All Categories'],
+          default: 'All Categories'
+        },
+        analysisDepth: {
+          type: 'slider',
+          label: 'Analysis Depth',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'Performance Monitoring Report',
+        'Trend Analysis Summary',
+        'Deviation Assessment',
+        'Innovation Opportunity Analysis',
+        'Product Optimization Recommendations'
+      ]
+    }
+  ]
+},
+{
+  id: "inventory-actuary-module",
+  title: "Inventory Actuary Module",
+  description: "A comprehensive actuarial management system for insurance companies, covering provisioning, behavioral analysis, technical margins, governance, regulatory compliance, and continuous improvement.",
+  icon: Calculator,
+  colorClass: "module-card-actuarial",
+  agents: [
+    {
+      id: "provisioning-evaluation",
+      name: "Provisioning & Evaluation of Provisions",
+      description: "Specializes in actuarial reserving, technical provisions evaluation, reserve adequacy assessment, and claims development analysis.",
+      inputs: {
+        text: "Upload claims data, reserve information, and actuarial calculations (CSV, Excel, PDF, DOCX, TXT).",
+        fileUploads: true
+      },
+      config: {
+        reservingMethodology: {
+          type: 'dropdown',
+          label: 'Reserving Methodology',
+          options: ['Chain Ladder', 'Bornhuetter-Ferguson', 'Mack Method', 'GLM Methods', 'All Methods'],
+          default: 'Chain Ladder'
+        },
+        analysisType: {
+          type: 'dropdown',
+          label: 'Analysis Type',
+          options: ['Reserve Adequacy', 'Claims Development', 'Back-Testing', 'Stochastic Analysis', 'All Types'],
+          default: 'Reserve Adequacy'
+        },
+        validationDepth: {
+          type: 'slider',
+          label: 'Validation Depth',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'Reserve Adequacy Report',
+        'Claims Development Analysis',
+        'Technical Provision Calculations',
+        'Back-Testing Results',
+        'Methodology Documentation'
+      ]
+    },
+    {
+      id: "behavioral-analyses",
+      name: "Behavioral Analyses",
+      description: "Specializes in policyholder behavior modeling, lapse/surrender analysis, renewal behavior, and fraud detection.",
+      inputs: {
+        text: "Upload policy data, behavioral metrics, and claims information (CSV, Excel, PDF, DOCX, TXT).",
+        fileUploads: true
+      },
+      config: {
+        behaviorType: {
+          type: 'dropdown',
+          label: 'Behavior Type',
+          options: ['Lapse/Surrender', 'Renewal Patterns', 'Claims Behavior', 'Fraud Detection', 'All Types'],
+          default: 'Lapse/Surrender'
+        },
+        productCategory: {
+          type: 'dropdown',
+          label: 'Product Category',
+          options: ['Life Insurance', 'Health Insurance', 'P&C Insurance', 'Group Contracts', 'All Categories'],
+          default: 'Life Insurance'
+        },
+        modelingComplexity: {
+          type: 'slider',
+          label: 'Modeling Complexity',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'Behavioral Models Report',
+        'Lapse Rate Analysis',
+        'Renewal Pattern Assessment',
+        'Fraud Detection Analysis',
+        'Risk Assessment Framework'
+      ]
+    },
+    {
+      id: "technical-margins-analysis",
+      name: "Technical Margins Analysis",
+      description: "Specializes in technical margin calculation, risk margin assessment, profitability studies, and experience variance analysis.",
+      inputs: {
+        text: "Upload premium data, claims information, and expense details (CSV, Excel, PDF, DOCX, TXT).",
+        fileUploads: true
+      },
+      config: {
+        marginType: {
+          type: 'dropdown',
+          label: 'Margin Type',
+          options: ['Technical Margin', 'Risk Margin', 'Profitability Analysis', 'Variance Analysis', 'All Types'],
+          default: 'Technical Margin'
+        },
+        portfolioFocus: {
+          type: 'dropdown',
+          label: 'Portfolio Focus',
+          options: ['Life Insurance', 'Health Insurance', 'P&C Insurance', 'All Portfolios'],
+          default: 'All Portfolios'
+        },
+        analysisPrecision: {
+          type: 'slider',
+          label: 'Analysis Precision',
+          min: 1,
+          max: 5,
+          default: 5
+        }
+      },
+      outputs: [
+        'Technical Margin Calculation',
+        'Risk Margin Assessment',
+        'Profitability Analysis',
+        'Experience Variance Report',
+        'Performance Benchmarking'
+      ]
+    },
+    {
+      id: "structuring-actuarial-functions",
+      name: "Structuring Actuarial Functions",
+      description: "Specializes in governance frameworks, process design, control frameworks, and regulatory pack assembly.",
+      inputs: {
+        text: "Upload process information, control frameworks, and governance data (CSV, Excel, PDF, DOCX, TXT).",
+        fileUploads: true
+      },
+      config: {
+        frameworkType: {
+          type: 'dropdown',
+          label: 'Framework Type',
+          options: ['Governance Design', 'Process Optimization', 'Control Frameworks', 'Regulatory Documentation', 'All Types'],
+          default: 'Governance Design'
+        },
+        operationalArea: {
+          type: 'dropdown',
+          label: 'Operational Area',
+          options: ['Reserving', 'Pricing', 'Risk Management', 'All Areas'],
+          default: 'All Areas'
+        },
+        complianceLevel: {
+          type: 'slider',
+          label: 'Compliance Level',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'Governance Framework',
+        'Process Design Documentation',
+        'Control Framework Assessment',
+        'Regulatory Pack Assembly',
+        'Operational Excellence Plan'
+      ]
+    },
+    {
+      id: "reg-accounting-alignment",
+      name: "Regulatory & Accounting Alignment",
+      description: "Specializes in IFRS 17 compliance, Solvency II alignment, local GAAP/statutory reporting, and accounting reconciliation.",
+      inputs: {
+        text: "Upload regulatory data, accounting information, and compliance requirements (CSV, Excel, PDF, DOCX, TXT).",
+        fileUploads: true
+      },
+      config: {
+        regulatoryFramework: {
+          type: 'dropdown',
+          label: 'Regulatory Framework',
+          options: ['IFRS 17', 'Solvency II', 'Local GAAP', 'Statutory Reporting', 'All Frameworks'],
+          default: 'IFRS 17'
+        },
+        alignmentFocus: {
+          type: 'dropdown',
+          label: 'Alignment Focus',
+          options: ['Accounting Standards', 'Capital Requirements', 'Disclosure Requirements', 'All Areas'],
+          default: 'All Areas'
+        },
+        reconciliationDepth: {
+          type: 'slider',
+          label: 'Reconciliation Depth',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'IFRS 17 Compliance Report',
+        'Solvency II Alignment Analysis',
+        'Local GAAP Assessment',
+        'Accounting Reconciliation Framework',
+        'Regulatory Compliance Plan'
+      ]
+    },
+    {
+      id: "monitoring-continuous-improvement",
+      name: "Monitoring & Continuous Improvement",
+      description: "Specializes in performance monitoring, model validation, early warning indicators, and operational excellence.",
+      inputs: {
+        text: "Upload performance metrics, KPI data, and operational information (CSV, Excel, PDF, DOCX, TXT).",
+        fileUploads: true
+      },
+      config: {
+        monitoringFocus: {
+          type: 'dropdown',
+          label: 'Monitoring Focus',
+          options: ['Performance Metrics', 'Model Validation', 'Early Warning Indicators', 'Process Optimization', 'All Areas'],
+          default: 'Performance Metrics'
+        },
+        improvementArea: {
+          type: 'dropdown',
+          label: 'Improvement Area',
+          options: ['Closing Cycle', 'Model Performance', 'Operational Efficiency', 'All Areas'],
+          default: 'All Areas'
+        },
+        optimizationLevel: {
+          type: 'slider',
+          label: 'Optimization Level',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'Performance Monitoring Dashboard',
+        'Model Validation Report',
+        'Early Warning System Design',
+        'Process Optimization Plan',
+        'Continuous Improvement Roadmap'
+      ]
+    }
+  ]
+},
+{
+  id: "forward-looking-financial-actuarial",
+  title: "Forward-Looking Financial Actuarial Module",
+  description: "A comprehensive ORSA and forward-looking actuarial management system for insurance companies, covering risk assessment, financial projections, regulatory compliance, and strategic integration.",
+  icon: TrendingUp,
+  colorClass: "module-card-financial-actuarial",
+  agents: [
+    {
+      id: "forward-looking-risk-assessment",
+      name: "Forward-Looking Risk Assessment",
+      description: "Specializes in risk identification, solvency projection, stress testing, and scenario analysis for insurance companies.",
+      inputs: {
+        text: "Upload risk data, solvency metrics, and scenario assumptions (CSV, Excel, PDF, DOCX, TXT).",
+        fileUploads: true
+      },
+      config: {
+        riskCategory: {
+          type: 'dropdown',
+          label: 'Risk Category',
+          options: ['Market Risk', 'Credit Risk', 'Underwriting Risk', 'Operational Risk', 'Liquidity Risk', 'ESG/Climate Risk', 'All Categories'],
+          default: 'All Categories'
+        },
+        projectionHorizon: {
+          type: 'slider',
+          label: 'Projection Horizon',
+          min: 1,
+          max: 10,
+          default: 5
+        },
+        scenarioType: {
+          type: 'dropdown',
+          label: 'Scenario Type',
+          options: ['Base', 'Optimistic', 'Pessimistic', 'Stress Test', 'All Types'],
+          default: 'All Types'
+        }
+      },
+      outputs: [
+        'Risk Assessment Report',
+        'Solvency Projection Analysis',
+        'Stress Testing Results',
+        'Scenario Analysis Summary',
+        'Risk Concentration Analysis'
+      ]
+    },
+    {
+      id: "financial-actuarial-projections",
+      name: "Financial Actuarial Projections",
+      description: "Specializes in balance sheet forecasting, capital requirement projection, and IFRS 17-Solvency II bridging.",
+      inputs: {
+        text: "Upload financial data, capital metrics, and regulatory requirements (CSV, Excel, PDF, DOCX, TXT).",
+        fileUploads: true
+      },
+      config: {
+        projectionType: {
+          type: 'dropdown',
+          label: 'Projection Type',
+          options: ['Balance Sheet', 'Capital Requirements', 'Profit Emergence', 'IFRS 17 Reconciliation', 'All Types'],
+          default: 'Balance Sheet'
+        },
+        measurementModel: {
+          type: 'dropdown',
+          label: 'Measurement Model',
+          options: ['GMM', 'PAA', 'VFA', 'All Models'],
+          default: 'GMM'
+        },
+        precisionLevel: {
+          type: 'slider',
+          label: 'Precision Level',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'Financial Projections Report',
+        'Capital Requirement Analysis',
+        'IFRS 17-Solvency II Bridge',
+        'Profit Emergence Pattern',
+        'Regulatory Compliance Assessment'
+      ]
+    },
+    {
+      id: "orsa-operationalization",
+      name: "ORSA Operationalization",
+      description: "Specializes in ORSA governance, risk management integration, and operational declassification.",
+      inputs: {
+        text: "Upload governance frameworks, risk policies, and operational data (CSV, Excel, PDF, DOCX, TXT).",
+        fileUploads: true
+      },
+      config: {
+        governanceArea: {
+          type: 'dropdown',
+          label: 'Governance Area',
+          options: ['ORSA Policy', 'Risk Appetite', 'Control Frameworks', 'Operational Limits', 'All Areas'],
+          default: 'All Areas'
+        },
+        integrationLevel: {
+          type: 'slider',
+          label: 'Integration Level',
+          min: 1,
+          max: 5,
+          default: 4
+        },
+        declassificationScope: {
+          type: 'dropdown',
+          label: 'Declassification Scope',
+          options: ['Group Level', 'Subsidiary Level', 'Business Unit Level', 'All Levels'],
+          default: 'All Levels'
+        }
+      },
+      outputs: [
+        'ORSA Governance Framework',
+        'Risk Management Integration Plan',
+        'Operational Controls Design',
+        'Capital Buffer Strategy',
+        'Declassification Roadmap'
+      ]
+    },
+    {
+      id: "regulatory-communication",
+      name: "Regulatory Communication & Reporting",
+      description: "Specializes in ORSA reporting, stakeholder communication, and regulatory compliance.",
+      inputs: {
+        text: "Upload regulatory requirements, communication templates, and stakeholder data (CSV, Excel, PDF, DOCX, TXT).",
+        fileUploads: true
+      },
+      config: {
+        audienceType: {
+          type: 'dropdown',
+          label: 'Audience Type',
+          options: ['Board/Management', 'Regulators', 'External Stakeholders', 'All Audiences'],
+          default: 'All Audiences'
+        },
+        reportType: {
+          type: 'dropdown',
+          label: 'Report Type',
+          options: ['ORSA Report', 'Regulatory Submission', 'Executive Summary', 'Disclosure Documents', 'All Types'],
+          default: 'ORSA Report'
+        },
+        transparencyLevel: {
+          type: 'slider',
+          label: 'Transparency Level',
+          min: 1,
+          max: 5,
+          default: 4
+        }
+      },
+      outputs: [
+        'ORSA Comprehensive Report',
+        'Regulatory Submission Package',
+        'Stakeholder Communication Plan',
+        'Disclosure Framework',
+        'Transparency Assessment'
+      ]
+    },
+    {
+      id: "strategic-integration",
+      name: "Strategic Integration",
+      description: "Specializes in business planning alignment, capital management, and product strategy optimization.",
+      inputs: {
+        text: "Upload strategic plans, business data, and product information (CSV, Excel, PDF, DOCX, TXT).",
+        fileUploads: true
+      },
+      config: {
+        integrationArea: {
+          type: 'dropdown',
+          label: 'Integration Area',
+          options: ['Business Planning', 'Capital Management', 'Product Strategy', 'Risk Appetite Alignment', 'All Areas'],
+          default: 'All Areas'
+        },
+        optimizationFocus: {
+          type: 'dropdown',
+          label: 'Optimization Focus',
+          options: ['Dividend Capacity', 'Capital Allocation', 'Product Pricing', 'Growth Strategies', 'All Focus Areas'],
+          default: 'Capital Allocation'
+        },
+        strategicHorizon: {
+          type: 'slider',
+          label: 'Strategic Horizon',
+          min: 1,
+          max: 10,
+          default: 3
+        }
+      },
+      outputs: [
+        'Strategic Integration Plan',
+        'Capital Optimization Strategy',
+        'Business Planning Alignment',
+        'Product Strategy Assessment',
+        'Risk-Return Optimization'
+      ]
+    },
+    {
+      id: "continuous-improvement",
+      name: "Continuous Improvement",
+      description: "Specializes in model enhancements, process automation, and ORSA process optimization.",
+      inputs: {
+        text: "Upload performance metrics, process data, and improvement initiatives (CSV, Excel, PDF, DOCX, TXT).",
+        fileUploads: true
+      },
+      config: {
+        improvementArea: {
+          type: 'dropdown',
+          label: 'Improvement Area',
+          options: ['Model Enhancement', 'Process Automation', 'ESG Integration', 'Stochastic Modeling', 'All Areas'],
+          default: 'All Areas'
+        },
+        automationLevel: {
+          type: 'slider',
+          label: 'Automation Level',
+          min: 1,
+          max: 5,
+          default: 3
+        },
+        innovationFocus: {
+          type: 'dropdown',
+          label: 'Innovation Focus',
+          options: ['Technology Implementation', 'Methodology Advancement', 'Industry Best Practices', 'Regulatory Adaptation', 'All Focus Areas'],
+          default: 'Industry Best Practices'
+        }
+      },
+      outputs: [
+        'Continuous Improvement Plan',
+        'Model Enhancement Roadmap',
+        'Process Automation Strategy',
+        'Innovation Implementation Guide',
+        'Performance Optimization Framework'
+      ]
+    }
+  ]
+}
 
 
 ];

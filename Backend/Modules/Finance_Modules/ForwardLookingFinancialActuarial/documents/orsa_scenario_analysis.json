@@ -1,0 +1,254 @@
+{
+  "orsa_scenario_analysis": {
+    "entity_id": "LIFE_001",
+    "entity_name": "LifeCo_Insurance",
+    "reporting_date": "2024-01-31",
+    "base_solvency_ratio": 145.2,
+    "projection_horizon": 5,
+    "scenarios": {
+      "base_scenario": {
+        "description": "Expected future development based on current business plan",
+        "assumptions": {
+          "interest_rate_evolution": "Gradual increase to 3.5% by 2029",
+          "equity_market_growth": "Annual growth of 6%",
+          "mortality_improvement": "Annual improvement of 1.5%",
+          "lapse_rates": "Stable at current levels",
+          "expense_inflation": "Annual inflation of 2.5%",
+          "new_business_growth": "Annual growth of 5%"
+        },
+        "projections": {
+          "year_1": {
+            "solvency_ratio": 147.8,
+            "scr_amount": 8650000,
+            "own_funds": 12780000,
+            "profit_after_tax": 850000,
+            "dividend_capacity": 600000
+          },
+          "year_2": {
+            "solvency_ratio": 150.5,
+            "scr_amount": 8800000,
+            "own_funds": 13240000,
+            "profit_after_tax": 920000,
+            "dividend_capacity": 650000
+          },
+          "year_3": {
+            "solvency_ratio": 153.2,
+            "scr_amount": 8950000,
+            "own_funds": 13720000,
+            "profit_after_tax": 980000,
+            "dividend_capacity": 700000
+          },
+          "year_4": {
+            "solvency_ratio": 155.8,
+            "scr_amount": 9100000,
+            "own_funds": 14180000,
+            "profit_after_tax": 1040000,
+            "dividend_capacity": 750000
+          },
+          "year_5": {
+            "solvency_ratio": 158.5,
+            "scr_amount": 9250000,
+            "own_funds": 14660000,
+            "profit_after_tax": 1100000,
+            "dividend_capacity": 800000
+          }
+        }
+      },
+      "optimistic_scenario": {
+        "description": "Favorable economic and business conditions",
+        "assumptions": {
+          "interest_rate_evolution": "Stable at 2.5%",
+          "equity_market_growth": "Annual growth of 8%",
+          "mortality_improvement": "Annual improvement of 2%",
+          "lapse_rates": "10% reduction from current levels",
+          "expense_inflation": "Annual inflation of 2%",
+          "new_business_growth": "Annual growth of 8%"
+        },
+        "projections": {
+          "year_1": {
+            "solvency_ratio": 152.3,
+            "scr_amount": 8200000,
+            "own_funds": 12480000,
+            "profit_after_tax": 950000,
+            "dividend_capacity": 700000
+          },
+          "year_2": {
+            "solvency_ratio": 158.7,
+            "scr_amount": 8350000,
+            "own_funds": 13250000,
+            "profit_after_tax": 1100000,
+            "dividend_capacity": 800000
+          },
+          "year_3": {
+            "solvency_ratio": 165.2,
+            "scr_amount": 8500000,
+            "own_funds": 14040000,
+            "profit_after_tax": 1250000,
+            "dividend_capacity": 900000
+          },
+          "year_4": {
+            "solvency_ratio": 171.8,
+            "scr_amount": 8650000,
+            "own_funds": 14850000,
+            "profit_after_tax": 1400000,
+            "dividend_capacity": 1000000
+          },
+          "year_5": {
+            "solvency_ratio": 178.5,
+            "scr_amount": 8800000,
+            "own_funds": 15700000,
+            "profit_after_tax": 1550000,
+            "dividend_capacity": 1100000
+          }
+        }
+      },
+      "pessimistic_scenario": {
+        "description": "Adverse economic and business conditions",
+        "assumptions": {
+          "interest_rate_evolution": "Rapid increase to 5% by 2029",
+          "equity_market_growth": "Annual decline of 2%",
+          "mortality_improvement": "No improvement",
+          "lapse_rates": "20% increase from current levels",
+          "expense_inflation": "Annual inflation of 4%",
+          "new_business_growth": "Annual decline of 3%"
+        },
+        "projections": {
+          "year_1": {
+            "solvency_ratio": 138.5,
+            "scr_amount": 9200000,
+            "own_funds": 12740000,
+            "profit_after_tax": 650000,
+            "dividend_capacity": 400000
+          },
+          "year_2": {
+            "solvency_ratio": 132.1,
+            "scr_amount": 9500000,
+            "own_funds": 12550000,
+            "profit_after_tax": 500000,
+            "dividend_capacity": 250000
+          },
+          "year_3": {
+            "solvency_ratio": 126.8,
+            "scr_amount": 9800000,
+            "own_funds": 12420000,
+            "profit_after_tax": 400000,
+            "dividend_capacity": 150000
+          },
+          "year_4": {
+            "solvency_ratio": 122.5,
+            "scr_amount": 10100000,
+            "own_funds": 12370000,
+            "profit_after_tax": 350000,
+            "dividend_capacity": 100000
+          },
+          "year_5": {
+            "solvency_ratio": 118.9,
+            "scr_amount": 10400000,
+            "own_funds": 12360000,
+            "profit_after_tax": 300000,
+            "dividend_capacity": 50000
+          }
+        }
+      }
+    },
+    "stress_tests": {
+      "interest_rate_shock": {
+        "description": "Parallel shift in interest rates",
+        "shock_size": "+200 basis points",
+        "impact_on_solvency_ratio": -8.5,
+        "impact_on_scr": 450000,
+        "impact_on_own_funds": -680000,
+        "risk_category": "Market Risk"
+      },
+      "equity_market_crash": {
+        "description": "40% decline in equity markets",
+        "shock_size": "-40%",
+        "impact_on_solvency_ratio": -12.3,
+        "impact_on_scr": 680000,
+        "impact_on_own_funds": -920000,
+        "risk_category": "Market Risk"
+      },
+      "mortality_stress": {
+        "description": "Pandemic-like mortality increase",
+        "shock_size": "+50% mortality rates",
+        "impact_on_solvency_ratio": -15.7,
+        "impact_on_scr": 850000,
+        "impact_on_own_funds": -1100000,
+        "risk_category": "Life Underwriting Risk"
+      },
+      "lapse_shock": {
+        "description": "Mass lapse event",
+        "shock_size": "+100% lapse rates",
+        "impact_on_solvency_ratio": -6.8,
+        "impact_on_scr": 320000,
+        "impact_on_own_funds": -480000,
+        "risk_category": "Life Underwriting Risk"
+      },
+      "credit_default": {
+        "description": "Sovereign default scenario",
+        "shock_size": "Default of major sovereign",
+        "impact_on_solvency_ratio": -9.2,
+        "impact_on_scr": 520000,
+        "impact_on_own_funds": -780000,
+        "risk_category": "Counterparty Default Risk"
+      },
+      "operational_event": {
+        "description": "Major operational failure",
+        "shock_size": "€2M operational loss",
+        "impact_on_solvency_ratio": -3.5,
+        "impact_on_scr": 200000,
+        "impact_on_own_funds": -2000000,
+        "risk_category": "Operational Risk"
+      }
+    },
+    "risk_limits_and_tolerances": {
+      "solvency_ratio_target": 150.0,
+      "solvency_ratio_minimum": 130.0,
+      "solvency_ratio_warning": 140.0,
+      "scr_concentration_limit": 25.0,
+      "market_risk_limit": 15.0,
+      "life_risk_limit": 35.0,
+      "counterparty_risk_limit": 5.0,
+      "operational_risk_limit": 10.0
+    },
+    "capital_management": {
+      "dividend_policy": {
+        "target_payout_ratio": 60.0,
+        "maximum_payout_ratio": 80.0,
+        "minimum_solvency_ratio_for_dividends": 140.0,
+        "stress_test_requirement": "Dividends must be sustainable under stress scenarios"
+      },
+      "capital_optimization": {
+        "reinsurance_strategy": "Optimize for capital efficiency",
+        "investment_strategy": "ALM-driven investment allocation",
+        "balance_sheet_optimization": "Maintain optimal capital structure"
+      }
+    },
+    "regulatory_compliance": {
+      "orsa_report_requirements": {
+        "annual_report": true,
+        "quarterly_updates": true,
+        "regulator_engagement": "Regular dialogue with supervisor",
+        "transparency_requirements": "Comprehensive disclosure of methodology and assumptions"
+      },
+      "stress_testing_requirements": {
+        "standard_scenarios": "Interest rate, equity, credit, operational",
+        "company_specific_scenarios": "Tailored to business model and risk profile",
+        "regulatory_scenarios": "Supervisor-prescribed scenarios"
+      }
+    },
+    "esg_integration": {
+      "climate_risk_scenarios": {
+        "physical_risk": "Increased frequency of natural catastrophes",
+        "transition_risk": "Policy changes affecting carbon-intensive investments",
+        "liability_risk": "Climate-related litigation and claims"
+      },
+      "sustainability_metrics": {
+        "esg_score": 75.5,
+        "climate_risk_score": 68.2,
+        "sustainable_investment_ratio": 45.0,
+        "carbon_footprint_reduction": 15.0
+      }
+    }
+  }
+}

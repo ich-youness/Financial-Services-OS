@@ -1,0 +1,17 @@
+Design_Area,Component_ID,Component_Name,Current_State,Target_Design,Data_Requirements,Integration_Points,Technology_Stack,Estimated_Cost,Implementation_Phase
+Data_Architecture,DA_001,Insurance Contract Master,Flat file structure,Relational database with hierarchies,"Contract details, pricing, claims","Policy Admin, Claims, Finance","PostgreSQL + MongoDB",50000,Phase 1
+Data_Architecture,DA_002,Cash Flow Projections,Excel spreadsheets,Time-series database,"Expected cash flows, discount rates","Actuarial, Finance, Risk","InfluxDB + Python",30000,Phase 1
+Data_Architecture,DA_003,Risk Parameters,Basic risk factors,Multi-dimensional risk model,"Market, credit, underwriting risks","Risk Management, Actuarial, Finance","Redis + Python",25000,Phase 2
+Data_Architecture,DA_004,Discount Rate Framework,Manual rate setting,Automated rate calculation,"Market rates, liquidity adjustments","Finance, Actuarial, Risk","Python + Bloomberg API",40000,Phase 1
+System_Integration,SI_001,Actuarial Model Interface,Manual data transfer,API-based integration,"Model inputs, outputs, validation","Actuarial Models, Data Warehouse, Calculation Engine","Python Flask + REST API",35000,Phase 1
+System_Integration,SI_002,Finance System Connector,File-based transfer,Real-time integration,"Journal entries, reconciliations","General Ledger, Sub-ledger, Reporting","Oracle EBS + Python",45000,Phase 2
+System_Integration,SI_003,Risk Engine Interface,Basic data feed,Advanced risk aggregation,"Portfolio risk, capital requirements","Risk Engine, Capital Models, ORSA","Python + RiskMetrics",50000,Phase 2
+System_Integration,SI_004,Reporting Platform,Manual report generation,Automated reporting,"Financial statements, regulatory reports","BI Tools, Regulatory Systems, Audit","Power BI + Python",40000,Phase 3
+Process_Workflows,PW_001,Contract Grouping Process,Manual grouping,Automated grouping engine,"Contract characteristics, measurement models","Policy Admin, Actuarial, Operations","Python + Business Rules Engine",30000,Phase 1
+Process_Workflows,PW_002,Measurement Calculation,Manual calculations,Automated calculation engine,"Model inputs, assumptions, outputs","Actuarial Models, Data Warehouse, Calculation Engine","Python + Celery",60000,Phase 1
+Process_Workflows,PW_003,Data Validation,Basic checks,Comprehensive validation,"Data quality, completeness, accuracy","All Systems, Data Governance, Quality Assurance","Python + Great Expectations",25000,Phase 1
+Process_Workflows,PW_004,Reconciliation Process,Manual reconciliation,Automated reconciliation,"Source system data, calculated results","All Systems, Finance, Audit","Python + Apache Airflow",35000,Phase 2
+Data_Governance,DG_001,Data Quality Framework,Basic monitoring,Comprehensive quality management,"Data standards, quality metrics, monitoring","All Systems, Data Governance, Quality Assurance","Python + Great Expectations",20000,Phase 1
+Data_Governance,DG_002,Data Lineage Tracking,No tracking,Full lineage documentation,"Data flow, transformations, dependencies","All Systems, Data Governance, Audit","Python + Apache Atlas",30000,Phase 2
+Data_Governance,DG_003,Access Control,Basic permissions,Role-based access control,"User roles, permissions, audit logs","All Systems, Security, Compliance","Python + Keycloak",25000,Phase 1
+Data_Governance,DG_004,Data Retention,No retention policy,Automated retention management,"Retention rules, archival, deletion","All Systems, Legal, Compliance","Python + Apache Airflow",20000,Phase 2

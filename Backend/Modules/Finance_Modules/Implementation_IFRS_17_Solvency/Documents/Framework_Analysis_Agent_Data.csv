@@ -1,0 +1,13 @@
+Data_Type,Document_ID,Document_Name,Version,Source,Effective_Date,Status,Key_Requirements,Notes
+IFRS_17_Standard,IFRS17_001,IFRS 17 Insurance Contracts,2023,IFRS Foundation,2023-01-01,Active,"GMM, PAA, VFA measurement models","Primary standard for insurance contract accounting"
+IFRS_17_Standard,IFRS17_002,IFRS 17 Transition Guidance,2023,IFRS Foundation,2023-01-01,Active,"Transition reliefs and practical expedients","Includes 5-year transition period options"
+Solvency_II_Pillar_I,SII_P1_001,Technical Provisions Calculation,2023,EIOPA,2023-01-01,Active,"Best estimate + risk margin","Risk margin calculation methodology"
+Solvency_II_Pillar_I,SII_P1_002,Capital Requirements Standard Formula,2023,EIOPA,2023-01-01,Active,"SCR and MCR calculations","Market, credit, and underwriting risk modules"
+Solvency_II_Pillar_II,SII_P2_001,ORSA Requirements,2023,EIOPA,2023-01-01,Active,"Own Risk and Solvency Assessment","Annual ORSA process and documentation"
+Solvency_II_Pillar_III,SII_P3_001,SFCR Disclosure Requirements,2023,EIOPA,2023-01-01,Active,"Public disclosure framework","Solvency and Financial Condition Report"
+Internal_Policy,INT_001,Current Accounting Policy Manual,2022,Internal,2022-01-01,Active,"Existing measurement approaches","Pre-IFRS 17 accounting policies"
+Internal_Policy,INT_002,Actuarial Assumptions Framework,2022,Internal,2022-01-01,Active,"Discount rates and risk margins","Current actuarial methodology"
+Industry_Guidance,IND_001,Insurance Europe Implementation Guide,2023,Insurance Europe,2023-01-01,Active,"Industry best practices","European insurance industry guidance"
+Industry_Guidance,IND_002,Actuarial Society White Paper,2023,Actuarial Society,2023-01-01,Active,"Technical implementation","Actuarial profession guidance"
+Regulatory_Update,REG_001,EIOPA Q&A on IFRS 17,2023,EIOPA,2023-06-01,Active,"Implementation clarifications","Frequently asked questions and answers"
+Regulatory_Update,REG_002,National Authority Circular,2023,Local Regulator,2023-07-01,Active,"Local implementation requirements","Country-specific requirements"

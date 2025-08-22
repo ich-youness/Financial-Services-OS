@@ -1,0 +1,176 @@
+{
+  "technical_provisions": {
+    "best_estimate_liability": {
+      "total_bel": 450000000,
+      "by_portfolio": {
+        "motor_insurance": {
+          "bel": 120000000,
+          "claims_frequency": 0.08,
+          "average_claim_size": 15000,
+          "development_pattern": "Stable",
+          "inflation_assumption": 0.025
+        },
+        "life_insurance": {
+          "bel": 180000000,
+          "mortality_rate": 0.005,
+          "lapse_rate": 0.12,
+          "expense_assumption": 0.03,
+          "investment_return": 0.04
+        },
+        "health_insurance": {
+          "bel": 80000000,
+          "medical_cost_inflation": 0.04,
+          "utilization_rate": 0.15,
+          "average_claim_cost": 8000
+        },
+        "property_insurance": {
+          "bel": 70000000,
+          "catastrophe_frequency": 0.02,
+          "average_catastrophe_loss": 5000000,
+          "normal_claims_frequency": 0.05
+        }
+      },
+      "calculation_methods": {
+        "stochastic_modeling": {
+          "simulation_runs": 10000,
+          "confidence_interval": 0.95,
+          "model_validation": "Passed"
+        },
+        "deterministic_modeling": {
+          "scenario_analysis": "Comprehensive",
+          "sensitivity_testing": "Completed"
+        }
+      }
+    },
+    "risk_margin": {
+      "total_risk_margin": 45000000,
+      "risk_margin_ratio": 0.10,
+      "by_risk_type": {
+        "underwriting_risk": {
+          "risk_margin": 20000000,
+          "confidence_level": 0.75,
+          "risk_factors": ["Claims volatility", "Reserve uncertainty"]
+        },
+        "market_risk": {
+          "risk_margin": 15000000,
+          "confidence_level": 0.75,
+          "risk_factors": ["Interest rate risk", "Equity risk"]
+        },
+        "operational_risk": {
+          "risk_margin": 10000000,
+          "confidence_level": 0.75,
+          "risk_factors": ["Process risk", "System risk"]
+        }
+      },
+      "calculation_approach": "Cost of Capital",
+      "cost_of_capital_rate": 0.06
+    },
+    "discounting": {
+      "discount_rates": {
+        "risk_free_rate": 0.025,
+        "liquidity_premium": 0.005,
+        "total_discount_rate": 0.03
+      },
+      "yield_curve": {
+        "1_year": 0.02,
+        "2_year": 0.022,
+        "3_year": 0.024,
+        "5_year": 0.026,
+        "10_year": 0.028,
+        "20_year": 0.03,
+        "30_year": 0.031
+      },
+      "duration_analysis": {
+        "macaulay_duration": 6.5,
+        "modified_duration": 6.2,
+        "effective_duration": 6.3
+      }
+    },
+    "claims_reserves": {
+      "total_claims_reserves": 280000000,
+      "by_accident_year": {
+        "2020": {
+          "reserve": 25000000,
+          "development_factor": 1.05,
+          "ultimate_loss_ratio": 0.78
+        },
+        "2021": {
+          "reserve": 35000000,
+          "development_factor": 1.12,
+          "ultimate_loss_ratio": 0.82
+        },
+        "2022": {
+          "reserve": 45000000,
+          "development_factor": 1.18,
+          "ultimate_loss_ratio": 0.85
+        },
+        "2023": {
+          "reserve": 60000000,
+          "development_factor": 1.25,
+          "ultimate_loss_ratio": 0.88
+        },
+        "2024": {
+          "reserve": 75000000,
+          "development_factor": 1.35,
+          "ultimate_loss_ratio": 0.90
+        }
+      },
+      "reserve_adequacy": {
+        "overall_adequacy": "Adequate",
+        "confidence_level": 0.95,
+        "reserve_range": {
+          "minimum": 270000000,
+          "maximum": 290000000
+        }
+      }
+    },
+    "premium_liabilities": {
+      "total_premium_liabilities": 170000000,
+      "by_product_line": {
+        "motor": {
+          "premium_liability": 45000000,
+          "expected_loss_ratio": 0.75,
+          "expense_ratio": 0.25
+        },
+        "life": {
+          "premium_liability": 70000000,
+          "expected_loss_ratio": 0.65,
+          "expense_ratio": 0.35
+        },
+        "health": {
+          "premium_liability": 30000000,
+          "expected_loss_ratio": 0.80,
+          "expense_ratio": 0.20
+        },
+        "property": {
+          "premium_liability": 25000000,
+          "expected_loss_ratio": 0.70,
+          "expense_ratio": 0.30
+        }
+      }
+    }
+  },
+  "assumptions": {
+    "economic_assumptions": {
+      "inflation_rate": 0.025,
+      "real_interest_rate": 0.005,
+      "equity_return": 0.07,
+      "bond_yield": 0.04
+    },
+    "demographic_assumptions": {
+      "mortality_improvement": 0.015,
+      "longevity_trend": 0.01,
+      "lapse_assumption": 0.12
+    },
+    "operational_assumptions": {
+      "expense_inflation": 0.03,
+      "commission_rate": 0.15,
+      "admin_expense_ratio": 0.08
+    }
+  },
+  "metadata": {
+    "valuation_date": "2024-12-19T10:00:00Z",
+    "data_version": "1.0",
+    "description": "Comprehensive prototype data for technical provisions testing and development"
+  }
+}

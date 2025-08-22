@@ -1,0 +1,160 @@
+{
+  "solvency_capital_requirement": {
+    "basic_solvency_capital_requirement": 150000000,
+    "adjustments": {
+      "deferred_taxes": 5000000,
+      "intangible_assets": 8000000,
+      "other_adjustments": 2000000
+    },
+    "risk_modules": {
+      "market_risk": {
+        "interest_rate_risk": {
+          "risk_charge": 25000000,
+          "duration": 7.5,
+          "convexity": 0.8,
+          "stress_scenarios": {
+            "upward_shock": 30000000,
+            "downward_shock": 28000000
+          }
+        },
+        "equity_risk": {
+          "risk_charge": 18000000,
+          "equity_exposure": 120000000,
+          "volatility": 0.25,
+          "stress_scenarios": {
+            "market_crash": 25000000,
+            "moderate_decline": 20000000
+          }
+        },
+        "property_risk": {
+          "risk_charge": 12000000,
+          "property_exposure": 80000000,
+          "property_type": "Commercial",
+          "geographic_concentration": "Medium"
+        },
+        "spread_risk": {
+          "risk_charge": 15000000,
+          "bond_exposure": 200000000,
+          "credit_rating": "BBB",
+          "duration": 5.2
+        },
+        "currency_risk": {
+          "risk_charge": 8000000,
+          "currency_exposures": {
+            "EUR": 0.6,
+            "USD": 0.25,
+            "GBP": 0.15
+          }
+        },
+        "concentration_risk": {
+          "risk_charge": 5000000,
+          "largest_exposure": 50000000,
+          "concentration_ratio": 0.15
+        }
+      },
+      "counterparty_default_risk": {
+        "risk_charge": 20000000,
+        "reinsurance_recoverables": 80000000,
+        "derivatives_exposure": 40000000,
+        "credit_ratings": {
+          "AAA": 0.3,
+          "AA": 0.4,
+          "A": 0.2,
+          "BBB": 0.1
+        }
+      },
+      "life_underwriting_risk": {
+        "mortality_risk": {
+          "risk_charge": 12000000,
+          "life_exposure": 150000000,
+          "age_distribution": "Mixed",
+          "underwriting_quality": "High"
+        },
+        "longevity_risk": {
+          "risk_charge": 8000000,
+          "annuity_exposure": 60000000,
+          "life_expectancy_trend": "Increasing"
+        },
+        "disability_risk": {
+          "risk_charge": 6000000,
+          "disability_exposure": 40000000,
+          "occupation_risk": "Medium"
+        },
+        "lapse_risk": {
+          "risk_charge": 4000000,
+          "lapse_sensitivity": 0.15,
+          "product_type": "Universal Life"
+        },
+        "expense_risk": {
+          "risk_charge": 3000000,
+          "expense_volatility": 0.1,
+          "cost_control_measures": "Effective"
+        }
+      },
+      "non_life_underwriting_risk": {
+        "premium_risk": {
+          "risk_charge": 18000000,
+          "written_premium": 300000000,
+          "loss_ratio": 0.75,
+          "volatility": 0.2
+        },
+        "reserve_risk": {
+          "risk_charge": 22000000,
+          "technical_provisions": 180000000,
+          "reserve_adequacy": "Adequate",
+          "development_pattern": "Stable"
+        },
+        "catastrophe_risk": {
+          "risk_charge": 35000000,
+          "catastrophe_exposure": 250000000,
+          "geographic_spread": "Wide",
+          "reinsurance_protection": "Comprehensive"
+        }
+      },
+      "health_underwriting_risk": {
+        "risk_charge": 15000000,
+        "health_exposure": 100000000,
+        "medical_cost_inflation": 0.04,
+        "underwriting_controls": "Strong"
+      },
+      "operational_risk": {
+        "risk_charge": 10000000,
+        "operational_risk_factors": {
+          "internal_control_quality": "High",
+          "it_system_reliability": "High",
+          "staff_competency": "High",
+          "outsourcing_risk": "Low"
+        }
+      }
+    },
+    "diversification_effects": {
+      "total_diversification": 45000000,
+      "diversification_by_risk_type": {
+        "market_risk": 0.15,
+        "underwriting_risk": 0.25,
+        "operational_risk": 0.1
+      }
+    },
+    "minimum_capital_requirement": {
+      "mcr": 75000000,
+      "mcr_ratio": 0.5,
+      "mcr_components": {
+        "technical_provisions": 60000000,
+        "operational_expenses": 15000000
+      }
+    }
+  },
+  "own_funds": {
+    "basic_own_funds": 200000000,
+    "ancillary_own_funds": 25000000,
+    "total_own_funds": 225000000,
+    "solvency_ratio": 1.5,
+    "mcr_ratio": 3.0
+  },
+  "metadata": {
+    "calculation_date": "2024-12-19T10:00:00Z",
+    "regulatory_framework": "Solvency II",
+    "data_version": "1.0",
+    "description": "Comprehensive prototype data for Solvency 2 capital requirements testing and development"
+  }
+}

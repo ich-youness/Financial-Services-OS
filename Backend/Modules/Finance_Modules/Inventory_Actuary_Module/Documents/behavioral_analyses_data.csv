@@ -1,0 +1,11 @@
+Policy_ID,Product_Type,Policy_Duration,Segment,Exposure_Count,Lapse_Count,Renewal_Count,Claim_Count,Claim_Amount,Age_Group,Gender,Smoker_Status,Occupation_Class,Geographic_Region,Behavior_Score
+POL001,Term_Life,5,Standard,1000,150,800,25,125000,30-40,Male,No,A,North,0.75
+POL002,Whole_Life,10,Premium,500,50,440,15,75000,40-50,Female,No,A,South,0.85
+POL003,Endowment,15,Standard,800,120,650,30,180000,25-35,Male,Yes,B,East,0.60
+POL004,ULIP,8,Premium,300,45,250,12,90000,35-45,Female,No,A,West,0.80
+POL005,Term_Life,3,Standard,1200,200,950,40,200000,20-30,Male,No,C,North,0.70
+POL006,Whole_Life,20,Premium,400,30,360,18,110000,45-55,Male,Yes,B,South,0.90
+POL007,Endowment,12,Standard,600,90,480,22,135000,30-40,Female,No,A,East,0.75
+POL008,ULIP,6,Premium,250,35,210,10,60000,40-50,Male,No,A,West,0.85
+POL009,Term_Life,7,Standard,900,135,720,28,140000,25-35,Female,No,B,North,0.70
+POL010,Whole_Life,15,Premium,350,25,315,16,95000,35-45,Male,No,A,South,0.90

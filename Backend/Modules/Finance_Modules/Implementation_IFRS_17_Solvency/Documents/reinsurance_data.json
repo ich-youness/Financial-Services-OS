@@ -1,0 +1,200 @@
+{
+  "reinsurance_program": {
+    "total_reinsurance_protection": 120000000,
+    "reinsurance_cost": 15000000,
+    "net_retention": 330000000,
+    "treaties": [
+      {
+        "treaty_id": "RT001",
+        "treaty_name": "Motor Quota Share",
+        "treaty_type": "Quota Share",
+        "reinsurer": "Global Re Ltd",
+        "credit_rating": "AA",
+        "coverage_period": "2024-01-01 to 2024-12-31",
+        "terms": {
+          "quota_share_percentage": 0.30,
+          "commission_rate": 0.25,
+          "profit_commission": 0.15,
+          "minimum_premium": 5000000,
+          "maximum_premium": 15000000
+        },
+        "limits": {
+          "per_risk_limit": 5000000,
+          "per_occurrence_limit": 10000000,
+          "aggregate_limit": 50000000
+        },
+        "recoverables": {
+          "current_recoverable": 8000000,
+          "total_recoverable": 25000000,
+          "recovery_pattern": "90 days average"
+        },
+        "status": "Active",
+        "data_quality": "High"
+      },
+      {
+        "treaty_id": "RT002",
+        "treaty_name": "Property Catastrophe Excess of Loss",
+        "treaty_type": "Excess of Loss",
+        "reinsurer": "Catastrophe Re AG",
+        "credit_rating": "A+",
+        "coverage_period": "2024-01-01 to 2024-12-31",
+        "terms": {
+          "attachment_point": 10000000,
+          "layer_limit": 40000000,
+          "reinstatement_premium": 0.15,
+          "number_of_reinstatements": 2
+        },
+        "limits": {
+          "per_occurrence_limit": 40000000,
+          "aggregate_limit": 80000000
+        },
+        "recoverables": {
+          "current_recoverable": 0,
+          "total_recoverable": 0,
+          "recovery_pattern": "N/A - No claims"
+        },
+        "status": "Active",
+        "data_quality": "High"
+      },
+      {
+        "treaty_id": "RT003",
+        "treaty_name": "Life Mortality Risk",
+        "treaty_type": "Excess of Loss",
+        "reinsurer": "Life Re Solutions",
+        "credit_rating": "AA-",
+        "coverage_period": "2024-01-01 to 2024-12-31",
+        "terms": {
+          "attachment_point": 5000000,
+          "layer_limit": 20000000,
+          "reinstatement_premium": 0.10,
+          "number_of_reinstatements": 1
+        },
+        "limits": {
+          "per_risk_limit": 20000000,
+          "aggregate_limit": 40000000
+        },
+        "recoverables": {
+          "current_recoverable": 3000000,
+          "total_recoverable": 8000000,
+          "recovery_pattern": "60 days average"
+        },
+        "status": "Active",
+        "data_quality": "High"
+      },
+      {
+        "treaty_id": "RT004",
+        "treaty_name": "Health Stop Loss",
+        "treaty_type": "Stop Loss",
+        "reinsurer": "Health Re Partners",
+        "credit_rating": "A",
+        "coverage_period": "2024-01-01 to 2024-12-31",
+        "terms": {
+          "attachment_point": 0.85,
+          "stop_loss_percentage": 0.95,
+          "maximum_liability": 30000000
+        },
+        "limits": {
+          "per_occurrence_limit": 30000000,
+          "aggregate_limit": 50000000
+        },
+        "recoverables": {
+          "current_recoverable": 5000000,
+          "total_recoverable": 12000000,
+          "recovery_pattern": "45 days average"
+        },
+        "status": "Active",
+        "data_quality": "Medium"
+      },
+      {
+        "treaty_id": "RT005",
+        "treaty_name": "Motor Excess of Loss",
+        "treaty_type": "Excess of Loss",
+        "reinsurer": "Motor Re Ltd",
+        "credit_rating": "A-",
+        "coverage_period": "2024-01-01 to 2024-12-31",
+        "terms": {
+          "attachment_point": 2000000,
+          "layer_limit": 8000000,
+          "reinstatement_premium": 0.20,
+          "number_of_reinstatements": 3
+        },
+        "limits": {
+          "per_risk_limit": 8000000,
+          "per_occurrence_limit": 8000000,
+          "aggregate_limit": 20000000
+        },
+        "recoverables": {
+          "current_recoverable": 2000000,
+          "total_recoverable": 6000000,
+          "recovery_pattern": "75 days average"
+        },
+        "status": "Active",
+        "data_quality": "High"
+      }
+    ],
+    "reinsurance_credit_risk": {
+      "total_credit_exposure": 80000000,
+      "credit_quality_distribution": {
+        "AAA": 0.05,
+        "AA": 0.25,
+        "A": 0.40,
+        "BBB": 0.25,
+        "BB": 0.05
+      },
+      "concentration_limits": {
+        "single_reinsurer_limit": 0.25,
+        "single_reinsurer_exposure": 30000000,
+        "concentration_ratio": 0.375
+      },
+      "collateral_requirements": {
+        "total_collateral": 20000000,
+        "collateral_coverage": 0.25,
+        "collateral_types": ["Letters of Credit", "Trust Accounts", "Securities"]
+      }
+    },
+    "reinsurance_effectiveness": {
+      "risk_transfer_ratio": 0.267,
+      "cost_benefit_ratio": 0.125,
+      "capital_efficiency": 0.8,
+      "risk_reduction": {
+        "volatility_reduction": 0.25,
+        "tail_risk_reduction": 0.40,
+        "capital_requirement_reduction": 0.30
+      }
+    }
+  },
+  "reinsurance_claims": {
+    "total_claims": 45000000,
+    "claims_by_treaty": {
+      "RT001": 15000000,
+      "RT002": 0,
+      "RT003": 8000000,
+      "RT004": 12000000,
+      "RT005": 6000000
+    },
+    "claims_development": {
+      "2024": {
+        "incurred_claims": 45000000,
+        "paid_claims": 35000000,
+        "outstanding_claims": 10000000,
+        "development_factor": 1.29
+      },
+      "2023": {
+        "incurred_claims": 38000000,
+        "paid_claims": 35000000,
+        "outstanding_claims": 3000000,
+        "development_factor": 1.09
+      }
+    },
+    "recovery_efficiency": {
+      "average_recovery_time": 67,
+      "recovery_rate": 0.95,
+      "dispute_rate": 0.05
+    }
+  },
+  "metadata": {
+    "data_date": "2024-12-19T10:00:00Z",
+    "data_version": "1.0",
+    "description": "Comprehensive prototype data for reinsurance arrangements testing and development"
+  }
+}

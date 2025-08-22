@@ -1,0 +1,31 @@
+Agent_Name,Input_Data_Type,Data_Description,Data_Format,Data_Source,Priority,Update_Frequency
+Framework_Analysis_Agent,Regulatory_Requirements,"IFRS 17 measurement models (GMM/PAA/VFA)",PDF/Text,IFRS Foundation,High,Quarterly
+Framework_Analysis_Agent,Regulatory_Requirements,"Solvency II Pillar I/II/III requirements",PDF/Text,"EIOPA/National Authorities",High,Quarterly
+Framework_Analysis_Agent,Policy_Documents,Current accounting policies and procedures,PDF/Word,Internal Documents,Medium,Annually
+Framework_Analysis_Agent,Industry_Standards,Best practices and industry guidance,PDF/Text,Industry Associations,Medium,Semi-annually
+Framework_Analysis_Agent,Regulatory_Updates,"Latest IFRS 17 and Solvency II interpretations",PDF/Text,Regulatory Bodies,High,Monthly
+Gap_Analysis_and_Implementation_Roadmap_Agent,Current_State_Assessment,Existing systems and processes inventory,Excel/JSON,Internal Audit,High,Quarterly
+Gap_Analysis_and_Implementation_Roadmap_Agent,Gap_Register,Identified compliance gaps and risks,Excel/CSV,Framework Analysis Output,High,Monthly
+Gap_Analysis_and_Implementation_Roadmap_Agent,Resource_Inventory,Available staff budget and technology,Excel/CSV,"HR/Finance",Medium,Quarterly
+Gap_Analysis_and_Implementation_Roadmap_Agent,Timeline_Constraints,Regulatory deadlines and business milestones,Excel/CSV,"Compliance/Project Management",High,Monthly
+Gap_Analysis_and_Implementation_Roadmap_Agent,Stakeholder_Requirements,Business unit needs and constraints,Word/Excel,Stakeholder Interviews,Medium,Quarterly
+Data_Systems_Process_Design_Agent,Data_Inventory,Current data sources and quality assessment,Excel/CSV,Data Governance,High,Monthly
+Data_Systems_Process_Design_Agent,System_Architecture,Existing IT infrastructure and capabilities,Visio/Excel,IT Architecture,High,Quarterly
+Data_Systems_Process_Design_Agent,Process_Flows,Current business processes and workflows,Visio/Excel,Business Process Owners,Medium,Quarterly
+Data_Systems_Process_Design_Agent,Integration_Requirements,Data flow and system integration needs,Excel/CSV,System Owners,High,Monthly
+Data_Systems_Process_Design_Agent,Data_Governance,Data quality security and compliance policies,PDF/Word,Data Governance,Medium,Annually
+Financial_Risk_Modeling_Agent,Actuarial_Models,Current reserving and pricing models,Excel/Text,Actuarial Team,High,Monthly
+Financial_Risk_Modeling_Agent,Financial_Data,Historical cash flows and financial performance,Excel/CSV,"Finance/Actuarial",High,Monthly
+Financial_Risk_Modeling_Agent,Risk_Parameters,"Market credit and underwriting risk factors",Excel/CSV,Risk Management,High,Monthly
+Financial_Risk_Modeling_Agent,Capital_Calculations,Current Solvency II capital requirements,Excel/CSV,Risk Management,High,Monthly
+Financial_Risk_Modeling_Agent,Stress_Scenarios,Economic and business scenario assumptions,Excel/CSV,"Economics/Risk",Medium,Quarterly
+Reporting_Compliance_Delivery_Agent,Financial_Statements,Current financial reporting templates,Excel/Word,Finance,High,Monthly
+Reporting_Compliance_Delivery_Agent,Regulatory_Reports,Existing QRT and SFCR templates,Excel/CSV,Compliance,High,Quarterly
+Reporting_Compliance_Delivery_Agent,Disclosure_Requirements,"IFRS 17 and Solvency II disclosure needs",PDF/Text,Regulatory Analysis,High,Quarterly
+Reporting_Compliance_Delivery_Agent,Audit_Requirements,Internal and external audit standards,PDF/Word,Internal Audit,Medium,Annually
+Reporting_Compliance_Delivery_Agent,Reporting_Calendars,Regulatory and business reporting deadlines,Excel/CSV,Compliance,High,Monthly
+IFRS17_SII_Manager_Agent,Project_Status,Overall implementation progress and milestones,Excel/CSV,Project Management,High,Weekly
+IFRS17_SII_Manager_Agent,Resource_Allocation,Team assignments and capacity planning,Excel/CSV,Project Management,High,Weekly
+IFRS17_SII_Manager_Agent,Risk_Register,Implementation risks and mitigation strategies,Excel/CSV,Risk Management,High,Weekly
+IFRS17_SII_Manager_Agent,Stakeholder_Updates,Executive and board reporting requirements,PowerPoint/Word,Executive Management,High,Monthly
+IFRS17_SII_Manager_Agent,Quality_Assurance,Validation and testing results,Excel/CSV,Quality Assurance,Medium,Weekly

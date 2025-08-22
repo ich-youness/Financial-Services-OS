@@ -21,6 +21,15 @@ from Modules.Finance_Modules.AnalystFinReportingAndRefModule.AnalystFinReporting
 from Modules.Finance_Modules.CSRD_ConsultantModule.CSRD_Consultant import manager_agent as csrd_consultant
 from Modules.Finance_Modules.ESG_Module.ESG_module import ESG_Manager_Agent
 from Modules.Finance_Modules.ALM.Agents import almTeam
+from Modules.Finance_Modules.Implementation_IFRS_17_Solvency.IFRS17_Solvency2_Module import IFRS17_SII_Manager_Agent
+from Modules.Finance_Modules.ProductDesignLifeInsuranceModule.product_design_life_insurance_module import ProductDesignLifeInsuranceTeam
+from Modules.Finance_Modules.LifeHealthModule.LifeHealthModule import manager_agent as LifeHealthManagerAgent
+from Modules.Finance_Modules.Product_design_aging.Agents import InsuranceProductTeam
+from Modules.Finance_Modules.Inventory_Actuary_Module.Inventory_Actuary_Module import Inventory_Actuary_Manager_Agent
+from Modules.Finance_Modules.ForwardLookingFinancialActuarial.Forward_Looking_Financial_Actuarial_Module import ForwardLookingFinancialActuarialTeam
+
+
+
 
 from Modules.Reporting_Module.Agents import ReportingTeam
 
@@ -146,6 +155,7 @@ def get_module(request: ModuleRequest):
         response = almTeam.run(f"""run the agent {request.agentId} with the prompt: {request.prompt}""")
         print("Response from Treasury Risk Management Module:", response.content)
         return response.content
+    
     ## ISR gave errors!!!!
     
     
@@ -156,13 +166,39 @@ def get_module(request: ModuleRequest):
         response = csrd_consultant.run(f"""run the agent {request.agentId} with the prompt: {request.prompt}""")
         print("Response from CSRD Consultant Module:", response.content)
         return response.content
+    elif request.moduleId == "ifrs17-solvency2":
+        print("Running IFRS17 Solvency2 Module")
+        response = IFRS17_SII_Manager_Agent.run(f"""run the agent {request.agentId} with the prompt: {request.prompt}""")
+        print("Response from IFRS17 Solvency2 Module:", response.content)
+        return response.content
+    elif request.moduleId == "product-design-life-insurance":
+        print("Running Product Design Life Insurance Module")
+        response = ProductDesignLifeInsuranceTeam.run(f"""run the agent {request.agentId} with the prompt: {request.prompt}""")
+        print("Response from Product Design Life Insurance Module:", response.content)
+        return response.content
+    # still the actuarially module => wait for moahmed
     
-
-    
-    
-
-
-    
+    ## Thursday::
+    elif request.moduleId == "life-health-module":
+        print("Running Life & Health Module")
+        response = LifeHealthManagerAgent.run(f"""run the agent {request.agentId} with the prompt: {request.prompt}""")
+        print("Response from Life & Health Module:", response.content)
+        return response.content
+    elif request.moduleId == "insurance-product-aging":
+        print("Running Insurance Product Aging Module")
+        response = InsuranceProductTeam.run(f"""run the agent {request.agentId} with the prompt: {request.prompt}""")
+        print("Response from Insurance Product Aging Module:", response.content)
+        return response.content
+    elif request.moduleId == "inventory-actuary-module":
+        print("Running Inventory Actuary Module")
+        response = Inventory_Actuary_Manager_Agent.run(f"""run the agent {request.agentId} with the prompt: {request.prompt}""")
+        print("Response from Inventory Actuary Module:", response.content)
+        return response.content
+    elif request.moduleId == "forward-looking-financial-actuarial":
+        print("Running Forward Looking Financial Actuarial Module")
+        response = ForwardLookingFinancialActuarialTeam.run(f"""run the agent {request.agentId} with the prompt: {request.prompt}""")
+        print("Response from Forward Looking Financial Actuarial Module:", response.content)
+        return response.content
     
 
     
