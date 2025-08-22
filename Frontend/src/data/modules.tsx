@@ -29,9 +29,19 @@ export interface Agent {
       min?: number;
       max?: number;
       default?: any;
+      placeholder?: string;
     };
   };
   outputs: string[];
+}
+
+// New sub-team interface used by modules that organize agents into sub-teams
+export interface SubTeam {
+  id: string;
+  name: string;
+  mode: 'Coordinate' | 'Collaborate' | 'Route';
+  description?: string;
+  agents: Agent[];
 }
 
 export interface Module {
@@ -41,9 +51,302 @@ export interface Module {
   icon: LucideIcon;
   colorClass: string;
   agents?: Agent[];
+  subTeams?: SubTeam[];
 }
 
 export const modules: Module[] = [
+  {
+    id: "actuarial-modeling",
+    title: "Actuarial Modeling Module",
+    description: "The Actuarial Modeling module is a sophisticated multi-agent module, designed to automate and enhance core actuarial functions across the entire insurance and financial services spectrum. It operates as a team-of-teams architecture where specialized sub-teams collaborate across actuarial domains to deliver comprehensive, end-to-end actuarial solutions.",
+    icon: FileText,
+    colorClass: "module-card-actuarial",
+    subTeams: [
+      {
+        id: "stm-model-dev",
+        name: "Development of Actuarial Models",
+        mode: "Coordinate",
+        agents: [
+          {
+            id: "life-nonlife-models",
+            name: "Life & Non-Life Insurance Models",
+            description: "Builds life and P&C models for pricing, reserving, and forecasting.",
+            inputs: {
+              text: "Upload exposure, claims, lapse/mortality, and policy data.",
+              fileUploads: true
+            },
+            config: {
+              modelClass: { type: 'dropdown', label: 'Model Class', options: ['Life', 'Non-Life', 'Both'] },
+              method: { type: 'dropdown', label: 'Methodology', options: ['GLM', 'Survival', 'Stochastic'] },
+              versioning: { type: 'toggle', label: 'Enable Versioning', default: true }
+            },
+            outputs: ['Model Spec', 'Calibrated Parameters', 'Training Summary']
+          },
+          {
+            id: "pension-retirement-models",
+            name: "Pension & Retirement Models",
+            description: "Designs actuarial models for pensions and retirement products.",
+            inputs: {
+              text: "Upload demographic tables, contributions, benefits, and salary growth.",
+              fileUploads: true
+            },
+            config: {
+              valuationBasis: { type: 'dropdown', label: 'Valuation Basis', options: ['Projected Unit', 'Entry Age', 'Aggregate'] },
+              discountRate: { type: 'numeric', label: 'Discount Rate (%)', default: 3 },
+              mortalityTable: { type: 'dropdown', label: 'Mortality Table', options: ['Custom', 'Standard'] }
+            },
+            outputs: ['Actuarial Valuation', 'Contribution Requirements', 'Sensitivity Summary']
+          },
+          {
+            id: "capital-solvency-models",
+            name: "Capital & Solvency Models",
+            description: "Develops capital and solvency models to meet regulatory and internal targets.",
+            inputs: {
+              text: "Upload risk exposures, capital components, and stress assumptions.",
+              fileUploads: true
+            },
+            config: {
+              framework: { type: 'dropdown', label: 'Framework', options: ['Solvency II', 'IFRS', 'Internal'] },
+              targetRatio: { type: 'numeric', label: 'Target Capital Ratio (%)', default: 150 }
+            },
+            outputs: ['Capital Ratio', 'SCR/MCR Summary', 'Capital Plan']
+          },
+          {
+            id: "alm-integration",
+            name: "ALM Integration",
+            description: "Integrates actuarial models with ALM for balance sheet consistency.",
+            inputs: {
+              text: "Upload asset/liability cash flows and rate scenarios.",
+              fileUploads: true
+            },
+            config: {
+              linkage: { type: 'dropdown', label: 'Linkage Level', options: ['Cashflow', 'Sensitivity', 'Full'] },
+              horizon: { type: 'dropdown', label: 'Horizon', options: ['1Y', '3Y', '5Y'] }
+            },
+            outputs: ['ALM Linkage Report', 'Sensitivity Alignment', 'Integration Notes']
+          }
+        ]
+      },
+      {
+        id: "stm-pricing",
+        name: "Pricing and Product Development",
+        mode: "Coordinate",
+        agents: [
+          {
+            id: "product-pricing-models",
+            name: "Product Pricing Models",
+            description: "Builds pricing models and rate structures for new/existing products.",
+            inputs: { text: "Provide product specs, assumptions, and historical experience.", fileUploads: true },
+            config: {
+              approach: { type: 'dropdown', label: 'Pricing Approach', options: ['Cost-Plus', 'Risk-Based', 'Market-Based'] },
+              marginTarget: { type: 'numeric', label: 'Target Margin (%)', default: 15 }
+            },
+            outputs: ['Pricing Sheet', 'Rate Cards', 'Pricing Assumptions']
+          },
+          {
+            id: "profitability-analysis",
+            name: "Profitability Analysis",
+            description: "Analyzes profitability by cohort, channel, and product variant.",
+            inputs: { text: "Upload premium, claims, expenses, and allocation keys.", fileUploads: true },
+            config: {
+              perspective: { type: 'dropdown', label: 'View', options: ['Cohort', 'Channel', 'Product'] },
+              threshold: { type: 'slider', label: 'Alert Threshold (%)', min: 0, max: 50, default: 10 }
+            },
+            outputs: ['Profitability Report', 'Variance Walk', 'Recommendations']
+          },
+          {
+            id: "sensitivity-testing",
+            name: "Sensitivity Testing",
+            description: "Performs sensitivity tests on key assumptions and pricing levers.",
+            inputs: { text: "Provide base assumptions and test ranges.", fileUploads: true },
+            config: {
+              dimension: { type: 'dropdown', label: 'Sensitivity Dimension', options: ['Mortality', 'Lapse', 'Expense', 'Yield'] },
+              rigor: { type: 'slider', label: 'Rigor Level', min: 1, max: 5, default: 3 }
+            },
+            outputs: ['Sensitivity Matrix', 'Key Drivers', 'Actionable Insights']
+          }
+        ]
+      },
+      {
+        id: "stm-reserving",
+        name: "Reserving and Liability Valuation",
+        mode: "Coordinate",
+        agents: [
+          {
+            id: "claims-triangle-analysis",
+            name: "Claims Triangle Analysis Specialist",
+            description: "Prepares and analyzes loss triangles (paid, incurred, claims counts).",
+            inputs: { text: "Upload paid/incurred triangles and exposure.", fileUploads: true },
+            config: {
+              triangleType: { type: 'dropdown', label: 'Triangle Type', options: ['Paid', 'Incurred', 'Reported'] },
+              smoothing: { type: 'dropdown', label: 'Smoothing', options: ['None', 'Moving Avg', 'Spline'] }
+            },
+            outputs: ['Prepared Triangles', 'Triangle Diagnostics', 'Data Quality Notes']
+          },
+          {
+            id: "chain-ladder-reserving",
+            name: "Chain-Ladder Reserving Specialist",
+            description: "Performs chain-ladder reserving and diagnostics.",
+            inputs: { text: "Upload triangles and exposure.", fileUploads: true },
+            config: {
+              tailFactor: { type: 'numeric', label: 'Tail Factor (%)', default: 5 },
+              confidence: { type: 'slider', label: 'Confidence Level', min: 0.5, max: 0.99, default: 0.75 }
+            },
+            outputs: ['Reserve Estimates', 'Development Factors', 'Interval Estimates']
+          },
+          {
+            id: "advanced-reserving-methods",
+            name: "Advanced Reserving Methods Specialist",
+            description: "Implements Bornhuetter–Ferguson, Mack, and other reserving methods.",
+            inputs: { text: "Upload triangles, premium, and expected loss ratios.", fileUploads: true },
+            config: {
+              method: { type: 'dropdown', label: 'Method', options: ['Bornhuetter-Ferguson', 'Mack', 'Bootstrap'] }
+            },
+            outputs: ['Advanced Reserve Estimates', 'Method Comparison', 'Assumption Notes']
+          },
+          {
+            id: "solvency2-valuation",
+            name: "Solvency II Valuation Specialist",
+            description: "Values technical provisions under Solvency II (Best Estimate + Risk Margin).",
+            inputs: { text: "Upload cash flows, discount curves, and risk margin parameters.", fileUploads: true },
+            config: {
+              curve: { type: 'dropdown', label: 'Curve', options: ['EIOPA Risk-Free', 'Custom'] },
+              riskMargin: { type: 'numeric', label: 'Risk Margin (%)', default: 6 }
+            },
+            outputs: ['Best Estimate Liabilities', 'Risk Margin', 'TP Reconciliation']
+          },
+          {
+            id: "ifrs17-implementation",
+            name: "IFRS 17 Implementation Specialist",
+            description: "Performs IFRS 17 measurement (GMM/PAA/VFA) and disclosures.",
+            inputs: { text: "Upload cohorts, cash flows, discounting and risk adjustment inputs.", fileUploads: true },
+            config: {
+              measurementModel: { type: 'dropdown', label: 'Measurement Model', options: ['GMM', 'PAA', 'VFA'] },
+              riskAdjustment: { type: 'numeric', label: 'Risk Adjustment (%)', default: 4 }
+            },
+            outputs: ['CSM Rollforward', 'IFRS 17 Disclosures', 'Measurement Summary']
+          },
+          {
+            id: "financial-reporting-integration",
+            name: "Financial Reporting Integration Specialist",
+            description: "Integrates reserving outputs into financial reporting frameworks.",
+            inputs: { text: "Upload framework mapping and reporting structures.", fileUploads: true },
+            config: {
+              framework: { type: 'dropdown', label: 'Framework', options: ['IFRS', 'US GAAP', 'Local GAAP'] }
+            },
+            outputs: ['Valuation Report', 'Disclosure Tables', 'Audit Support']
+          },
+          {
+            id: "mortality-experience",
+            name: "Mortality Experience Analysis Specialist",
+            description: "Analyzes mortality experience and proposes assumption updates.",
+            inputs: { text: "Upload exposures, deaths, and policy data.", fileUploads: true },
+            config: {
+              table: { type: 'dropdown', label: 'Reference Table', options: ['Custom', 'Standard'] }
+            },
+            outputs: ['Mortality Experience', 'Selected Assumptions', 'Study Documentation']
+          },
+          {
+            id: "lapse-persistency",
+            name: "Lapse and Persistency Analysis Specialist",
+            description: "Performs lapse and persistency studies and segmentation.",
+            inputs: { text: "Upload policy status histories and segments.", fileUploads: true },
+            config: {
+              segmentation: { type: 'dropdown', label: 'Segmentation', options: ['Product', 'Channel', 'Cohort'] }
+            },
+            outputs: ['Lapse/Persistency Results', 'Drivers & Segments', 'Assumption Update']
+          },
+          {
+            id: "credibility-blending",
+            name: "Credibility and Blending Specialist",
+            description: "Applies credibility theory to blend experience with external benchmarks.",
+            inputs: { text: "Upload internal experience and external benchmarks.", fileUploads: true },
+            config: {
+              method: { type: 'dropdown', label: 'Credibility Method', options: ['Bühlmann', 'Empirical Bayes'] }
+            },
+            outputs: ['Credibility Weights', 'Blended Assumptions', 'Documentation']
+          }
+        ]
+      },
+      {
+        id: "stm-risk",
+        name: "Risk Management and Scenario Testing",
+        mode: "Collaborate",
+        agents: [
+          {
+            id: "stress-testing",
+            name: "Stress Testing & Scenario Analysis",
+            description: "Executes stress and scenario analyses across portfolios.",
+            inputs: { text: "Provide scenarios and portfolio exposures.", fileUploads: true },
+            config: {
+              severity: { type: 'dropdown', label: 'Severity', options: ['Mild', 'Moderate', 'Severe'] },
+              horizon: { type: 'dropdown', label: 'Horizon', options: ['1Y', '3Y', '5Y'] }
+            },
+            outputs: ['Scenario Results', 'Vulnerabilities', 'Mitigation Plan']
+          },
+          {
+            id: "stochastic-modeling",
+            name: "Stochastic Modeling",
+            description: "Runs stochastic simulations for capital and risk measures.",
+            inputs: { text: "Upload distributions and dependency structures.", fileUploads: true },
+            config: {
+              trials: { type: 'numeric', label: 'Simulations', default: 10000 },
+              metric: { type: 'dropdown', label: 'Metric', options: ['VaR', 'TVaR'] }
+            },
+            outputs: ['Distribution Outputs', 'Risk Metrics', 'Stability Diagnostics']
+          },
+          {
+            id: "enterprise-risk",
+            name: "Enterprise Risk Management",
+            description: "Aggregates risks and evaluates enterprise-level impacts.",
+            inputs: { text: "Provide risk registers and interdependencies.", fileUploads: true },
+            config: {
+              aggregation: { type: 'dropdown', label: 'Aggregation', options: ['Additive', 'Copula-Based', 'Scenario'] }
+            },
+            outputs: ['ERM Profile', 'Concentration Analysis', 'Capital Allocation']
+          }
+        ]
+      },
+      {
+        id: "stm-validation",
+        name: "Model Validation and Governance",
+        mode: "Route",
+        agents: [
+          {
+            id: "model-validation",
+            name: "Model Validation",
+            description: "Validates model design, data, and performance.",
+            inputs: { text: "Upload documentation and validation datasets.", fileUploads: true },
+            config: {
+              scope: { type: 'dropdown', label: 'Scope', options: ['Data', 'Methodology', 'Performance', 'All'] },
+              backtest: { type: 'toggle', label: 'Backtesting', default: true }
+            },
+            outputs: ['Validation Report', 'Findings Log', 'Remediation Plan']
+          },
+          {
+            id: "regulatory-compliance",
+            name: "Regulatory Compliance",
+            description: "Checks frameworks and regulatory adherence.",
+            inputs: { text: "Upload frameworks and regulatory mappings.", fileUploads: true },
+            config: {
+              regime: { type: 'dropdown', label: 'Regime', options: ['IFRS', 'Solvency II', 'Local'] }
+            },
+            outputs: ['Compliance Checklist', 'Regulatory Notes', 'Deficiencies']
+          },
+          {
+            id: "model-risk-management",
+            name: "Model Risk Management",
+            description: "Assesses model risk and governance controls.",
+            inputs: { text: "Upload model inventory and risk ratings.", fileUploads: true },
+            config: {
+              policy: { type: 'dropdown', label: 'Policy Strictness', options: ['Basic', 'Standard', 'Strict'] }
+            },
+            outputs: ['Model Risk Assessment', 'Governance Checklist', 'Approval Recommendation']
+          }
+        ]
+      }
+    ]
+  },
   {
     id: "risk-assessment",
     title: "Risk Assessment Module",
@@ -1038,7 +1341,7 @@ export const modules: Module[] = [
 {
   id: "reporting",
   title: "Group Reporting Module",
-  description: "Centralized reporting framework for subsidiaries, ensuring compliance, consolidation, validation, and continuous optimization of the group’s financial closing process.",
+  description: "Centralized reporting framework for subsidiaries, ensuring compliance, consolidation, validation, and continuous optimization of the group's financial closing process.",
   icon: FileText,
   colorClass: "module-card-reporting",
   agents: [
@@ -2235,7 +2538,7 @@ export const modules: Module[] = [
       },
       config: {
         liquidityBuffer: {
-          type: "number",
+          type: "numeric",
           label: "Liquidity Buffer Amount",
           placeholder: "200",
           default: 200
@@ -2316,7 +2619,6 @@ export const modules: Module[] = [
           label: "Stress Factor Multiplier",
           min: 1.0,
           max: 2.0,
-          step: 0.1,
           default: 1.2
         },
         rateShiftRange: {
@@ -2613,7 +2915,4 @@ export const modules: Module[] = [
     }
   ]
 },
-
-
-
 ];
