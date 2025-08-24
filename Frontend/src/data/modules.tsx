@@ -55,7 +55,7 @@ export interface Module {
 }
 
 export const modules: Module[] = [
-  {
+   {
     id: "actuarial-modeling",
     title: "Actuarial Modeling Module",
     description: "The Actuarial Modeling module is a sophisticated multi-agent module, designed to automate and enhance core actuarial functions across the entire insurance and financial services spectrum. It operates as a team-of-teams architecture where specialized sub-teams collaborate across actuarial domains to deliver comprehensive, end-to-end actuarial solutions.",
@@ -64,12 +64,12 @@ export const modules: Module[] = [
     subTeams: [
       {
         id: "stm-model-dev",
-        name: "Development of Actuarial Models",
+        name: "Team 1: Development of Actuarial Models",
         mode: "Coordinate",
         agents: [
           {
             id: "life-nonlife-models",
-            name: "Life & Non-Life Insurance Models",
+            name: "Agent 1: Life & Non-Life Insurance Models",
             description: "Builds life and P&C models for pricing, reserving, and forecasting.",
             inputs: {
               text: "Upload exposure, claims, lapse/mortality, and policy data.",
@@ -84,7 +84,7 @@ export const modules: Module[] = [
           },
           {
             id: "pension-retirement-models",
-            name: "Pension & Retirement Models",
+            name: "Agent 2: Pension & Retirement Models",
             description: "Designs actuarial models for pensions and retirement products.",
             inputs: {
               text: "Upload demographic tables, contributions, benefits, and salary growth.",
@@ -99,7 +99,7 @@ export const modules: Module[] = [
           },
           {
             id: "capital-solvency-models",
-            name: "Capital & Solvency Models",
+            name: "Agent 3: Capital & Solvency Models",
             description: "Develops capital and solvency models to meet regulatory and internal targets.",
             inputs: {
               text: "Upload risk exposures, capital components, and stress assumptions.",
@@ -113,7 +113,7 @@ export const modules: Module[] = [
           },
           {
             id: "alm-integration",
-            name: "ALM Integration",
+            name: "Agent 4: ALM Integration",
             description: "Integrates actuarial models with ALM for balance sheet consistency.",
             inputs: {
               text: "Upload asset/liability cash flows and rate scenarios.",
@@ -129,12 +129,12 @@ export const modules: Module[] = [
       },
       {
         id: "stm-pricing",
-        name: "Pricing and Product Development",
+        name: "Team 2: Pricing and Product Development",
         mode: "Coordinate",
         agents: [
           {
             id: "product-pricing-models",
-            name: "Product Pricing Models",
+            name: "Agent 5: Product Pricing Models",
             description: "Builds pricing models and rate structures for new/existing products.",
             inputs: { text: "Provide product specs, assumptions, and historical experience.", fileUploads: true },
             config: {
@@ -145,7 +145,7 @@ export const modules: Module[] = [
           },
           {
             id: "profitability-analysis",
-            name: "Profitability Analysis",
+            name: "Agent 6: Profitability Analysis",
             description: "Analyzes profitability by cohort, channel, and product variant.",
             inputs: { text: "Upload premium, claims, expenses, and allocation keys.", fileUploads: true },
             config: {
@@ -156,7 +156,7 @@ export const modules: Module[] = [
           },
           {
             id: "sensitivity-testing",
-            name: "Sensitivity Testing",
+            name: "Agent 7: Sensitivity Testing",
             description: "Performs sensitivity tests on key assumptions and pricing levers.",
             inputs: { text: "Provide base assumptions and test ranges.", fileUploads: true },
             config: {
@@ -169,12 +169,12 @@ export const modules: Module[] = [
       },
       {
         id: "stm-reserving",
-        name: "Reserving and Liability Valuation",
+        name: "Team 3: Reserving and Liability Valuation",
         mode: "Coordinate",
         agents: [
           {
             id: "claims-triangle-analysis",
-            name: "Claims Triangle Analysis Specialist",
+            name: "Agent 8: Claims Triangle Analysis Specialist",
             description: "Prepares and analyzes loss triangles (paid, incurred, claims counts).",
             inputs: { text: "Upload paid/incurred triangles and exposure.", fileUploads: true },
             config: {
@@ -185,7 +185,7 @@ export const modules: Module[] = [
           },
           {
             id: "chain-ladder-reserving",
-            name: "Chain-Ladder Reserving Specialist",
+            name: "Agent 9: Chain-Ladder Reserving Specialist",
             description: "Performs chain-ladder reserving and diagnostics.",
             inputs: { text: "Upload triangles and exposure.", fileUploads: true },
             config: {
@@ -196,7 +196,7 @@ export const modules: Module[] = [
           },
           {
             id: "advanced-reserving-methods",
-            name: "Advanced Reserving Methods Specialist",
+            name: "Agent 10: Advanced Reserving Methods Specialist",
             description: "Implements Bornhuetter–Ferguson, Mack, and other reserving methods.",
             inputs: { text: "Upload triangles, premium, and expected loss ratios.", fileUploads: true },
             config: {
@@ -206,7 +206,7 @@ export const modules: Module[] = [
           },
           {
             id: "solvency2-valuation",
-            name: "Solvency II Valuation Specialist",
+            name: "Agent 11: Solvency II Valuation Specialist",
             description: "Values technical provisions under Solvency II (Best Estimate + Risk Margin).",
             inputs: { text: "Upload cash flows, discount curves, and risk margin parameters.", fileUploads: true },
             config: {
@@ -217,7 +217,7 @@ export const modules: Module[] = [
           },
           {
             id: "ifrs17-implementation",
-            name: "IFRS 17 Implementation Specialist",
+            name: "Agent 12: IFRS 17 Implementation Specialist",
             description: "Performs IFRS 17 measurement (GMM/PAA/VFA) and disclosures.",
             inputs: { text: "Upload cohorts, cash flows, discounting and risk adjustment inputs.", fileUploads: true },
             config: {
@@ -228,7 +228,7 @@ export const modules: Module[] = [
           },
           {
             id: "financial-reporting-integration",
-            name: "Financial Reporting Integration Specialist",
+            name: "Agent 13: Financial Reporting Integration Specialist",
             description: "Integrates reserving outputs into financial reporting frameworks.",
             inputs: { text: "Upload framework mapping and reporting structures.", fileUploads: true },
             config: {
@@ -238,7 +238,7 @@ export const modules: Module[] = [
           },
           {
             id: "mortality-experience",
-            name: "Mortality Experience Analysis Specialist",
+            name: "Agent 14: Mortality Experience Analysis Specialist",
             description: "Analyzes mortality experience and proposes assumption updates.",
             inputs: { text: "Upload exposures, deaths, and policy data.", fileUploads: true },
             config: {
@@ -248,7 +248,7 @@ export const modules: Module[] = [
           },
           {
             id: "lapse-persistency",
-            name: "Lapse and Persistency Analysis Specialist",
+            name: "Agent 15: Lapse and Persistency Analysis Specialist",
             description: "Performs lapse and persistency studies and segmentation.",
             inputs: { text: "Upload policy status histories and segments.", fileUploads: true },
             config: {
@@ -258,7 +258,7 @@ export const modules: Module[] = [
           },
           {
             id: "credibility-blending",
-            name: "Credibility and Blending Specialist",
+            name: "Agent 16: Credibility and Blending Specialist",
             description: "Applies credibility theory to blend experience with external benchmarks.",
             inputs: { text: "Upload internal experience and external benchmarks.", fileUploads: true },
             config: {
@@ -270,12 +270,12 @@ export const modules: Module[] = [
       },
       {
         id: "stm-risk",
-        name: "Risk Management and Scenario Testing",
+        name: "Team 4: Risk Management and Scenario Testing",
         mode: "Collaborate",
         agents: [
           {
             id: "stress-testing",
-            name: "Stress Testing & Scenario Analysis",
+            name: "Agent 17: Stress Testing & Scenario Analysis",
             description: "Executes stress and scenario analyses across portfolios.",
             inputs: { text: "Provide scenarios and portfolio exposures.", fileUploads: true },
             config: {
@@ -286,7 +286,7 @@ export const modules: Module[] = [
           },
           {
             id: "stochastic-modeling",
-            name: "Stochastic Modeling",
+            name: "Agent 18: Stochastic Modeling",
             description: "Runs stochastic simulations for capital and risk measures.",
             inputs: { text: "Upload distributions and dependency structures.", fileUploads: true },
             config: {
@@ -297,7 +297,7 @@ export const modules: Module[] = [
           },
           {
             id: "enterprise-risk",
-            name: "Enterprise Risk Management",
+            name: "Agent 19: Enterprise Risk Management",
             description: "Aggregates risks and evaluates enterprise-level impacts.",
             inputs: { text: "Provide risk registers and interdependencies.", fileUploads: true },
             config: {
@@ -309,12 +309,12 @@ export const modules: Module[] = [
       },
       {
         id: "stm-validation",
-        name: "Model Validation and Governance",
+        name: "Team 5: Model Validation and Governance",
         mode: "Route",
         agents: [
           {
             id: "model-validation",
-            name: "Model Validation",
+            name: "Agent 20: Model Validation",
             description: "Validates model design, data, and performance.",
             inputs: { text: "Upload documentation and validation datasets.", fileUploads: true },
             config: {
@@ -325,7 +325,7 @@ export const modules: Module[] = [
           },
           {
             id: "regulatory-compliance",
-            name: "Regulatory Compliance",
+            name: "Agent 21: Regulatory Compliance",
             description: "Checks frameworks and regulatory adherence.",
             inputs: { text: "Upload frameworks and regulatory mappings.", fileUploads: true },
             config: {
@@ -335,7 +335,7 @@ export const modules: Module[] = [
           },
           {
             id: "model-risk-management",
-            name: "Model Risk Management",
+            name: "Agent 22: Model Risk Management",
             description: "Assesses model risk and governance controls.",
             inputs: { text: "Upload model inventory and risk ratings.", fileUploads: true },
             config: {
