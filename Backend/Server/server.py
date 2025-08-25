@@ -27,6 +27,7 @@ from Modules.Finance_Modules.LifeHealthModule.LifeHealthModule import manager_ag
 from Modules.Finance_Modules.Product_design_aging.Agents import InsuranceProductTeam
 from Modules.Finance_Modules.Inventory_Actuary_Module.Inventory_Actuary_Module import Inventory_Actuary_Manager_Agent
 from Modules.Finance_Modules.ForwardLookingFinancialActuarial.Forward_Looking_Financial_Actuarial_Module import ForwardLookingFinancialActuarialTeam
+from Modules.Finance_Modules.Actuarial_Modeling.Agents import Actuarial_Modeling_Team
 
 
 
@@ -68,7 +69,13 @@ def get_module(request: ModuleRequest):
     print("Prompt:", request.prompt)
     print("Config:", request.config)
 
-    if request.moduleId == "risk-assessment":
+    
+    if request.moduleId == "actuarial-modeling":
+        print("Running Actuarial Modeling Module")
+        response = Actuarial_Modeling_Team.run(f"""run the agent {request.agentId} with the prompt: {request.prompt}""")
+        return response.content
+
+    elif request.moduleId == "risk-assessment":
         print("Running Risk Assessment Module")
         response = financial_router_team.run(f"""run the agent {request.agentId} with the prompt: {request.prompt}""")
         print("Response from Risk Assessment Module:", response.content)

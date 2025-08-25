@@ -16,7 +16,7 @@ from typing import Dict, List, Any, Optional
 from pathlib import Path
 
 # Import custom tools
-from tools import (
+from .tools import (
     # Life & Non-Life Modeling Tools
     fit_mortality_table, project_life_liability, analyze_claims_triangle, fit_catastrophe_model,
     # Pension & Retirement Tools
