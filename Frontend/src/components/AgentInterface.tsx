@@ -194,22 +194,22 @@ ${inputText}`;
               />
             </div>
             
-            {agent.inputs.fileUploads && (
-              <div className="space-y-2">
-                <Label>File Upload</Label>
-                <div className="border-2 border-dashed border-border rounded-lg p-4">
-                  <div className="flex flex-col items-center gap-2 text-center">
-                    <Upload className="w-6 h-6 text-muted-foreground" />
-                    <p className="text-sm text-muted-foreground">
-                      Click to upload or drag and drop files
-                    </p>
-                    <Button variant="outline" size="sm">
-                      Choose Files
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            )}
+             {/* {agent.inputs.fileUploads && (
+              // <div className="space-y-2">
+              //   <Label>File Upload</Label>
+              //   <div className="border-2 border-dashed border-border rounded-lg p-4">
+              //     <div className="flex flex-col items-center gap-2 text-center">
+              //       <Upload className="w-6 h-6 text-muted-foreground" />
+              //       <p className="text-sm text-muted-foreground">
+              //         Click to upload or drag and drop files
+              //       </p>
+              //       <Button variant="outline" size="sm">
+              //         Choose Files
+              //       </Button>
+              //     </div>
+              //   </div>
+              // </div>
+            )}*/}
           </CardContent>
         </Card>
 

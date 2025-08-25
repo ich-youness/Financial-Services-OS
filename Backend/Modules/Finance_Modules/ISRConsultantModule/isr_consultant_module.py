@@ -366,11 +366,11 @@ def test_comprehensive_isr_consulting():
     )
 
 
-if __name__ == "__main__":
-    print("ISR Consultant Module Loaded Successfully!")
-    print("Available Agents:")
-    print("1. EthicalInvestmentAgent - SRI policy development and values alignment")
-    test_ethical_investment_strategy()
+# if __name__ == "__main__":
+#     print("ISR Consultant Module Loaded Successfully!")
+#     print("Available Agents:")
+#     print("1. EthicalInvestmentAgent - SRI policy development and values alignment")
+#     test_ethical_investment_strategy()
 #     print("2. ESGIntegrationAgent - ESG criteria integration and risk management")
 #     test_esg_integration()
 #     print(

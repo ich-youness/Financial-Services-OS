@@ -34,6 +34,12 @@ export interface Agent {
   };
   outputs: string[];
 }
+export interface SubTeam {
+  id: string;
+  name: string;
+  agents: Agent[];
+  mode?: string;
+}
 
 export interface Module {
   id: string;
@@ -42,9 +48,302 @@ export interface Module {
   icon: LucideIcon;
   colorClass: string;
   agents?: Agent[];
+  subTeams?: SubTeam[];
 }
 
 export const modules: Module[] = [
+  {
+    id: "actuarial-modeling",
+    title: "Actuarial Modeling Module",
+    description: "The Actuarial Modeling module is a sophisticated multi-agent module, designed to automate and enhance core actuarial functions across the entire insurance and financial services spectrum. It operates as a team-of-teams architecture where specialized sub-teams collaborate across actuarial domains to deliver comprehensive, end-to-end actuarial solutions.",
+    icon: FileText,
+    colorClass: "module-card-actuarial",
+    subTeams: [
+      {
+        id: "stm-model-dev",
+        name: "Team 1: Development of Actuarial Models",
+        mode: "Coordinate",
+        agents: [
+          {
+            id: "life-nonlife-models",
+            name: "Agent 1: Life & Non-Life Insurance Models",
+            description: "Builds life and P&C models for pricing, reserving, and forecasting.",
+            inputs: {
+              text: "Upload exposure, claims, lapse/mortality, and policy data.",
+              fileUploads: true
+            },
+            config: {
+              modelClass: { type: 'dropdown', label: 'Model Class', options: ['Life', 'Non-Life', 'Both'] },
+              method: { type: 'dropdown', label: 'Methodology', options: ['GLM', 'Survival', 'Stochastic'] },
+              versioning: { type: 'toggle', label: 'Enable Versioning', default: true }
+            },
+            outputs: ['Model Spec', 'Calibrated Parameters', 'Training Summary']
+          },
+          {
+            id: "pension-retirement-models",
+            name: "Agent 2: Pension & Retirement Models",
+            description: "Designs actuarial models for pensions and retirement products.",
+            inputs: {
+              text: "Upload demographic tables, contributions, benefits, and salary growth.",
+              fileUploads: true
+            },
+            config: {
+              valuationBasis: { type: 'dropdown', label: 'Valuation Basis', options: ['Projected Unit', 'Entry Age', 'Aggregate'] },
+              discountRate: { type: 'numeric', label: 'Discount Rate (%)', default: 3 },
+              mortalityTable: { type: 'dropdown', label: 'Mortality Table', options: ['Custom', 'Standard'] }
+            },
+            outputs: ['Actuarial Valuation', 'Contribution Requirements', 'Sensitivity Summary']
+          },
+          {
+            id: "capital-solvency-models",
+            name: "Agent 3: Capital & Solvency Models",
+            description: "Develops capital and solvency models to meet regulatory and internal targets.",
+            inputs: {
+              text: "Upload risk exposures, capital components, and stress assumptions.",
+              fileUploads: true
+            },
+            config: {
+              framework: { type: 'dropdown', label: 'Framework', options: ['Solvency II', 'IFRS', 'Internal'] },
+              targetRatio: { type: 'numeric', label: 'Target Capital Ratio (%)', default: 150 }
+            },
+            outputs: ['Capital Ratio', 'SCR/MCR Summary', 'Capital Plan']
+          },
+          {
+            id: "alm-integration",
+            name: "Agent 4: ALM Integration",
+            description: "Integrates actuarial models with ALM for balance sheet consistency.",
+            inputs: {
+              text: "Upload asset/liability cash flows and rate scenarios.",
+              fileUploads: true
+            },
+            config: {
+              linkage: { type: 'dropdown', label: 'Linkage Level', options: ['Cashflow', 'Sensitivity', 'Full'] },
+              horizon: { type: 'dropdown', label: 'Horizon', options: ['1Y', '3Y', '5Y'] }
+            },
+            outputs: ['ALM Linkage Report', 'Sensitivity Alignment', 'Integration Notes']
+          }
+        ]
+      },
+      {
+        id: "stm-pricing",
+        name: "Team 2: Pricing and Product Development",
+        mode: "Coordinate",
+        agents: [
+          {
+            id: "product-pricing-models",
+            name: "Agent 5: Product Pricing Models",
+            description: "Builds pricing models and rate structures for new/existing products.",
+            inputs: { text: "Provide product specs, assumptions, and historical experience.", fileUploads: true },
+            config: {
+              approach: { type: 'dropdown', label: 'Pricing Approach', options: ['Cost-Plus', 'Risk-Based', 'Market-Based'] },
+              marginTarget: { type: 'numeric', label: 'Target Margin (%)', default: 15 }
+            },
+            outputs: ['Pricing Sheet', 'Rate Cards', 'Pricing Assumptions']
+          },
+          {
+            id: "profitability-analysis",
+            name: "Agent 6: Profitability Analysis",
+            description: "Analyzes profitability by cohort, channel, and product variant.",
+            inputs: { text: "Upload premium, claims, expenses, and allocation keys.", fileUploads: true },
+            config: {
+              perspective: { type: 'dropdown', label: 'View', options: ['Cohort', 'Channel', 'Product'] },
+              threshold: { type: 'slider', label: 'Alert Threshold (%)', min: 0, max: 50, default: 10 }
+            },
+            outputs: ['Profitability Report', 'Variance Walk', 'Recommendations']
+          },
+          {
+            id: "sensitivity-testing",
+            name: "Agent 7: Sensitivity Testing",
+            description: "Performs sensitivity tests on key assumptions and pricing levers.",
+            inputs: { text: "Provide base assumptions and test ranges.", fileUploads: true },
+            config: {
+              dimension: { type: 'dropdown', label: 'Sensitivity Dimension', options: ['Mortality', 'Lapse', 'Expense', 'Yield'] },
+              rigor: { type: 'slider', label: 'Rigor Level', min: 1, max: 5, default: 3 }
+            },
+            outputs: ['Sensitivity Matrix', 'Key Drivers', 'Actionable Insights']
+          }
+        ]
+      },
+      {
+        id: "stm-reserving",
+        name: "Team 3: Reserving and Liability Valuation",
+        mode: "Coordinate",
+        agents: [
+          {
+            id: "claims-triangle-analysis",
+            name: "Agent 8: Claims Triangle Analysis Specialist",
+            description: "Prepares and analyzes loss triangles (paid, incurred, claims counts).",
+            inputs: { text: "Upload paid/incurred triangles and exposure.", fileUploads: true },
+            config: {
+              triangleType: { type: 'dropdown', label: 'Triangle Type', options: ['Paid', 'Incurred', 'Reported'] },
+              smoothing: { type: 'dropdown', label: 'Smoothing', options: ['None', 'Moving Avg', 'Spline'] }
+            },
+            outputs: ['Prepared Triangles', 'Triangle Diagnostics', 'Data Quality Notes']
+          },
+          {
+            id: "chain-ladder-reserving",
+            name: "Agent 9: Chain-Ladder Reserving Specialist",
+            description: "Performs chain-ladder reserving and diagnostics.",
+            inputs: { text: "Upload triangles and exposure.", fileUploads: true },
+            config: {
+              tailFactor: { type: 'numeric', label: 'Tail Factor (%)', default: 5 },
+              confidence: { type: 'slider', label: 'Confidence Level', min: 0.5, max: 0.99, default: 0.75 }
+            },
+            outputs: ['Reserve Estimates', 'Development Factors', 'Interval Estimates']
+          },
+          {
+            id: "advanced-reserving-methods",
+            name: "Agent 10: Advanced Reserving Methods Specialist",
+            description: "Implements Bornhuetter–Ferguson, Mack, and other reserving methods.",
+            inputs: { text: "Upload triangles, premium, and expected loss ratios.", fileUploads: true },
+            config: {
+              method: { type: 'dropdown', label: 'Method', options: ['Bornhuetter-Ferguson', 'Mack', 'Bootstrap'] }
+            },
+            outputs: ['Advanced Reserve Estimates', 'Method Comparison', 'Assumption Notes']
+          },
+          {
+            id: "solvency2-valuation",
+            name: "Agent 11: Solvency II Valuation Specialist",
+            description: "Values technical provisions under Solvency II (Best Estimate + Risk Margin).",
+            inputs: { text: "Upload cash flows, discount curves, and risk margin parameters.", fileUploads: true },
+            config: {
+              curve: { type: 'dropdown', label: 'Curve', options: ['EIOPA Risk-Free', 'Custom'] },
+              riskMargin: { type: 'numeric', label: 'Risk Margin (%)', default: 6 }
+            },
+            outputs: ['Best Estimate Liabilities', 'Risk Margin', 'TP Reconciliation']
+          },
+          {
+            id: "ifrs17-implementation",
+            name: "Agent 12: IFRS 17 Implementation Specialist",
+            description: "Performs IFRS 17 measurement (GMM/PAA/VFA) and disclosures.",
+            inputs: { text: "Upload cohorts, cash flows, discounting and risk adjustment inputs.", fileUploads: true },
+            config: {
+              measurementModel: { type: 'dropdown', label: 'Measurement Model', options: ['GMM', 'PAA', 'VFA'] },
+              riskAdjustment: { type: 'numeric', label: 'Risk Adjustment (%)', default: 4 }
+            },
+            outputs: ['CSM Rollforward', 'IFRS 17 Disclosures', 'Measurement Summary']
+          },
+          {
+            id: "financial-reporting-integration",
+            name: "Agent 13: Financial Reporting Integration Specialist",
+            description: "Integrates reserving outputs into financial reporting frameworks.",
+            inputs: { text: "Upload framework mapping and reporting structures.", fileUploads: true },
+            config: {
+              framework: { type: 'dropdown', label: 'Framework', options: ['IFRS', 'US GAAP', 'Local GAAP'] }
+            },
+            outputs: ['Valuation Report', 'Disclosure Tables', 'Audit Support']
+          },
+          {
+            id: "mortality-experience",
+            name: "Agent 14: Mortality Experience Analysis Specialist",
+            description: "Analyzes mortality experience and proposes assumption updates.",
+            inputs: { text: "Upload exposures, deaths, and policy data.", fileUploads: true },
+            config: {
+              table: { type: 'dropdown', label: 'Reference Table', options: ['Custom', 'Standard'] }
+            },
+            outputs: ['Mortality Experience', 'Selected Assumptions', 'Study Documentation']
+          },
+          {
+            id: "lapse-persistency",
+            name: "Agent 15: Lapse and Persistency Analysis Specialist",
+            description: "Performs lapse and persistency studies and segmentation.",
+            inputs: { text: "Upload policy status histories and segments.", fileUploads: true },
+            config: {
+              segmentation: { type: 'dropdown', label: 'Segmentation', options: ['Product', 'Channel', 'Cohort'] }
+            },
+            outputs: ['Lapse/Persistency Results', 'Drivers & Segments', 'Assumption Update']
+          },
+          {
+            id: "credibility-blending",
+            name: "Agent 16: Credibility and Blending Specialist",
+            description: "Applies credibility theory to blend experience with external benchmarks.",
+            inputs: { text: "Upload internal experience and external benchmarks.", fileUploads: true },
+            config: {
+              method: { type: 'dropdown', label: 'Credibility Method', options: ['Bühlmann', 'Empirical Bayes'] }
+            },
+            outputs: ['Credibility Weights', 'Blended Assumptions', 'Documentation']
+          }
+        ]
+      },
+      {
+        id: "stm-risk",
+        name: "Team 4: Risk Management and Scenario Testing",
+        mode: "Collaborate",
+        agents: [
+          {
+            id: "stress-testing",
+            name: "Agent 17: Stress Testing & Scenario Analysis",
+            description: "Executes stress and scenario analyses across portfolios.",
+            inputs: { text: "Provide scenarios and portfolio exposures.", fileUploads: true },
+            config: {
+              severity: { type: 'dropdown', label: 'Severity', options: ['Mild', 'Moderate', 'Severe'] },
+              horizon: { type: 'dropdown', label: 'Horizon', options: ['1Y', '3Y', '5Y'] }
+            },
+            outputs: ['Scenario Results', 'Vulnerabilities', 'Mitigation Plan']
+          },
+          {
+            id: "stochastic-modeling",
+            name: "Agent 18: Stochastic Modeling",
+            description: "Runs stochastic simulations for capital and risk measures.",
+            inputs: { text: "Upload distributions and dependency structures.", fileUploads: true },
+            config: {
+              trials: { type: 'numeric', label: 'Simulations', default: 10000 },
+              metric: { type: 'dropdown', label: 'Metric', options: ['VaR', 'TVaR'] }
+            },
+            outputs: ['Distribution Outputs', 'Risk Metrics', 'Stability Diagnostics']
+          },
+          {
+            id: "enterprise-risk",
+            name: "Agent 19: Enterprise Risk Management",
+            description: "Aggregates risks and evaluates enterprise-level impacts.",
+            inputs: { text: "Provide risk registers and interdependencies.", fileUploads: true },
+            config: {
+              aggregation: { type: 'dropdown', label: 'Aggregation', options: ['Additive', 'Copula-Based', 'Scenario'] }
+            },
+            outputs: ['ERM Profile', 'Concentration Analysis', 'Capital Allocation']
+          }
+        ]
+      },
+      {
+        id: "stm-validation",
+        name: "Team 5: Model Validation and Governance",
+        mode: "Route",
+        agents: [
+          {
+            id: "model-validation",
+            name: "Agent 20: Model Validation",
+            description: "Validates model design, data, and performance.",
+            inputs: { text: "Upload documentation and validation datasets.", fileUploads: true },
+            config: {
+              scope: { type: 'dropdown', label: 'Scope', options: ['Data', 'Methodology', 'Performance', 'All'] },
+              backtest: { type: 'toggle', label: 'Backtesting', default: true }
+            },
+            outputs: ['Validation Report', 'Findings Log', 'Remediation Plan']
+          },
+          {
+            id: "regulatory-compliance",
+            name: "Agent 21: Regulatory Compliance",
+            description: "Checks frameworks and regulatory adherence.",
+            inputs: { text: "Upload frameworks and regulatory mappings.", fileUploads: true },
+            config: {
+              regime: { type: 'dropdown', label: 'Regime', options: ['IFRS', 'Solvency II', 'Local'] }
+            },
+            outputs: ['Compliance Checklist', 'Regulatory Notes', 'Deficiencies']
+          },
+          {
+            id: "model-risk-management",
+            name: "Agent 22: Model Risk Management",
+            description: "Assesses model risk and governance controls.",
+            inputs: { text: "Upload model inventory and risk ratings.", fileUploads: true },
+            config: {
+              policy: { type: 'dropdown', label: 'Policy Strictness', options: ['Basic', 'Standard', 'Strict'] }
+            },
+            outputs: ['Model Risk Assessment', 'Governance Checklist', 'Approval Recommendation']
+          }
+        ]
+      }
+    ]
+  },
   {
     id: "risk-assessment",
     title: "Risk Assessment Module",
@@ -1185,193 +1484,194 @@ export const modules: Module[] = [
     }
   ]
 },
-{
-  id: "consolidation",
-  title: "Accounting Consolidation Module",
-  description: "End-to-end consolidation of subsidiary financial data into accurate, compliant, and auditable group financial statements, covering data integration, eliminations, compliance, and final filing.",
-  icon: FolderArchive,
-  colorClass: "module-card-consolidation",
-  agents: [
-    {
-      id: "data-consolidation",
-      name: "Accounting Data Consolidation Agent",
-      description: "Collects and integrates subsidiary trial balances, applies group mappings, currency conversion, and eliminates intercompany transactions for accurate group-level data.",
-      inputs: {
-        text: "Upload subsidiary trial balances, reporting packages, and exchange rates.",
-        fileUploads: true
-      },
-      config: {
-        currencyConversion: {
-          type: 'dropdown',
-          label: 'Currency Conversion Method',
-          options: ['Group Exchange Rates', 'Subsidiary Reported Rates'],
-          default: 'Group Exchange Rates'
-        },
-        mappingFramework: {
-          type: 'dropdown',
-          label: 'GAAP Mapping Framework',
-          options: ['IFRS', 'US GAAP', 'Custom Mapping']
-        },
-        intercompanyHandling: {
-          type: 'dropdown',
-          label: 'Intercompany Matching Rule',
-          options: ['Strict Match', 'Flexible Match'],
-          default: 'Strict Match'
-        }
-      },
-      outputs: [
-        'Consolidated Trial Balance (consolidated_tb.json)',
-        'Intercompany Eliminations Report',
-        'Mapping Adjustments Report',
-        'Audit Trail Logs'
-      ]
-    },
-    {
-      id: "financial-statements",
-      name: "Consolidated Financial Statements Agent",
-      description: "Prepares consolidated balance sheet, income statement, cash flow statement, equity statement, and disclosures based on consolidated trial balance.",
-      inputs: {
-        text: "Provide consolidated trial balance file (consolidated_tb.json).",
-        fileUploads: true
-      },
-      config: {
-        accountingFramework: {
-          type: 'dropdown',
-          label: 'Accounting Framework',
-          options: ['IFRS', 'US GAAP', 'Custom Framework'],
-          default: 'IFRS'
-        },
-        disclosureLevel: {
-          type: 'slider',
-          label: 'Disclosure Depth',
-          min: 1,
-          max: 5,
-          default: 3
-        }
-      },
-      outputs: [
-        'Consolidated Financial Statements (consolidated_statements.xlsx)',
-        'Notes & Disclosures (notes.md)',
-        'Supporting Working Papers',
-        'Audit Support Package'
-      ]
-    },
-    {
-      id: "scope-analysis",
-      name: "Variations in Scope Analysis Agent",
-      description: "Handles consolidation scope changes due to M&A, disposals, restructurings, and performs purchase price allocations where required.",
-      inputs: {
-        text: "Provide details of scope changes (M&A, divestitures, restructurings).",
-        fileUploads: true
-      },
-      config: {
-        consolidationMethod: {
-          type: 'dropdown',
-          label: 'Default Consolidation Method',
-          options: ['Full', 'Proportionate', 'Equity Method'],
-          default: 'Full'
-        },
-        ppaTreatment: {
-          type: 'dropdown',
-          label: 'Purchase Price Allocation Handling',
-          options: ['Automatic Allocation', 'Manual Input Required'],
-          default: 'Automatic Allocation'
-        }
-      },
-      outputs: [
-        'Scope Change Report',
-        'Purchase Price Allocation Summary',
-        'Goodwill & Intangibles Report',
-        'Adjusted Consolidation Outputs'
-      ]
-    },
-    {
-      id: "subsidiary-reports",
-      name: "Production Subsidiary Reports Agent",
-      description: "Prepares subsidiary-level reporting packages aligned with group policies, including disclosures and required notes for consolidation.",
-      inputs: {
-        text: "Upload subsidiary financials for group reporting conversion.",
-        fileUploads: true
-      },
-      config: {
-        reportingFormat: {
-          type: 'dropdown',
-          label: 'Reporting Format',
-          options: ['Excel Template', 'JSON Standardized Package'],
-          default: 'Excel Template'
-        },
-        disclosureCollection: {
-          type: 'dropdown',
-          label: 'Disclosure Data Collection',
-          options: ['Manual Upload', 'Automated Pull'],
-          default: 'Manual Upload'
-        }
-      },
-      outputs: [
-        'Subsidiary Reporting Packages',
-        'Disclosure Data Sheets',
-        'Alignment Report with Group Policies'
-      ]
-    },
-    {
-      id: "compliance-validation",
-      name: "Compliance Validation Agent",
-      description: "Validates compliance of both subsidiary and consolidated reports with group policies, accounting standards, and regulatory requirements.",
-      inputs: {
-        text: "Provide consolidated and subsidiary reports for compliance validation.",
-        fileUploads: true
-      },
-      config: {
-        complianceFramework: {
-          type: 'dropdown',
-          label: 'Compliance Framework',
-          options: ['IFRS', 'US GAAP', 'Local GAAP', 'Custom Framework'],
-          default: 'IFRS'
-        },
-        updateCheck: {
-          type: 'toggle',
-          label: 'Check for Regulatory Updates',
-          default: true
-        }
-      },
-      outputs: [
-        'Compliance Validation Report',
-        'Policy Alignment Report',
-        'Regulatory Update Notes'
-      ]
-    },
-    {
-      id: "final-statements",
-      name: "Final Consolidated Statements Agent",
-      description: "Performs final review, variance analysis, board sign-off preparation, and regulatory filing of the consolidated financial statements.",
-      inputs: {
-        text: "Provide prepared consolidated financial statements for review and finalization.",
-        fileUploads: true
-      },
-      config: {
-        varianceAnalysis: {
-          type: 'dropdown',
-          label: 'Variance Analysis Scope',
-          options: ['vs. Prior Period', 'vs. Budget', 'vs. Forecast', 'All'],
-          default: 'All'
-        },
-        filingDestination: {
-          type: 'dropdown',
-          label: 'Regulatory Filing Destination',
-          options: ['Tax Authority', 'Stock Exchange', 'Securities Regulator', 'All'],
-          default: 'All'
-        }
-      },
-      outputs: [
-        'Final Reviewed Consolidated Financial Statements',
-        'Variance Analysis Report',
-        'Management Commentary',
-        'Regulatory Filing Package',
-        'Executive Summary'
-      ]
-    }
-  ]
-},
+// consolidation : not working
+// {
+//   id: "consolidation",
+//   title: "Accounting Consolidation Module",
+//   description: "End-to-end consolidation of subsidiary financial data into accurate, compliant, and auditable group financial statements, covering data integration, eliminations, compliance, and final filing.",
+//   icon: FolderArchive,
+//   colorClass: "module-card-consolidation",
+//   agents: [
+//     {
+//       id: "data-consolidation",
+//       name: "Accounting Data Consolidation Agent",
+//       description: "Collects and integrates subsidiary trial balances, applies group mappings, currency conversion, and eliminates intercompany transactions for accurate group-level data.",
+//       inputs: {
+//         text: "Upload subsidiary trial balances, reporting packages, and exchange rates.",
+//         fileUploads: true
+//       },
+//       config: {
+//         currencyConversion: {
+//           type: 'dropdown',
+//           label: 'Currency Conversion Method',
+//           options: ['Group Exchange Rates', 'Subsidiary Reported Rates'],
+//           default: 'Group Exchange Rates'
+//         },
+//         mappingFramework: {
+//           type: 'dropdown',
+//           label: 'GAAP Mapping Framework',
+//           options: ['IFRS', 'US GAAP', 'Custom Mapping']
+//         },
+//         intercompanyHandling: {
+//           type: 'dropdown',
+//           label: 'Intercompany Matching Rule',
+//           options: ['Strict Match', 'Flexible Match'],
+//           default: 'Strict Match'
+//         }
+//       },
+//       outputs: [
+//         'Consolidated Trial Balance (consolidated_tb.json)',
+//         'Intercompany Eliminations Report',
+//         'Mapping Adjustments Report',
+//         'Audit Trail Logs'
+//       ]
+//     },
+//     {
+//       id: "financial-statements",
+//       name: "Consolidated Financial Statements Agent",
+//       description: "Prepares consolidated balance sheet, income statement, cash flow statement, equity statement, and disclosures based on consolidated trial balance.",
+//       inputs: {
+//         text: "Provide consolidated trial balance file (consolidated_tb.json).",
+//         fileUploads: true
+//       },
+//       config: {
+//         accountingFramework: {
+//           type: 'dropdown',
+//           label: 'Accounting Framework',
+//           options: ['IFRS', 'US GAAP', 'Custom Framework'],
+//           default: 'IFRS'
+//         },
+//         disclosureLevel: {
+//           type: 'slider',
+//           label: 'Disclosure Depth',
+//           min: 1,
+//           max: 5,
+//           default: 3
+//         }
+//       },
+//       outputs: [
+//         'Consolidated Financial Statements (consolidated_statements.xlsx)',
+//         'Notes & Disclosures (notes.md)',
+//         'Supporting Working Papers',
+//         'Audit Support Package'
+//       ]
+//     },
+//     {
+//       id: "scope-analysis",
+//       name: "Variations in Scope Analysis Agent",
+//       description: "Handles consolidation scope changes due to M&A, disposals, restructurings, and performs purchase price allocations where required.",
+//       inputs: {
+//         text: "Provide details of scope changes (M&A, divestitures, restructurings).",
+//         fileUploads: true
+//       },
+//       config: {
+//         consolidationMethod: {
+//           type: 'dropdown',
+//           label: 'Default Consolidation Method',
+//           options: ['Full', 'Proportionate', 'Equity Method'],
+//           default: 'Full'
+//         },
+//         ppaTreatment: {
+//           type: 'dropdown',
+//           label: 'Purchase Price Allocation Handling',
+//           options: ['Automatic Allocation', 'Manual Input Required'],
+//           default: 'Automatic Allocation'
+//         }
+//       },
+//       outputs: [
+//         'Scope Change Report',
+//         'Purchase Price Allocation Summary',
+//         'Goodwill & Intangibles Report',
+//         'Adjusted Consolidation Outputs'
+//       ]
+//     },
+//     {
+//       id: "subsidiary-reports",
+//       name: "Production Subsidiary Reports Agent",
+//       description: "Prepares subsidiary-level reporting packages aligned with group policies, including disclosures and required notes for consolidation.",
+//       inputs: {
+//         text: "Upload subsidiary financials for group reporting conversion.",
+//         fileUploads: true
+//       },
+//       config: {
+//         reportingFormat: {
+//           type: 'dropdown',
+//           label: 'Reporting Format',
+//           options: ['Excel Template', 'JSON Standardized Package'],
+//           default: 'Excel Template'
+//         },
+//         disclosureCollection: {
+//           type: 'dropdown',
+//           label: 'Disclosure Data Collection',
+//           options: ['Manual Upload', 'Automated Pull'],
+//           default: 'Manual Upload'
+//         }
+//       },
+//       outputs: [
+//         'Subsidiary Reporting Packages',
+//         'Disclosure Data Sheets',
+//         'Alignment Report with Group Policies'
+//       ]
+//     },
+//     {
+//       id: "compliance-validation",
+//       name: "Compliance Validation Agent",
+//       description: "Validates compliance of both subsidiary and consolidated reports with group policies, accounting standards, and regulatory requirements.",
+//       inputs: {
+//         text: "Provide consolidated and subsidiary reports for compliance validation.",
+//         fileUploads: true
+//       },
+//       config: {
+//         complianceFramework: {
+//           type: 'dropdown',
+//           label: 'Compliance Framework',
+//           options: ['IFRS', 'US GAAP', 'Local GAAP', 'Custom Framework'],
+//           default: 'IFRS'
+//         },
+//         updateCheck: {
+//           type: 'toggle',
+//           label: 'Check for Regulatory Updates',
+//           default: true
+//         }
+//       },
+//       outputs: [
+//         'Compliance Validation Report',
+//         'Policy Alignment Report',
+//         'Regulatory Update Notes'
+//       ]
+//     },
+//     {
+//       id: "final-statements",
+//       name: "Final Consolidated Statements Agent",
+//       description: "Performs final review, variance analysis, board sign-off preparation, and regulatory filing of the consolidated financial statements.",
+//       inputs: {
+//         text: "Provide prepared consolidated financial statements for review and finalization.",
+//         fileUploads: true
+//       },
+//       config: {
+//         varianceAnalysis: {
+//           type: 'dropdown',
+//           label: 'Variance Analysis Scope',
+//           options: ['vs. Prior Period', 'vs. Budget', 'vs. Forecast', 'All'],
+//           default: 'All'
+//         },
+//         filingDestination: {
+//           type: 'dropdown',
+//           label: 'Regulatory Filing Destination',
+//           options: ['Tax Authority', 'Stock Exchange', 'Securities Regulator', 'All'],
+//           default: 'All'
+//         }
+//       },
+//       outputs: [
+//         'Final Reviewed Consolidated Financial Statements',
+//         'Variance Analysis Report',
+//         'Management Commentary',
+//         'Regulatory Filing Package',
+//         'Executive Summary'
+//       ]
+//     }
+//   ]
+// },
 {
   id: "structural-risk-analyst",
   title: "Structural Risk Analyst Module",
@@ -1793,200 +2093,201 @@ export const modules: Module[] = [
     }
   ]
 },
-{
-  id: "esg-module",
-  title: "ESG Compliance & Reporting Module",
-  description: "Helps financial institutions and corporates manage ESG compliance, align with global frameworks, produce CSRD/ESRS-compliant reports, and monitor regulatory updates.",
-  icon: FileText,
-  colorClass: "module-card-esg",
-  agents: [
-    {
-      id: "framework-analysis",
-      name: "Framework Analysis",
-      description: "Interprets CSRD and ESRS requirements, maps to ESG frameworks (EU Taxonomy, SFDR, TCFD, GRI, ISSB), and provides gap analyses and implementation roadmaps.",
-      inputs: {
-        text: "Upload ESG or sustainability data (CSV, Excel) and policy/report documents.",
-        fileUploads: true
-      },
-      config: {
-        frameworkFocus: {
-          type: "dropdown",
-          label: "Framework Focus",
-          options: ["CSRD", "ESRS", "EU Taxonomy", "GRI", "ISSB", "All"],
-          default: "CSRD"
-        },
-        analysisDepth: {
-          type: "slider",
-          label: "Gap Analysis Depth",
-          min: 1,
-          max: 5,
-          default: 3
-        },
-        roadmapHorizon: {
-          type: "dropdown",
-          label: "Roadmap Horizon",
-          options: ["Short-Term", "Medium-Term", "Long-Term"],
-          default: "Medium-Term"
-        }
-      },
-      outputs: [
-        "CSRD/ESRS Gap Analysis",
-        "Compliance Readiness Report",
-        "Framework Mapping Summary",
-        "Phased Implementation Roadmap",
-        "Executive Recommendations"
-      ]
-    },
-    {
-      id: "new-regulations-compliance",
-      name: "New Regulations Compliance",
-      description: "Supports materiality assessments, defines ESG data requirements, and ensures audit readiness for CSRD/ESRS compliance.",
-      inputs: {
-        text: "Upload ESG datasets (CSV, Excel) and internal compliance documents.",
-        fileUploads: true
-      },
-      config: {
-        materialityScope: {
-          type: "dropdown",
-          label: "Materiality Scope",
-          options: ["Financial Materiality", "Impact Materiality", "Double Materiality"],
-          default: "Double Materiality"
-        },
-        auditReadinessLevel: {
-          type: "slider",
-          label: "Audit Readiness Level",
-          min: 1,
-          max: 5,
-          default: 3
-        },
-        dataCoverage: {
-          type: "dropdown",
-          label: "Data Coverage Focus",
-          options: ["Environmental", "Social", "Governance", "Full ESG"],
-          default: "Full ESG"
-        }
-      },
-      outputs: [
-        "Materiality Assessment Report",
-        "Data Requirement Mapping",
-        "Audit Readiness Evaluation",
-        "Compliance Action Plan",
-        "Gap Closure Recommendations"
-      ]
-    },
-    {
-      id: "reporting-process-design",
-      name: "Designing Reporting Processes",
-      description: "Designs ESG reporting workflows, standardizes data collection, integrates systems, and strengthens governance for CSRD/ESRS compliance.",
-      inputs: {
-        text: "Upload ESG reporting data (CSV, Excel) and governance/policy documentation.",
-        fileUploads: true
-      },
-      config: {
-        workflowFocus: {
-          type: "dropdown",
-          label: "Workflow Focus",
-          options: ["Data Collection", "Validation Controls", "Governance", "Integration"],
-          default: "Integration"
-        },
-        automationLevel: {
-          type: "slider",
-          label: "Automation Level",
-          min: 1,
-          max: 5,
-          default: 2
-        },
-        governanceStrength: {
-          type: "slider",
-          label: "Governance Maturity Level",
-          min: 1,
-          max: 5,
-          default: 3
-        }
-      },
-      outputs: [
-        "Process Workflow Blueprint",
-        "Data Collection & Validation Framework",
-        "Governance & Control Recommendations",
-        "System Integration Map",
-        "Process Optimization Report"
-      ]
-    },
-    {
-      id: "compliant-report-production",
-      name: "Producing Compliant Reports",
-      description: "Structures CSRD-compliant reports with narrative and quantitative disclosures, reconciles ESG metrics with financials, and ensures audit-ready machine-readable outputs.",
-      inputs: {
-        text: "Upload ESG data (CSV, Excel) and financial statements or narratives.",
-        fileUploads: true
-      },
-      config: {
-        disclosureFormat: {
-          type: "dropdown",
-          label: "Disclosure Format",
-          options: ["Narrative", "Quantitative", "Combined"],
-          default: "Combined"
-        },
-        reconciliationFocus: {
-          type: "dropdown",
-          label: "Reconciliation Focus",
-          options: ["ESG with Financials", "KPIs Only", "Full Integration"],
-          default: "Full Integration"
-        },
-        outputFormat: {
-          type: "dropdown",
-          label: "Report Format",
-          options: ["PDF", "Excel", "XHTML/ESEF"],
-          default: "XHTML/ESEF"
-        }
-      },
-      outputs: [
-        "CSRD-Compliant Draft Report",
-        "Narrative & KPI Disclosures",
-        "Financial Reconciliation Summary",
-        "Audit-Ready Report Package",
-        "Regulatory Submission File (ESEF/XHTML)"
-      ]
-    },
-    {
-      id: "continuous-monitoring",
-      name: "Continuous Monitoring",
-      description: "Tracks ESG regulatory updates, classifies impact, and recommends actions with compliance logs and training recommendations.",
-      inputs: {
-        text: "Upload regulatory update logs (CSV, Excel) or compliance notes.",
-        fileUploads: true
-      },
-      config: {
-        updateScope: {
-          type: "dropdown",
-          label: "Update Scope",
-          options: ["CSRD", "ESRS", "ISSB", "SEC", "All"],
-          default: "All"
-        },
-        urgencyThreshold: {
-          type: "slider",
-          label: "Urgency Threshold (days)",
-          min: 7,
-          max: 90,
-          default: 30
-        },
-        trainingFocus: {
-          type: "dropdown",
-          label: "Training Focus",
-          options: ["Regulation Awareness", "Process Adoption", "Audit Preparation"],
-          default: "Regulation Awareness"
-        }
-      },
-      outputs: [
-        "Regulatory Update Tracker",
-        "Compliance Impact Assessment",
-        "Action & Deadline Log",
-        "Training Recommendation Summary",
-        "Executive Monitoring Report"
-      ]
-    }
-  ]
-},
+// not working esg
+// {
+//   id: "esg-module",
+//   title: "ESG Compliance & Reporting Module",
+//   description: "Helps financial institutions and corporates manage ESG compliance, align with global frameworks, produce CSRD/ESRS-compliant reports, and monitor regulatory updates.",
+//   icon: FileText,
+//   colorClass: "module-card-esg",
+//   agents: [
+//     {
+//       id: "framework-analysis",
+//       name: "Framework Analysis",
+//       description: "Interprets CSRD and ESRS requirements, maps to ESG frameworks (EU Taxonomy, SFDR, TCFD, GRI, ISSB), and provides gap analyses and implementation roadmaps.",
+//       inputs: {
+//         text: "Upload ESG or sustainability data (CSV, Excel) and policy/report documents.",
+//         fileUploads: true
+//       },
+//       config: {
+//         frameworkFocus: {
+//           type: "dropdown",
+//           label: "Framework Focus",
+//           options: ["CSRD", "ESRS", "EU Taxonomy", "GRI", "ISSB", "All"],
+//           default: "CSRD"
+//         },
+//         analysisDepth: {
+//           type: "slider",
+//           label: "Gap Analysis Depth",
+//           min: 1,
+//           max: 5,
+//           default: 3
+//         },
+//         roadmapHorizon: {
+//           type: "dropdown",
+//           label: "Roadmap Horizon",
+//           options: ["Short-Term", "Medium-Term", "Long-Term"],
+//           default: "Medium-Term"
+//         }
+//       },
+//       outputs: [
+//         "CSRD/ESRS Gap Analysis",
+//         "Compliance Readiness Report",
+//         "Framework Mapping Summary",
+//         "Phased Implementation Roadmap",
+//         "Executive Recommendations"
+//       ]
+//     },
+//     {
+//       id: "new-regulations-compliance",
+//       name: "New Regulations Compliance",
+//       description: "Supports materiality assessments, defines ESG data requirements, and ensures audit readiness for CSRD/ESRS compliance.",
+//       inputs: {
+//         text: "Upload ESG datasets (CSV, Excel) and internal compliance documents.",
+//         fileUploads: true
+//       },
+//       config: {
+//         materialityScope: {
+//           type: "dropdown",
+//           label: "Materiality Scope",
+//           options: ["Financial Materiality", "Impact Materiality", "Double Materiality"],
+//           default: "Double Materiality"
+//         },
+//         auditReadinessLevel: {
+//           type: "slider",
+//           label: "Audit Readiness Level",
+//           min: 1,
+//           max: 5,
+//           default: 3
+//         },
+//         dataCoverage: {
+//           type: "dropdown",
+//           label: "Data Coverage Focus",
+//           options: ["Environmental", "Social", "Governance", "Full ESG"],
+//           default: "Full ESG"
+//         }
+//       },
+//       outputs: [
+//         "Materiality Assessment Report",
+//         "Data Requirement Mapping",
+//         "Audit Readiness Evaluation",
+//         "Compliance Action Plan",
+//         "Gap Closure Recommendations"
+//       ]
+//     },
+//     {
+//       id: "reporting-process-design",
+//       name: "Designing Reporting Processes",
+//       description: "Designs ESG reporting workflows, standardizes data collection, integrates systems, and strengthens governance for CSRD/ESRS compliance.",
+//       inputs: {
+//         text: "Upload ESG reporting data (CSV, Excel) and governance/policy documentation.",
+//         fileUploads: true
+//       },
+//       config: {
+//         workflowFocus: {
+//           type: "dropdown",
+//           label: "Workflow Focus",
+//           options: ["Data Collection", "Validation Controls", "Governance", "Integration"],
+//           default: "Integration"
+//         },
+//         automationLevel: {
+//           type: "slider",
+//           label: "Automation Level",
+//           min: 1,
+//           max: 5,
+//           default: 2
+//         },
+//         governanceStrength: {
+//           type: "slider",
+//           label: "Governance Maturity Level",
+//           min: 1,
+//           max: 5,
+//           default: 3
+//         }
+//       },
+//       outputs: [
+//         "Process Workflow Blueprint",
+//         "Data Collection & Validation Framework",
+//         "Governance & Control Recommendations",
+//         "System Integration Map",
+//         "Process Optimization Report"
+//       ]
+//     },
+//     {
+//       id: "compliant-report-production",
+//       name: "Producing Compliant Reports",
+//       description: "Structures CSRD-compliant reports with narrative and quantitative disclosures, reconciles ESG metrics with financials, and ensures audit-ready machine-readable outputs.",
+//       inputs: {
+//         text: "Upload ESG data (CSV, Excel) and financial statements or narratives.",
+//         fileUploads: true
+//       },
+//       config: {
+//         disclosureFormat: {
+//           type: "dropdown",
+//           label: "Disclosure Format",
+//           options: ["Narrative", "Quantitative", "Combined"],
+//           default: "Combined"
+//         },
+//         reconciliationFocus: {
+//           type: "dropdown",
+//           label: "Reconciliation Focus",
+//           options: ["ESG with Financials", "KPIs Only", "Full Integration"],
+//           default: "Full Integration"
+//         },
+//         outputFormat: {
+//           type: "dropdown",
+//           label: "Report Format",
+//           options: ["PDF", "Excel", "XHTML/ESEF"],
+//           default: "XHTML/ESEF"
+//         }
+//       },
+//       outputs: [
+//         "CSRD-Compliant Draft Report",
+//         "Narrative & KPI Disclosures",
+//         "Financial Reconciliation Summary",
+//         "Audit-Ready Report Package",
+//         "Regulatory Submission File (ESEF/XHTML)"
+//       ]
+//     },
+//     {
+//       id: "continuous-monitoring",
+//       name: "Continuous Monitoring",
+//       description: "Tracks ESG regulatory updates, classifies impact, and recommends actions with compliance logs and training recommendations.",
+//       inputs: {
+//         text: "Upload regulatory update logs (CSV, Excel) or compliance notes.",
+//         fileUploads: true
+//       },
+//       config: {
+//         updateScope: {
+//           type: "dropdown",
+//           label: "Update Scope",
+//           options: ["CSRD", "ESRS", "ISSB", "SEC", "All"],
+//           default: "All"
+//         },
+//         urgencyThreshold: {
+//           type: "slider",
+//           label: "Urgency Threshold (days)",
+//           min: 7,
+//           max: 90,
+//           default: 30
+//         },
+//         trainingFocus: {
+//           type: "dropdown",
+//           label: "Training Focus",
+//           options: ["Regulation Awareness", "Process Adoption", "Audit Preparation"],
+//           default: "Regulation Awareness"
+//         }
+//       },
+//       outputs: [
+//         "Regulatory Update Tracker",
+//         "Compliance Impact Assessment",
+//         "Action & Deadline Log",
+//         "Training Recommendation Summary",
+//         "Executive Monitoring Report"
+//       ]
+//     }
+//   ]
+// },
 {
   id: "isr-module",
   title: "ISR Consulting Module",

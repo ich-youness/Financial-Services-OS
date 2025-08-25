@@ -1040,3 +1040,52 @@ almTeam = Team(
 #     "Assess FX exposure and counterparty risk across our treasury operations",
 #     stream=True
 # )
+
+
+# Cash flows
+cash_flows_json = json.dumps([
+    {"Date": "2025-08-20", "Inflows": 300, "Outflows": 250},
+    {"Date": "2025-08-21", "Inflows": 150, "Outflows": 400},
+    {"Date": "2025-08-22", "Inflows": 100, "Outflows": 350},
+], indent=4)
+
+# Off-balance-sheet commitments
+off_balance_json = json.dumps([
+    {"Date": "2025-08-20", "Commitments": 50},
+    {"Date": "2025-08-21", "Commitments": 100},
+    {"Date": "2025-08-22", "Commitments": 80},
+], indent=4)
+
+# Portfolio for interest rate sensitivity
+portfolio_json = json.dumps([
+    {"Instrument": "LoanA", "Type": "Asset", "Amount": 500, "Rate": 0.03, "Duration": 2},
+    {"Instrument": "DepositB", "Type": "Liability", "Amount": 300, "Rate": 0.01, "Duration": 1},
+    {"Instrument": "BondC", "Type": "Asset", "Amount": 400, "Rate": 0.025, "Duration": 3},
+], indent=4)
+
+# Rate shifts to test sensitivity (+1% and -1%)
+rate_shifts_json = json.dumps([0.01, -0.01], indent=4)
+
+
+# almTeam.print_response(
+#     f"""
+# You are a Risk Model Builder agent.
+
+# Step 1: Liquidity Projection
+# - Use the knowledge base to ensure minimum coverage ratios and gap limits are respected.
+# Cash Flows: {cash_flows_json}
+# Off-Balance-Sheet Commitments: {off_balance_json}
+# Stress Factor: 1.2
+
+# Step 2: Interest Rate Sensitivity Analysis
+# - Use the knowledge base to follow IRRBB compliance rules.
+# Portfolio: {portfolio_json}
+# Rate Shifts: {rate_shifts_json}
+
+# Step 3: Reporting & Recommendations
+# - Summarize projected liquidity positions, identify liquidity gaps.
+# - Provide NII and EVE sensitivity results.
+# - Highlight any vulnerabilities and recommend mitigation actions.
+# """
+# )
+

@@ -457,12 +457,11 @@ AccountingComplianceTeam = Team(
 
 # AccountingComplianceTeam.print_response("""
 # I have the following raw transactions that need to be validated:
-
 # [
 #     {"date": "2025-08-10", "amount": 1500, "account_code": "1200", "description": " Office Supplies ", "type": "expense"},
 #     {"date": "2025-08-11", "amount": "5000", "account_code": 2001, "description": "Loan Payment", "type": "liability"},
 #     {"date": "2025/08/12", "amount": "abc", "account_code": "4000", "description": "Product Sale", "type": "revenue"}
 # ]
-
 # Please validate these transactions and generate a compliance audit report afterwards.
 # """)
+

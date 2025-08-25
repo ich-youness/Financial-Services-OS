@@ -192,8 +192,8 @@ manager_agent = Team(
     # debug_mode=True,
 )
 
-manager_agent.print_response("""
-Please provide a detailed analysis of the profitability and ROI of each business unit for the last quarter, and highlight any areas where performance deviated significantly from the budget.
-""", stream=True)
+# manager_agent.print_response("""
+# Please provide a detailed analysis of the profitability and ROI of each business unit for the last quarter, and highlight any areas where performance deviated significantly from the budget.
+# """, stream=True)
 
 

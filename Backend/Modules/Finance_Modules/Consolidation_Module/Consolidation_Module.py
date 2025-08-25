@@ -13,10 +13,10 @@ load_dotenv()
 
 knowledge_base_1 = MarkdownKnowledgeBase(
     path="Knowledge/Consolidation_Standards.md",
-    vector_db=PgVector(
-        table_name="consolidation_documents",
-        db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
-    )
+    # vector_db=PgVector(
+    #     table_name="consolidation_documents",
+    #     db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
+    # )
 )
 
 Accounting_Data_Consolidation_Agent = Agent(
@@ -53,10 +53,10 @@ Accounting_Data_Consolidation_Agent = Agent(
 
 knowledge_base_2 = MarkdownKnowledgeBase(
     path="Knowledge/Consolidation_Standards.md",
-    vector_db=PgVector(
-        table_name="consolidation_financial_statements_documents",
-        db_url="postgresql+psycopg://ai",
-    )
+    # vector_db=PgVector(
+    #     table_name="consolidation_financial_statements_documents",
+    #     db_url="postgresql+psycopg://ai",
+    # )
 )
 
 
@@ -95,10 +95,10 @@ Consolidated_Financial_Statements_Agent = Agent(
 
 knowledge_base_3 = MarkdownKnowledgeBase(
     path="Knowledge/Consolidation_Standards.md",
-    vector_db=PgVector(
-        table_name="consolidation_variations_scope_documents",
-        db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
-    )
+    # vector_db=PgVector(
+    #     table_name="consolidation_variations_scope_documents",
+    #     db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
+    # )
 )
 
 
@@ -134,10 +134,10 @@ Variations_Scope_Analysis_Agent = Agent(
 
 knowledge_base_4 = MarkdownKnowledgeBase(
     path="Knowledge/Consolidation_Standards.md",
-    vector_db=PgVector(
-        table_name="consolidation_subsidiary_reports_documents",
-        db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
-    )
+    # vector_db=PgVector(
+    #     table_name="consolidation_subsidiary_reports_documents",
+    #     db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
+    # )
 )
 
 
@@ -172,10 +172,10 @@ Production_Subsidiary_Reports_Agent = Agent(
 
 knowledge_base_5 = MarkdownKnowledgeBase(
     path="Knowledge/Consolidation_Standards.md",
-    vector_db=PgVector(
-        table_name="consolidation_compliance_documents",
-        db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
-    )
+    # vector_db=PgVector(
+    #     table_name="consolidation_compliance_documents",
+    #     db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
+    # )
 )
 
 
@@ -210,10 +210,10 @@ Compliance_Validation_Agent = Agent(
 
 knowledge_base_6 = MarkdownKnowledgeBase(
     path="Knowledge/Consolidation_Standards.md",
-    vector_db=PgVector(
-        table_name="consolidation_final_review_filing_documents",
-        db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
-    )
+    # vector_db=PgVector(
+    #     table_name="consolidation_final_review_filing_documents",
+    #     db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
+    # )
 )
 
 Final_Consolidated_Financial_Statements_Agent = Agent(

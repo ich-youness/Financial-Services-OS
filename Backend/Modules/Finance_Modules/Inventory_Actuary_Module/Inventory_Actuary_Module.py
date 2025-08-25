@@ -1367,10 +1367,10 @@ def test_comprehensive_actuarial_services():
     )
 
 # if __name__ == "__main__":
-    #print("Inventory Actuary Module Loaded Successfully!")
-    #print("\nAvailable Agents:")
-    #print("1. Provisioning_Evaluation_of_Provisions - Reserve adequacy and technical provisions")
-    #test_provisioning_evaluation()
+#     print("Inventory Actuary Module Loaded Successfully!")
+#     print("\nAvailable Agents:")
+#     print("1. Provisioning_Evaluation_of_Provisions - Reserve adequacy and technical provisions")
+#     test_provisioning_evaluation()
     #
     #print("\n2. Behavioral_Analyses - Behavioral modeling and risk assessment")
     #test_behavioral_analyses()

@@ -717,11 +717,11 @@ def test_comprehensive_product_design():
         print(chunk.content, end="", flush=True)
 
 
-# if __name__ == "__main__":
-#     print("Product Design Life Insurance Module Loaded Successfully!")
-#     print("Available Agents:")
-#     print("1. MarketInsightsAgent - Market research and customer insights")
-#     test_market_insights()
+if __name__ == "__main__":
+    print("Product Design Life Insurance Module Loaded Successfully!")
+    print("Available Agents:")
+    print("1. MarketInsightsAgent - Market research and customer insights")
+    test_market_insights()
 #     print("2. ProductDesignAgent - Life insurance product design")
 #     test_product_design()
 #     print("3. ActuarialModelingAgent - Actuarial modeling and pricing")

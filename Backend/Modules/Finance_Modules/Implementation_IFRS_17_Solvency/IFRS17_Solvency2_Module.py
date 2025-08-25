@@ -525,10 +525,10 @@ def test_comprehensive_implementation():
     )
 
 # if __name__ == "__main__":
-    #print("IFRS 17 & Solvency II Module Loaded Successfully!")
-    #print("\nAvailable Agents:")
-    #print("1. Framework_Analysis_Agent - Regulatory framework analysis and policy development")
-    #test_framework_analysis()
+#     print("IFRS 17 & Solvency II Module Loaded Successfully!")
+#     print("\nAvailable Agents:")
+#     print("1. Framework_Analysis_Agent - Regulatory framework analysis and policy development")
+#     test_framework_analysis()
     #
     #print("\n2. Gap_Analysis_and_Implementation_Roadmap_Agent - Gap analysis and implementation planning")
     #test_gap_analysis()

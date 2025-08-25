@@ -1,1154 +1,2047 @@
-from __future__ import annotations
+from agno.knowledge.markdown import MarkdownKnowledgeBase
+from agno.vectordb.pgvector import PgVector
+from agno.embedder.mistral import MistralEmbedder
 from agno.agent import Agent
 from agno.team.team import Team
-from agno.models.openai import OpenAIChat
-from agno.models.google import Gemini
 from agno.models.mistral import MistralChat
-from agno.tools.scrapegraph import ScrapeGraphTools
 from agno.tools.file import FileTools
-from agno.tools.exa import ExaTools
 from agno.tools.reasoning import ReasoningTools
-from agno.models.huggingface import HuggingFace
-from agno.tools.yfinance import YFinanceTools
 from agno.tools.calculator import CalculatorTools
+from agno.tools.yfinance import YFinanceTools
+from agno.tools.exa import ExaTools
+from agno.tools import tool
 from dotenv import load_dotenv
 import os
-from polygon import RESTClient
-import numpy as np
-import pandas as pd
-from scipy.stats import norm
-from agno.knowledge.markdown import MarkdownKnowledgeBase
+from typing import Dict, List, Any, Optional
+from pathlib import Path
+
+# Import custom tools
+from tools import (
+    # Life & Non-Life Modeling Tools
+    fit_mortality_table, project_life_liability, analyze_claims_triangle, fit_catastrophe_model,
+    # Pension & Retirement Tools
+    calculate_pbo, project_funding_ratio, optimize_contributions,
+    # Capital & Solvency Tools
+    calculate_scr, compute_risk_margin, ifrs17_csm_calculation,
+    # ALM Integration Tools
+    calculate_duration, duration_gap_analysis, optimize_alm_portfolio,
+    # Pricing & Profitability Tools
+    calculate_technical_premium, stochastic_pricing_simulation, calculate_roc
+)
 
 load_dotenv()
 
+# ============================================================================
+# KNOWLEDGE BASE SETUP
+# ============================================================================
 
-kb1 = MarkdownKnowledgeBase(
-    path="Knowledge/ActurialModeling.md"
-)
-
-import math
-import numpy as np
-import pandas as pd
-from typing import Dict, List, Iterable, Optional
-
-# -----------------------------
-# 1) LIFE LIABILITY PROJECTION
-# -----------------------------
-def project_life_liability(
-    policies: pd.DataFrame,
-    mortality_table: Dict[int, float],
-    discount_curve: Dict[int, float],
-    lapse_rate: float = 0.0,
-    max_term_years: int = 60,
-) -> pd.DataFrame:
-    """
-    Deterministic expected present value (EPV) for simple life products.
-    Assumes annual steps, level premium and level sum assured per policy.
+# Initialize Knowledge Base for the module
+actuarial_modeling_knowledge_base = MarkdownKnowledgeBase(
+    path="knowledge/Actuarial_Modeling_Knowledge.md",
     
-    policies columns:
-      - PolicyID (str/int)
-      - IssueAge (int)
-      - Term (int)  # in years
-      - SumAssured (float)
-      - AnnualPremium (float)
-      - Product (str) in {"TermLife","WholeLife","Endowment"}  # WholeLife ignores Term
+    # vector_db=PgVector(
+    #     table_name="actuarial_modeling_knowledge",
+    #     db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
+    #     embedder=MistralEmbedder(api_key=os.getenv("MISTRAL_API_KEY")),
+    # ),
+)
+# actuarial_modeling_knowledge_base.load(recreate=True)
 
-    mortality_table: dict of age->qx (annual mortality prob)
-    discount_curve: dict of t(year)->annual spot rate (continuously compounded not assumed; we use simple 1/(1+r)^t)
-    lapse_rate: annual lapse probability applied to in-force each year (constant)
-    max_term_years: safety cap
+# ============================================================================
+# SUB-TEAM 1: DEVELOPMENT OF ACTUARIAL MODELS (COORDINATE MODE)
+# ============================================================================
 
-    Returns per policy:
-      - PV_Benefits, PV_Premiums, EPV (Benefits - Premiums), Dur_Benefits (Macaulay-like)
-    """
-    results = []
-    for _, row in policies.iterrows():
-        pid = row["PolicyID"]
-        age0 = int(row["IssueAge"])
-        term = int(row["Term"])
-        sa = float(row["SumAssured"])
-        prem = float(row["AnnualPremium"])
-        product = str(row.get("Product", "TermLife"))
-
-        T = term if product in ("TermLife", "Endowment") else max_term_years
-        T = min(T, max_term_years)
-
-        surv = 1.0
-        pv_ben = 0.0
-        pv_prem = 0.0
-        dur_weighted_ben = 0.0
-
-        for t in range(1, T + 1):
-            age_t = age0 + t - 1
-            qx = mortality_table.get(age_t, min(0.999, mortality_table.get(max(mortality_table.keys()), 0.02)))
-            lx = lapse_rate
-            # Death in year t (approx): surv * qx
-            death_prob = surv * qx
-            # Premium in year t: paid at start of year t if still in-force at start ~ surv
-            prem_prob = surv
-
-            r = discount_curve.get(t, list(discount_curve.values())[-1])
-            df = 1.0 / ((1.0 + r) ** t)
-
-            # Benefits
-            if product in ("TermLife", "WholeLife"):
-                pv_ben += death_prob * sa * df
-                dur_weighted_ben += t * death_prob * sa * df
-            elif product == "Endowment":
-                # death benefit during term; maturity at t==T if survive
-                pv_ben += death_prob * sa * df
-                if t == T:
-                    pv_ben += surv * sa * df
-                    dur_weighted_ben += t * surv * sa * df
-                else:
-                    dur_weighted_ben += t * death_prob * sa * df
-
-            # Premiums (level, paid annually in advance approximation using surv at start)
-            pv_prem += prem_prob * prem * df
-
-            # Update survival for next step (no multiple decrements interaction refinement)
-            surv *= (1.0 - qx) * (1.0 - lx)
-
-        duration_ben = (dur_weighted_ben / pv_ben) if pv_ben > 0 else np.nan
-        results.append({
-            "PolicyID": pid,
-            "PV_Benefits": pv_ben,
-            "PV_Premiums": pv_prem,
-            "EPV": pv_ben - pv_prem,
-            "Dur_Benefits": duration_ben,
-            "Product": product
-        })
-
-    return pd.DataFrame(results)
-
-
-# ------------------------------------
-# 2) NON-LIFE RESERVING: CHAIN-LADDER
-# ------------------------------------
-def chain_ladder_reserving(triangle: pd.DataFrame, tail_factor: Optional[float] = None) -> pd.DataFrame:
-    """
-    Simple deterministic Chain-Ladder on a cumulative development triangle (paid or reported).
-    triangle columns:
-      - AccidentYear (int)
-      - Dev (int)   # development period number starting at 1
-      - CumValue (float)
-
-    Returns:
-      DataFrame per AccidentYear with:
-        - SelectedFactors (list)
-        - Ultimate
-        - Latest
-        - IBNR = Ultimate - Latest
-    """
-    # Pivot to AY x Dev matrix
-    piv = triangle.pivot(index="AccidentYear", columns="Dev", values="CumValue").sort_index()
-    dev_cols = sorted([c for c in piv.columns if pd.notna(c)])
-    # Development factors f_k = sum(C_{.,k+1}) / sum(C_{.,k}) across available AYs
-    factors = []
-    for k in range(len(dev_cols) - 1):
-        c_k = piv[dev_cols[k]]
-        c_k1 = piv[dev_cols[k + 1]]
-        mask = c_k.notna() & c_k1.notna()
-        f = c_k1[mask].sum() / max(c_k[mask].sum(), 1e-12)
-        factors.append(f)
-    if tail_factor is not None:
-        factors.append(tail_factor)
-
-    # Project to ultimate
-    ultimates = []
-    for ay, row in piv.iterrows():
-        # latest observed dev col for this AY
-        obs = row.dropna()
-        if obs.empty:
-            continue
-        latest_dev = obs.index.max()
-        latest_val = obs.loc[latest_dev]
-        # multiply the remaining factors from latest_dev position
-        start_idx = dev_cols.index(latest_dev)
-        prod = 1.0
-        for f in factors[start_idx:]:
-            prod *= f
-        ultimate = latest_val * prod
-        ultimates.append({"AccidentYear": ay, "Latest": latest_val, "Ultimate": ultimate, "SelectedFactors": factors})
-
-    out = pd.DataFrame(ultimates)
-    out["IBNR"] = out["Ultimate"] - out["Latest"]
-    return out
-
-
-# ---------------------------------------
-# 3) PENSION (DB) OBLIGATION & FUNDING
-# ---------------------------------------
-def calculate_pension_db_obligation(
-    members: pd.DataFrame,
-    discount_rate: float,
-    salary_growth: float,
-    retirement_age: int,
-    plan_accrual_rate: float = 0.015,
-    assets_fair_value: float = 0.0,
-    mortality_table: Optional[Dict[int, float]] = None,
-) -> Dict[str, float]:
-    """
-    Very simple PBO approximation for a final-salary DB plan.
-    members columns:
-      - MemberID, Age (int), ServiceYears (float), Salary (float)
-
-    Benefit at retirement (annual): accrual_rate * FinalSalary * ServiceYears
-    PBO: Present value of accrued benefit prorated to date using discount_rate and survival (optional).
-
-    Returns dict with: PBO, Assets, FundingRatio, AvgDuration (rough), ServiceCost (approx).
-    """
-    pbo = 0.0
-    dur_weighted = 0.0
-    sc = 0.0  # crude service cost: one extra year of accrual
-
-    for _, m in members.iterrows():
-        age = int(m["Age"])
-        yrs_to_ret = max(0, retirement_age - age)
-        svc = float(m["ServiceYears"])
-        sal = float(m["Salary"])
-        # Project salary to retirement
-        final_sal = sal * ((1.0 + salary_growth) ** yrs_to_ret)
-        ann_benefit = plan_accrual_rate * final_sal * svc  # accrued to date
-        # Survival probability to retirement (optional mortality)
-        if mortality_table:
-            surv = 1.0
-            for a in range(age, retirement_age):
-                qx = mortality_table.get(a, mortality_table.get(max(mortality_table.keys()), 0.01))
-                surv *= (1.0 - qx)
-        else:
-            surv = 1.0
-        df = 1.0 / ((1.0 + discount_rate) ** yrs_to_ret)
-        pv = ann_benefit * surv * df
-        pbo += pv
-        dur_weighted += yrs_to_ret * pv
-        # Service cost (one more year accrual on same salary path)
-        ann_benefit_next = plan_accrual_rate * (sal * ((1.0 + salary_growth) ** (yrs_to_ret - 1 if yrs_to_ret > 0 else 0))) * (svc + 1)
-        pv_next = ann_benefit_next * surv * (1.0 / ((1.0 + discount_rate) ** max(yrs_to_ret - 1, 0)))
-        sc += max(pv_next - pv, 0.0)
-
-    assets = float(assets_fair_value)
-    funding_ratio = assets / pbo if pbo > 0 else np.nan
-    avg_duration = (dur_weighted / pbo) if pbo > 0 else np.nan
-
-    return {
-        "PBO": pbo,
-        "Assets": assets,
-        "FundingRatio": funding_ratio,
-        "AvgDurationYears": avg_duration,
-        "ServiceCostApprox": sc
-    }
-
-
-# -----------------------------------------------------
-# 4) SOLVENCY CAPITAL (POISSON-LOGNORMAL SIMULATION)
-# -----------------------------------------------------
-def simulate_solvency_capital_poisson_lognormal(
-    lambda_freq: float,
-    sev_mu: float,
-    sev_sigma: float,
-    sims: int = 100_000,
-    confidence: float = 0.995,
-    seed: Optional[int] = 42,
-) -> Dict[str, float]:
-    """
-    Economic capital for annual loss modeled as compound Poisson(Lognormal).
-    - Frequency ~ Poisson(lambda_freq)
-    - Severity ~ Lognormal(mu, sigma) on natural log scale
-
-    Returns VaR, TVaR, MeanLoss.
-    """
-    rng = np.random.default_rng(seed)
-    N = rng.poisson(lambda_freq, size=sims)
-    # draw severities efficiently
-    losses = np.zeros(sims)
-    idx_nonzero = np.where(N > 0)[0]
-    if len(idx_nonzero) > 0:
-        # expand severities per simulation
-        for i in idx_nonzero:
-            k = N[i]
-            sev = rng.lognormal(mean=sev_mu, sigma=sev_sigma, size=k).sum()
-            losses[i] = sev
-    mean_loss = float(losses.mean())
-    var_level = float(np.quantile(losses, confidence))
-    # TVaR (conditional tail expectation)
-    tvar = float(losses[losses >= var_level].mean()) if np.any(losses >= var_level) else var_level
-    return {"VaR": var_level, "TVaR": tvar, "MeanLoss": mean_loss, "Confidence": confidence}
-
-
-# --------------------------------------------
-# 5) LIGHT ALM: DURATION MISMATCH DIAGNOSTICS
-# --------------------------------------------
-def _pv_and_duration(cashflows: List[Dict[str, float]], discount_curve: Dict[int, float]) -> Dict[str, float]:
-    """
-    Helper: cashflows = list of {'t': year_int, 'cf': amount}
-    discount_curve: {t: rate}
-    Returns PV and Macaulay Duration.
-    """
-    pv = 0.0
-    dur_w = 0.0
-    for leg in cashflows:
-        t = int(leg["t"])
-        cf = float(leg["cf"])
-        r = discount_curve.get(t, list(discount_curve.values())[-1])
-        df = 1.0 / ((1.0 + r) ** t)
-        pv_cf = cf * df
-        pv += pv_cf
-        dur_w += t * pv_cf
-    duration = (dur_w / pv) if pv != 0 else np.nan
-    return {"PV": pv, "Duration": duration}
-
-def alm_duration_mismatch(
-    asset_cashflows: List[Dict[str, float]],
-    liability_cashflows: List[Dict[str, float]],
-    discount_curve: Dict[int, float],
-) -> Dict[str, float]:
-    """
-    Compares asset vs liability PV and durations; reports gaps.
-    """
-    a = _pv_and_duration(asset_cashflows, discount_curve)
-    l = _pv_and_duration(liability_cashflows, discount_curve)
-    return {
-        "PV_Assets": a["PV"],
-        "PV_Liabilities": l["PV"],
-        "Net_PV": a["PV"] - l["PV"],
-        "Dur_Assets": a["Duration"],
-        "Dur_Liabilities": l["Duration"],
-        "Dur_Gap": (a["Duration"] - l["Duration"]) if (not math.isnan(a["Duration"]) and not math.isnan(l["Duration"])) else np.nan
-    }
-
-
-Actuarial_Model_Developer = Agent(
-    name="Actuarial Model Developer",
-    model=MistralChat(id="mistral-large-latest", api_key=os.getenv("MISTRAL_API_KEY")),
-    reasoning=True,
-    stream=True,
+# Agent 1: Life & Non-Life Insurance Models
+Life_NonLife_Models = Agent(
+    name="Life & Non-Life Insurance Models",
+    agent_id="Life_NonLife_Models",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
     tools=[
-        alm_duration_mismatch,
-        calculate_pension_db_obligation,
-        chain_ladder_reserving,
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        YFinanceTools(stock_price=True, company_info=True, company_news=True),
+        fit_mortality_table,
         project_life_liability,
-        simulate_solvency_capital_poisson_lognormal,
+        analyze_claims_triangle,
+        fit_catastrophe_model,
     ],
-    knowledge=kb1, 
     description="""
-    The Actuarial Model Developer builds and runs core actuarial models across life, non-life (P&C), pensions,
-    solvency capital, and light ALM diagnostics. It applies the knowledge base for standards (e.g., Solvency II,
-    IFRS 17), documents assumptions, and returns transparent, reproducible results with key sensitivities.
-    """,
-    instructions="""
-    Follow this route and use the explicit tools:
-
-    Step 0: Data & Assumptions Check
-    - Validate inputs (units, cumulative vs incremental triangles, curve tenors).
-    - Reference the knowledge base for modeling principles and compliance notes.
-
-    Step 1: Life Liability Projection (EPV)
-    - Tool: project_life_liability
-    - Input: policies, mortality_table, discount_curve, lapse_rate (if any).
-    - Output: PV_Benefits, PV_Premiums, EPV, Dur_Benefits per policy.
-
-    Step 2: Non-Life Reserving (Deterministic)
-    - Tool: chain_ladder_reserving
-    - Input: cumulative development triangle (AccidentYear, Dev, CumValue), optional tail_factor.
-    - Output: Latest, Ultimate, IBNR per AccidentYear and selected factors.
-
-    Step 3: Pension (DB) Obligation & Funding
-    - Tool: calculate_pension_db_obligation
-    - Input: members, discount_rate, salary_growth, retirement_age, plan_accrual_rate, assets_fair_value, (optional) mortality_table.
-    - Output: PBO, Assets, FundingRatio, AvgDurationYears, ServiceCostApprox.
-
-    Step 4: Solvency Capital (Loss Distribution)
-    - Tool: simulate_solvency_capital_poisson_lognormal
-    - Input: lambda_freq, sev_mu, sev_sigma, sims, confidence.
-    - Output: VaR, TVaR, MeanLoss at the specified confidence.
-
-    Step 5: ALM Diagnostics (Duration & PV)
-    - Tool: alm_duration_mismatch
-    - Input: asset_cashflows, liability_cashflows, discount_curve.
-    - Output: PV_Assets, PV_Liabilities, Net_PV, Dur_Assets, Dur_Liabilities, Dur_Gap.
-
-    Step 6: Reporting
-    - Summarize results with assumptions and any caveats.
-    - Flag data quality issues and compliance considerations from the knowledge base.
-    """
-)
-import json
-
-# --- Step 1: Life sample ---
-policies_json = json.dumps([
-    {"PolicyID": "P001", "IssueAge": 40, "Term": 20, "SumAssured": 100000, "AnnualPremium": 800, "Product": "TermLife"},
-    {"PolicyID": "P002", "IssueAge": 55, "Term": 10, "SumAssured": 50000,  "AnnualPremium": 1200, "Product": "Endowment"}
-], indent=4)
-
-mortality_table_json = json.dumps({
-    40: 0.0020, 41: 0.0021, 42: 0.0022, 43: 0.0023, 44: 0.0024,
-    45: 0.0026, 50: 0.0040, 55: 0.0060, 60: 0.0090, 65: 0.0140, 70: 0.0220, 80: 0.0500
-}, indent=4)
-
-discount_curve_json = json.dumps({1: 0.02, 2: 0.022, 3: 0.023, 4: 0.024, 5: 0.025}, indent=4)  # used as flat beyond last key
-lapse_rate_json = json.dumps(0.03, indent=4)
-
-# --- Step 2: Non-life triangle (cumulative) ---
-triangle_json = json.dumps([
-    {"AccidentYear": 2021, "Dev": 1, "CumValue": 120},
-    {"AccidentYear": 2021, "Dev": 2, "CumValue": 180},
-    {"AccidentYear": 2021, "Dev": 3, "CumValue": 200},
-    {"AccidentYear": 2022, "Dev": 1, "CumValue": 130},
-    {"AccidentYear": 2022, "Dev": 2, "CumValue": 185},
-    {"AccidentYear": 2023, "Dev": 1, "CumValue": 140}
-], indent=4)
-
-tail_factor_json = json.dumps(1.03, indent=4)  # optional
-
-# --- Step 3: Pension DB sample ---
-members_json = json.dumps([
-    {"MemberID": "M1", "Age": 45, "ServiceYears": 15, "Salary": 50000},
-    {"MemberID": "M2", "Age": 35, "ServiceYears": 8,  "Salary": 42000},
-    {"MemberID": "M3", "Age": 58, "ServiceYears": 25, "Salary": 68000}
-], indent=4)
-
-pension_assumptions_json = json.dumps({
-    "discount_rate": 0.03,
-    "salary_growth": 0.02,
-    "retirement_age": 65,
-    "plan_accrual_rate": 0.015,
-    "assets_fair_value": 1800000
-}, indent=4)
-
-# Optional mortality for pension
-pension_mortality_json = json.dumps({58:0.009, 59:0.010, 60:0.011, 61:0.012, 62:0.013, 63:0.014, 64:0.015}, indent=4)
-
-# --- Step 4: Solvency capital (compound Poisson-Lognormal) ---
-solvency_params_json = json.dumps({
-    "lambda_freq": 12.0,
-    "sev_mu": 9.0,
-    "sev_sigma": 1.0,
-    "sims": 20000,
-    "confidence": 0.995
-}, indent=4)
-
-# --- Step 5: ALM cashflows & curve ---
-asset_cfs_json = json.dumps([
-    {"t": 1, "cf": 300000},
-    {"t": 2, "cf": 250000},
-    {"t": 3, "cf": 200000},
-    {"t": 4, "cf": 150000},
-    {"t": 5, "cf": 100000}
-], indent=4)
-
-liability_cfs_json = json.dumps([
-    {"t": 1, "cf": 200000},
-    {"t": 2, "cf": 220000},
-    {"t": 3, "cf": 230000},
-    {"t": 4, "cf": 240000},
-    {"t": 5, "cf": 250000}
-], indent=4)
-
-alm_discount_curve_json = discount_curve_json  # reuse the same curve
-
-# Actuarial_Model_Developer.print_response(
-#     f"""
-# You are the Actuarial Model Developer. Use the knowledge base and the specified tools exactly as instructed.
-
-# Step 1 — Life Projection (project_life_liability):
-# Policies: {policies_json}
-# MortalityTable: {mortality_table_json}
-# DiscountCurve: {discount_curve_json}
-# LapseRate: {lapse_rate_json}
-
-# Step 2 — Non-Life Reserving (chain_ladder_reserving):
-# CumulativeTriangle: {triangle_json}
-# TailFactor: {tail_factor_json}
-
-# Step 3 — Pension DB Obligation (calculate_pension_db_obligation):
-# Members: {members_json}
-# Assumptions: {pension_assumptions_json}
-# OptionalPensionMortality: {pension_mortality_json}
-
-# Step 4 — Solvency Capital (simulate_solvency_capital_poisson_lognormal):
-# Params: {solvency_params_json}
-
-# Step 5 — ALM Diagnostics (alm_duration_mismatch):
-# AssetCashflows: {asset_cfs_json}
-# LiabilityCashflows: {liability_cfs_json}
-# DiscountCurve: {alm_discount_curve_json}
-
-# Deliverables:
-# - Key tables for each step (EPV results, Chain-Ladder ultimates/IBNR, Pension PBO & FundingRatio, VaR/TVaR, ALM PV & Duration Gap).
-# - State assumptions and any data caveats. Keep it concise and structured.
-# """
-# )
-
-
-################## 2end agent ##################
-
-kb2= MarkdownKnowledgeBase(
-    path="Knowledge/Pricing_Product_Developer.md"
-)
-
-
-def calculate_life_premium(self, mortality_table, benefits, discount_rate, expenses):
-        """
-        Calculate technical premium for life insurance products.
-        Inputs:
-            - mortality_table: dict or DataFrame with mortality rates
-            - benefits: dict with benefit amounts per policy
-            - discount_rate: float (annual)
-            - expenses: dict with acquisition and maintenance costs
-        Output:
-            - premium: float
-        """
-        # Placeholder for calculation logic
-        premium = sum(benefits.values()) * (1 + sum(expenses.values())) / (1 - discount_rate)
-        return premium
-
-def calculate_non_life_premium(self, expected_claims, expense_loading, risk_margin):
-        """
-        Calculate technical premium for non-life insurance products.
-        Inputs:
-            - expected_claims: float or array (frequency x severity)
-            - expense_loading: float (percentage of claims)
-            - risk_margin: float (percentage)
-        Output:
-            - premium: float
-        """
-        premium = expected_claims * (1 + expense_loading + risk_margin)
-        return premium
-
-def assess_profitability(self, premiums, expected_claims, expenses, capital, roc_target=0.1):
-        """
-        Evaluate risk-adjusted profitability (ROC, ROE)
-        Inputs:
-            - premiums: float
-            - expected_claims: float
-            - expenses: float
-            - capital: float
-            - roc_target: target return on capital
-        Output:
-            - profitability_metrics: dict
-        """
-        net_profit = premiums - expected_claims - expenses
-        roc = net_profit / capital
-        is_target_met = roc >= roc_target
-        return {"net_profit": net_profit, "roc": roc, "target_met": is_target_met}
-
-def sensitivity_analysis(self, base_premium, scenarios):
-        """
-        Run sensitivity analysis on premiums under different assumptions.
-        Inputs:
-            - base_premium: float
-            - scenarios: dict of {scenario_name: adjustment_factor}
-        Output:
-            - results: dict of {scenario_name: adjusted_premium}
-        """
-        results = {}
-        for scenario, factor in scenarios.items():
-            results[scenario] = base_premium * factor
-        return results
-
-def stochastic_simulation(self, base_premium, n_simulations, random_seed=None):
-        """
-        Simulate premium outcomes under stochastic risk scenarios.
-        Inputs:
-            - base_premium: float
-            - n_simulations: int
-            - random_seed: int or None
-        Output:
-            - simulated_premiums: list of floats
-        """
-        import random
-        if random_seed:
-            random.seed(random_seed)
-        simulated_premiums = [base_premium * (1 + random.gauss(0, 0.05)) for _ in range(n_simulations)]
-        return simulated_premiums
-
-Pricing_Product_Developer = Agent(
-    name="Pricing Product Developer",
-    model=MistralChat(id="mistral-large-latest", api_key=os.getenv("MISTRAL_API_KEY")),
-    reasoning=True,
-    stream=True,
-    tools=[
-        calculate_life_premium,
-        calculate_non_life_premium,
-        assess_profitability,
-        sensitivity_analysis,
-        stochastic_simulation
-    ],
-    knowledge=kb2,
-    description="""
-Designs, prices, and evaluates insurance and financial products to ensure profitability, competitiveness, and compliance. 
-It covers life, non-life, and pension products, integrating actuarial assumptions, capital requirements, and market data 
-to recommend technical premiums, risk margins, and product adjustments.
+An AI agent specialized in developing comprehensive models for life and non-life insurance products.
+Focuses on mortality modeling, liability projection, claims analysis, and catastrophe modeling.
 """,
     instructions="""
-You are the Pricing & Product Developer. Follow these steps, explicitly using the listed tools:
+You are Life_NonLife_Models, an AI-powered actuarial modeling specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
 
-1. **Calculate Technical Premiums**
-   - For life insurance products, use `calculate_life_premium`.
-   - For non-life insurance products, use `calculate_non_life_premium`.
-   - Inputs include mortality tables, claims data, benefits, expenses, and financial assumptions.
+## Your Responsibilities:
+1. **Life Insurance Models**
+   - Develop mortality tables using Gompertz, Makeham, and other mortality laws
+   - Project life insurance liabilities using mortality and discount assumptions
+   - Model lapse/surrender behavior and persistency patterns
+   - Analyze annuity cash flows and longevity risk
 
-2. **Assess Product Profitability**
-   - Use `assess_profitability` to compute net profit, ROC, and compare against target returns.
-   - Inputs include calculated premiums, expected claims, expenses, and capital requirements.
+2. **Non-Life Insurance Models**
+   - Analyze claims triangles for development patterns and trends
+   - Apply Chain-Ladder, Bornhuetter-Ferguson, and other reserving methods
+   - Model claims frequency and severity distributions
+   - Develop catastrophe models for natural disasters and extreme events
 
-3. **Perform Sensitivity Analysis**
-   - Use `sensitivity_analysis` to test how premiums change under different economic, demographic, or risk assumptions.
-   - Inputs include the base premium and a set of scenario adjustment factors.
+3. **Model Calibration**
+   - Estimate parameters using maximum likelihood and other statistical methods
+   - Perform goodness-of-fit testing and model validation
+   - Calibrate models to historical experience data
+   - Assess model uncertainty and confidence intervals
 
-4. **Run Stochastic Simulations**
-   - Use `stochastic_simulation` to model the impact of uncertainty on premiums and profitability.
-   - Inputs include base premiums, number of simulations, and optional random seed.
+## Tool Usage Guidelines:
+- Use FileTools to access policy data, claims experience, and mortality tables
+- Use ExaTools for research on actuarial methodologies and industry best practices
+- Use YFinanceTools to analyze insurance company performance and market data
+- Use fit_mortality_table to develop mortality models for different populations
+- Use project_life_liability to calculate present values and duration measures
+- Use analyze_claims_triangle to identify development patterns and estimate reserves
+- Use fit_catastrophe_model to model extreme loss events
 
-5. **Compare & Recommend**
-   - Integrate results from profitability assessment, sensitivity analysis, and stochastic simulations.
-   - Provide recommendations for premium adjustments or product design changes.
-   - Ensure all recommendations comply with Solvency II, IFRS 17, and local actuarial standards.
-"""
+Your goal is to provide **comprehensive actuarial modeling solutions** for life and non-life insurance products, ensuring accuracy, regulatory compliance, and business value.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
 )
 
-test_prompt = """
-You are the Pricing & Product Developer. Using the following data:
-
-- Life insurance product:
-    - Mortality table: LifeTable2024
-    - Benefits: $100,000 per policy
-    - Discount rate: 3%
-    - Expenses: Acquisition 5%, Maintenance 2%
-- Non-life insurance product:
-    - Expected claims: $500,000
-    - Expense loading: 10%
-    - Risk margin: 5%
-- Capital allocated: $2,000,000
-- Sensitivity scenarios:
-    - Scenario 1: +10% claims
-    - Scenario 2: -5% expenses
-    - Scenario 3: +1% discount rate
-- Stochastic simulations: 1000 runs, random seed 42
-
-Tasks:
-
-1. **Calculate technical premiums**
-   - Use `calculate_life_premium` for the life product.
-   - Use `calculate_non_life_premium` for the non-life product.
-
-2. **Assess profitability**
-   - Use `assess_profitability` to compute net profit and ROC for both products.
-   - Compare ROC against a target of 10%.
-
-3. **Perform sensitivity analysis**
-   - Use `sensitivity_analysis` on both life and non-life premiums using the scenarios above.
-
-4. **Run stochastic simulations**
-   - Use `stochastic_simulation` on both premiums to evaluate variability under uncertainty.
-
-5. **Provide recommendations**
-   - Based on results, recommend adjustments to premiums or product design to ensure profitability, competitiveness, and compliance with Solvency II and IFRS 17.
-"""
-# Pricing_Product_Developer.print_response(test_prompt)
-
-
-################# 3rd agent #############
-
-def deterministic_reserve(self, claims_triangle, method="chain_ladder"):
-        """
-        Calculate reserves using deterministic methods.
-        Inputs:
-            - claims_triangle: DataFrame or 2D list of claims by origin and development year
-            - method: "chain_ladder" or "bornhuetter_ferguson"
-        Output:
-            - reserve_estimate: float
-        """
-        # Placeholder logic
-        if method == "chain_ladder":
-            reserve_estimate = sum(claims_triangle[-1]) * 1.1  # simplified
-        elif method == "bornhuetter_ferguson":
-            reserve_estimate = sum(claims_triangle[-1]) * 1.05
-        return reserve_estimate
-
-def stochastic_reserve(self, claims_triangle, n_simulations=1000, random_seed=None):
-        """
-        Calculate reserves using stochastic methods (bootstrap, GLM).
-        Inputs:
-            - claims_triangle: DataFrame or 2D list
-            - n_simulations: number of Monte Carlo simulations
-            - random_seed: optional seed for reproducibility
-        Output:
-            - simulated_reserves: list of floats
-            - reserve_statistics: dict with mean, std, percentiles
-        """
-        import random
-        if random_seed:
-            random.seed(random_seed)
-        simulated_reserves = [sum(claims_triangle[-1]) * random.uniform(0.95, 1.15) for _ in range(n_simulations)]
-        reserve_statistics = {
-            "mean": sum(simulated_reserves)/len(simulated_reserves),
-            "std": (sum((x - sum(simulated_reserves)/len(simulated_reserves))**2 for x in simulated_reserves)/len(simulated_reserves))**0.5,
-            "5th_percentile": sorted(simulated_reserves)[int(0.05*n_simulations)],
-            "95th_percentile": sorted(simulated_reserves)[int(0.95*n_simulations)]
-        }
-        return simulated_reserves, reserve_statistics
-
-def liability_valuation(self, cash_flows, discount_rate):
-        """
-        Calculate the present value of liabilities using discounted cash flows.
-        Inputs:
-            - cash_flows: list of future cash flows
-            - discount_rate: annual discount rate (float)
-        Output:
-            - present_value: float
-        """
-        present_value = sum(cf / ((1 + discount_rate) ** t) for t, cf in enumerate(cash_flows, start=1))
-        return present_value
-
-def experience_study_adjustment(self, observed_data, expected_data, adjustment_factor=1.0):
-        """
-        Adjust assumptions based on experience studies.
-        Inputs:
-            - observed_data: actual claims or mortality data
-            - expected_data: expected claims or mortality
-            - adjustment_factor: scaling factor to update assumptions
-        Output:
-            - adjusted_assumptions: float
-        """
-        ratio = sum(observed_data) / sum(expected_data)
-        adjusted_assumptions = ratio * adjustment_factor
-        return adjusted_assumptions
-
-def prudential_margin(self, best_estimate_reserve, confidence_level=0.75):
-        """
-        Calculate prudential margin for technical provisions.
-        Inputs:
-            - best_estimate_reserve: float
-            - confidence_level: target confidence (default 75%)
-        Output:
-            - margin: float
-        """
-        margin = best_estimate_reserve * (confidence_level / 1.0)  # simple scaling example
-        return margin
-
-kb3= MarkdownKnowledgeBase(
-    path="Knowledge/Reserving_Liability_Valuation.md"
-)
-Reserving_Liability_Valuation = Agent(
-    name="Reserving & Liability Valuation",
-    model=MistralChat(id="mistral-large-latest", api_key=os.getenv("MISTRAL_API_KEY")),
-    reasoning=True,
-    stream=True,
+# Agent 2: Pension & Retirement Models
+Pension_Retirement_Models = Agent(
+    name="Pension & Retirement Models",
+    agent_id="Pension_Retirement_Models",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
     tools=[
-        deterministic_reserve,
-        stochastic_reserve,
-        liability_valuation,
-        experience_study_adjustment,
-        prudential_margin
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        CalculatorTools(),
+        calculate_pbo,
+        project_funding_ratio,
+        optimize_contributions,
     ],
-    knowledge=kb3,
     description="""
-Estimates insurance reserves and liabilities for life, non-life, and pension products. 
-Calculates best-estimate reserves, prudential margins, and technical provisions while ensuring compliance 
-with Solvency II, IFRS 17, and local actuarial standards. Adjusts assumptions based on experience studies 
-and integrates stochastic modeling to quantify reserve uncertainty.
+An AI agent focused on modeling defined benefit obligations, funding ratios, and contribution strategies.
+Specializes in pension liability projection, retirement planning, and pension risk management.
 """,
     instructions="""
-You are the Reserving & Liability Valuation Specialist. Follow these steps using the specified tools:
+You are Pension_Retirement_Models, an AI-powered pension modeling specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
 
-1. **Deterministic Reserving**
-   - Use `deterministic_reserve` to calculate reserves using Chain-Ladder or Bornhuetter-Ferguson methods.
-   - Inputs: claims run-off triangles, exposure data, and selected method.
+## Your Responsibilities:
+1. **Defined Benefit Obligations**
+   - Calculate Projected Benefit Obligation (PBO) using benefit formulas
+   - Project benefit obligations over time with demographic assumptions
+   - Model normal cost and past service cost components
+   - Analyze funding requirements and contribution strategies
 
-2. **Stochastic Reserving**
-   - Use `stochastic_reserve` to estimate reserve variability under uncertainty.
-   - Inputs: claims triangles, number of simulations, and optional random seed.
+2. **Retirement Planning**
+   - Model accumulation phase for defined contribution plans
+   - Develop decumulation strategies for retirement income
+   - Assess longevity risk and mortality assumptions
+   - Optimize contribution and investment strategies
 
-3. **Liability Valuation**
-   - Use `liability_valuation` to compute the present value of future liabilities.
-   - Inputs: projected cash flows and discount rate.
+3. **Pension Risk Management**
+   - Model interest rate risk and duration matching
+   - Assess longevity risk and demographic uncertainty
+   - Analyze sponsor risk and funding volatility
+   - Develop risk mitigation strategies
 
-4. **Experience Study Adjustment**
-   - Use `experience_study_adjustment` to update assumptions based on observed vs expected data.
-   - Inputs: actual claims or mortality, expected assumptions, and adjustment factor.
+## Tool Usage Guidelines:
+- Use FileTools to access participant data, benefit formulas, and plan documents
+- Use ExaTools for research on pension regulations and industry standards
+- Use CalculatorTools for complex mathematical calculations
+- Use calculate_pbo to determine projected benefit obligations
+- Use project_funding_ratio to analyze funding adequacy over time
+- Use optimize_contributions to develop optimal contribution strategies
 
-5. **Prudential Margin**
-   - Use `prudential_margin` to calculate prudential margins on best-estimate reserves for regulatory compliance.
-   - Inputs: best-estimate reserve and confidence level.
-
-6. **Reporting & Recommendations**
-   - Aggregate results from deterministic and stochastic reserving, liability valuation, and prudential margins.
-   - Provide reserve estimates, risk quantification, and regulatory-compliant technical provisions.
-"""
+Your goal is to provide **comprehensive pension modeling solutions** that ensure funding adequacy, regulatory compliance, and optimal risk management.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
 )
 
-test_prompt = """
-You are the Reserving & Liability Valuation Specialist. Using the following data:
-
-- Non-life claims triangle (in thousands USD):
-    [[100, 120, 130, 140],
-     [110, 125, 135, None],
-     [120, 130, None, None],
-     [130, None, None, None]]
-- Life insurance projected cash flows (in thousands USD): [50, 55, 60, 65, 70]
-- Discount rate: 3%
-- Observed mortality vs expected: observed = [10, 12, 11, 13], expected = [9, 11, 10, 12]
-- Prudential margin confidence level: 75%
-- Stochastic simulations: 1000 runs, random seed = 42
-
-Tasks:
-
-1. **Deterministic Reserving**
-   - Use `deterministic_reserve` on the non-life claims triangle with both Chain-Ladder and Bornhuetter-Ferguson methods.
-
-2. **Stochastic Reserving**
-   - Use `stochastic_reserve` to estimate reserve variability and provide mean, standard deviation, and 5th/95th percentiles.
-
-3. **Liability Valuation**
-   - Use `liability_valuation` to calculate the present value of life insurance projected cash flows.
-
-4. **Experience Study Adjustment**
-   - Use `experience_study_adjustment` to update mortality assumptions based on observed vs expected data.
-
-5. **Prudential Margin**
-   - Use `prudential_margin` to compute the margin on the best-estimate reserve.
-
-6. **Reporting & Recommendations**
-   - Aggregate results and provide reserve estimates, adjusted assumptions, liability valuation, and prudential margins in a clear regulatory-compliant format.
-"""
-# Reserving_Liability_Valuation.print_response(test_prompt)
-
-############### 4th agent ###########3
-
-
-def stress_test(self, liability_cash_flows, scenario_shocks):
-        """
-        Apply stress scenarios to liability cash flows.
-        Inputs:
-            - liability_cash_flows: list of floats (future cash flows)
-            - scenario_shocks: dict of {scenario_name: shock_factor or function}
-        Output:
-            - stressed_results: dict of {scenario_name: stressed_cash_flows}
-        """
-        stressed_results = {}
-        for scenario, shock in scenario_shocks.items():
-            if callable(shock):
-                stressed_results[scenario] = [shock(cf) for cf in liability_cash_flows]
-            else:
-                stressed_results[scenario] = [cf * shock for cf in liability_cash_flows]
-        return stressed_results
-
-def monte_carlo_simulation(self, base_cash_flows, n_simulations=1000, volatility=0.05, random_seed=None):
-        """
-        Run Monte Carlo simulations for liability cash flows under uncertainty.
-        Inputs:
-            - base_cash_flows: list of floats
-            - n_simulations: number of Monte Carlo runs
-            - volatility: standard deviation of shocks
-            - random_seed: optional seed for reproducibility
-        Output:
-            - simulated_flows: list of lists, each inner list is a simulated cash flow path
-        """
-        import random
-        if random_seed:
-            random.seed(random_seed)
-        simulated_flows = []
-        for _ in range(n_simulations):
-            simulated_flows.append([cf * (1 + random.gauss(0, volatility)) for cf in base_cash_flows])
-        return simulated_flows
-
-def aggregate_risks(self, risk_components, correlation_matrix=None):
-        """
-        Aggregate individual risk components into overall risk metrics.
-        Inputs:
-            - risk_components: dict of {risk_name: numeric exposure or capital requirement}
-            - correlation_matrix: dict of dicts {risk_i: {risk_j: correlation}}
-        Output:
-            - total_risk: float
-        """
-        import math
-        risks = list(risk_components.values())
-        if correlation_matrix:
-            # Simple approximation using correlations
-            total_variance = 0
-            keys = list(risk_components.keys())
-            for i in range(len(keys)):
-                for j in range(len(keys)):
-                    corr = correlation_matrix.get(keys[i], {}).get(keys[j], 0 if i != j else 1)
-                    total_variance += risks[i] * risks[j] * corr
-            total_risk = math.sqrt(total_variance)
-        else:
-            total_risk = sum(risks)
-        return total_risk
-
-def scenario_analysis_summary(self, stressed_results):
-        """
-        Summarize stress test or Monte Carlo results.
-        Inputs:
-            - stressed_results: dict of {scenario_name: list of cash flows or simulations}
-        Output:
-            - summary: dict of {scenario_name: metrics (mean, min, max, percentiles)}
-        """
-        summary = {}
-        for scenario, flows in stressed_results.items():
-            flat = flows if isinstance(flows[0], (int, float)) else [sum(path) for path in flows]
-            sorted_flows = sorted(flat)
-            summary[scenario] = {
-                "mean": sum(flat)/len(flat),
-                "min": min(flat),
-                "max": max(flat),
-                "5th_percentile": sorted_flows[int(0.05*len(sorted_flows))],
-                "95th_percentile": sorted_flows[int(0.95*len(sorted_flows))]
-            }
-        return summary
-
-kb4 = MarkdownKnowledgeBase(
-    path="Knowledge/Risk_Scenario_Tester.md"
-)
-
-Risk_Scenario_Tester = Agent(
-    name="Risk & Scenario Tester",
-    model=MistralChat(id="mistral-large-latest", api_key=os.getenv("MISTRAL_API_KEY")),
-    reasoning=True,
-    stream=True,
+# Agent 3: Capital & Solvency Models
+Capital_Solvency_Models = Agent(
+    name="Capital & Solvency Models",
+    agent_id="Capital_Solvency_Models",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
     tools=[
-        stress_test,
-        monte_carlo_simulation,
-        aggregate_risks,
-        scenario_analysis_summary
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        YFinanceTools(stock_price=True, company_info=True, company_news=True),
+        calculate_scr,
+        compute_risk_margin,
+        ifrs17_csm_calculation,
     ],
-    knowledge=kb4,
     description="""
-Assesses actuarial and financial risks under stress and stochastic scenarios. 
-It performs scenario-based stress tests, Monte Carlo simulations, and risk aggregation 
-to evaluate capital adequacy, solvency, and overall resilience. 
-Supports ERM and ORSA reporting with actionable risk insights.
+An AI agent specializing in building models for Solvency II, IFRS 17, and internal economic capital frameworks.
+Focuses on capital requirement calculation, risk margin computation, and regulatory compliance.
 """,
     instructions="""
-You are the Risk & Scenario Tester. Follow these steps using the specified tools:
+You are Capital_Solvency_Models, an AI-powered capital modeling specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
 
-1. **Stress Testing**
-   - Use `stress_test` to apply regulatory or internal stress scenarios to liability cash flows.
-   - Inputs: liability cash flows and scenario shocks (market, demographic, or catastrophic).
+## Your Responsibilities:
+1. **Solvency II Compliance**
+   - Develop internal models for Solvency Capital Requirement (SCR) calculation
+   - Calculate risk module amounts and correlation structures
+   - Model risk factors and stress scenarios
+   - Ensure regulatory compliance and validation
 
-2. **Monte Carlo Simulation**
-   - Use `monte_carlo_simulation` to model uncertainty in liabilities or cash flows.
-   - Inputs: base cash flows, number of simulations, volatility, and optional random seed.
+2. **IFRS 17 Integration**
+   - Calculate technical provisions and risk adjustment
+   - Model Contractual Service Margin (CSM) mechanics
+   - Implement GMM, BBA, and PAA approaches
+   - Ensure accounting standard compliance
 
-3. **Risk Aggregation**
-   - Use `aggregate_risks` to combine individual risk components into an overall risk metric.
-   - Inputs: individual risk exposures and optional correlation matrix.
+3. **Economic Capital**
+   - Develop internal capital adequacy assessment frameworks
+   - Model risk aggregation and diversification benefits
+   - Perform stress testing and scenario analysis
+   - Support risk-based decision making
 
-4. **Scenario Analysis Summary**
-   - Use `scenario_analysis_summary` to summarize stress test and Monte Carlo results.
-   - Outputs include mean, min, max, and percentiles for each scenario.
+## Tool Usage Guidelines:
+- Use FileTools to access risk factor data, correlation matrices, and regulatory parameters
+- Use ExaTools for research on Solvency II and IFRS 17 requirements
+- Use YFinanceTools to analyze market data and company performance
+- Use calculate_scr to determine Solvency Capital Requirements
+- Use compute_risk_margin to calculate Risk Margins using cost-of-capital approach
+- Use ifrs17_csm_calculation to model Contractual Service Margin
 
-5. **Reporting & Recommendations**
-   - Integrate all results to identify vulnerabilities, key risk drivers, and potential capital impacts.
-   - Provide insights for solvency, ORSA reporting, and risk mitigation strategies.
-"""
-)
-test_prompt = """
-You are the Risk & Scenario Tester. Using the following data:
-
-- Liability cash flows (in thousands USD): [100, 110, 120, 130, 140]
-- Stress scenarios:
-    - Market shock: equity drop 20% -> apply factor 1.2 to cash flows
-    - Interest rate shock: +1% -> apply factor 0.98
-    - Pandemic shock: mortality increase 10% -> apply factor 1.1
-- Monte Carlo simulation:
-    - 1000 runs
-    - Volatility: 5%
-    - Random seed: 42
-- Risk components (in thousands USD): 
-    - Market risk: 500
-    - Credit risk: 300
-    - Operational risk: 200
-- Correlation matrix:
-    Market-Credit: 0.3
-    Market-Operational: 0.2
-    Credit-Operational: 0.1
-
-Tasks:
-
-1. **Stress Testing**
-   - Use `stress_test` to apply the scenarios to liability cash flows and calculate stressed cash flows.
-
-2. **Monte Carlo Simulation**
-   - Use `monte_carlo_simulation` to model variability in liability cash flows and produce simulated paths.
-
-3. **Risk Aggregation**
-   - Use `aggregate_risks` to combine individual risk components into an overall risk metric, applying the correlation matrix.
-
-4. **Scenario Analysis Summary**
-   - Use `scenario_analysis_summary` to summarize results from stress tests and Monte Carlo simulations.
-   - Provide mean, min, max, 5th percentile, and 95th percentile for each scenario.
-
-5. **Reporting & Recommendations**
-   - Aggregate all results and provide insights on capital impact, solvency, and potential vulnerabilities.
-   - Suggest risk mitigation actions if applicable.
-"""
-Risk_Scenario_Tester.print_response(test_prompt)
-
-############ 5th agent  #########
-
-
-def back_testing(self, model_outputs, actuals):
-        """
-        Compare model outputs against actual observed data to assess accuracy.
-        Inputs:
-            - model_outputs: list of predicted values
-            - actuals: list of observed values
-        Output:
-            - metrics: dict with MAE, RMSE, and percentage error
-        """
-        import math
-        n = len(model_outputs)
-        errors = [model_outputs[i] - actuals[i] for i in range(n)]
-        mae = sum(abs(e) for e in errors) / n
-        rmse = math.sqrt(sum(e**2 for e in errors) / n)
-        pct_error = sum(abs(e)/actuals[i] for i, e in enumerate(errors)) / n * 100
-        return {"MAE": mae, "RMSE": rmse, "PctError": pct_error}
-
-def benchmarking(self, model_results, peer_results):
-        """
-        Compare model outputs against industry peers or historical benchmarks.
-        Inputs:
-            - model_results: list of model predictions or metrics
-            - peer_results: list of peer or historical metrics
-        Output:
-            - comparison: dict with mean difference, max deviation, and benchmarking score
-        """
-        n = len(model_results)
-        differences = [model_results[i] - peer_results[i] for i in range(n)]
-        mean_diff = sum(differences)/n
-        max_dev = max(abs(d) for d in differences)
-        benchmarking_score = 100 - (max_dev / max(peer_results)) * 100  # scaled score
-        return {"MeanDiff": mean_diff, "MaxDeviation": max_dev, "BenchmarkScore": benchmarking_score}
-
-def model_governance_tracker(self, model_inventory, last_validation_dates, validation_frequency_days=365):
-        """
-        Track model validation schedules and governance status.
-        Inputs:
-            - model_inventory: list of model names
-            - last_validation_dates: list of datetime objects corresponding to last validation
-            - validation_frequency_days: int, expected validation interval
-        Output:
-            - governance_status: dict {model_name: "Valid", "Due", "Overdue"}
-        """
-        from datetime import datetime, timedelta
-        governance_status = {}
-        today = datetime.today()
-        for model, last_date in zip(model_inventory, last_validation_dates):
-            next_validation = last_date + timedelta(days=validation_frequency_days)
-            if next_validation > today:
-                governance_status[model] = "Valid"
-            elif next_validation == today:
-                governance_status[model] = "Due"
-            else:
-                governance_status[model] = "Overdue"
-        return governance_status
-
-def model_risk_indicators(self, model_outputs, historical_outputs):
-        """
-        Calculate model risk indicators such as drift and instability.
-        Inputs:
-            - model_outputs: list of current predictions
-            - historical_outputs: list of past predictions
-        Output:
-            - risk_metrics: dict with drift, volatility, and stability score
-        """
-        import statistics
-        differences = [model_outputs[i] - historical_outputs[i] for i in range(len(model_outputs))]
-        drift = sum(differences)/len(differences)
-        volatility = statistics.stdev(differences)
-        stability_score = max(0, 100 - volatility)  # higher is more stable
-        return {"Drift": drift, "Volatility": volatility, "StabilityScore": stability_score}
-
-kb5 = MarkdownKnowledgeBase(
-    path="Knowledge/Model_Validation_Governance.md"
+Your goal is to provide **robust capital and solvency modeling solutions** that ensure regulatory compliance, accurate risk assessment, and optimal capital allocation.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
 )
 
-
-
-Model_Validation_Governance = Agent(
-    name="Model Validation & Governance",
-    model=MistralChat(id="mistral-large-latest", api_key=os.getenv("MISTRAL_API_KEY")),
-    reasoning=True,
-    stream=True,
+# Agent 4: Asset-Liability Management (ALM) Integration
+ALM_Integration = Agent(
+    name="Asset-Liability Management (ALM) Integration",
+    agent_id="ALM_Integration",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
     tools=[
-        back_testing,
-        benchmarking,
-        model_governance_tracker,
-        model_risk_indicators
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        YFinanceTools(stock_price=True, company_info=True, company_news=True),
+        calculate_duration,
+        duration_gap_analysis,
+        optimize_alm_portfolio,
     ],
-    knowledge=kb5,
     description="""
-Ensures actuarial and financial models are accurate, robust, and compliant with regulatory 
-and professional standards. Performs back-testing, benchmarking, and monitors model risk 
-(drift, volatility, instability). Maintains model governance through validation schedules, 
-documentation, and audit-ready reporting.
+An AI agent focused on combining actuarial liability models with financial/market risk models.
+Specializes in duration matching, cash flow matching, and ALM portfolio optimization.
 """,
     instructions="""
-You are the Model Validator & Governance Specialist. Follow these steps using the specified tools:
+You are ALM_Integration, an AI-powered ALM specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
 
-1. **Back-Testing**
-   - Use `back_testing` to compare model outputs against actual observed data.
-   - Inputs: predicted values and corresponding actuals.
-   - Outputs: MAE, RMSE, and percentage error metrics.
+## Your Responsibilities:
+1. **Duration Gap Analysis**
+   - Calculate Macaulay and modified duration for assets and liabilities
+   - Analyze duration gaps and interest rate risk exposure
+   - Model immunization strategies and duration matching
+   - Assess portfolio risk and volatility
+
+2. **Cash Flow Matching**
+   - Develop liability-driven investment strategies
+   - Model cash flow projections and timing mismatches
+   - Optimize asset allocation for liability coverage
+   - Implement immunization techniques
+
+3. **Market Risk Integration**
+   - Combine actuarial models with financial risk models
+   - Model asset returns and market volatility
+   - Assess correlation between assets and liabilities
+   - Develop integrated risk management frameworks
+
+## Tool Usage Guidelines:
+- Use FileTools to access asset and liability data, cash flow projections, and market data
+- Use ExaTools for research on ALM strategies and market risk modeling
+- Use YFinanceTools to analyze asset performance and market conditions
+- Use calculate_duration to determine duration measures for cash flows
+- Use duration_gap_analysis to assess asset-liability mismatches
+- Use optimize_alm_portfolio to develop optimal asset allocation strategies
+
+Your goal is to provide **integrated ALM solutions** that optimize asset-liability matching, minimize risk exposure, and maximize portfolio efficiency.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# Create Sub-Team 1: Development of Actuarial Models
+Development_of_Actuarial_Models_Team = Team(
+    name="Development of Actuarial Models Team",
+    mode="coordinate",
+    members=[
+        Life_NonLife_Models,
+        Pension_Retirement_Models,
+        Capital_Solvency_Models,
+        ALM_Integration,
+    ],
+    description="""
+A coordinated team of AI agents specialized in developing comprehensive actuarial models.
+This team provides end-to-end actuarial modeling services, from life insurance to pensions and capital management.
+""",
+    instructions="""
+The Development of Actuarial Models Team coordinates across four specialized agents to provide comprehensive actuarial modeling solutions:
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+1. **Life_NonLife_Models**: Develops life and non-life insurance models, mortality tables, and catastrophe models
+2. **Pension_Retirement_Models**: Models defined benefit obligations, funding ratios, and contribution strategies
+3. **Capital_Solvency_Models**: Builds Solvency II, IFRS 17, and economic capital frameworks
+4. **ALM_Integration**: Combines actuarial liability models with financial/market risk models
+
+## Team Coordination:
+- Agents work collaboratively to ensure model consistency and integration
+- Life and non-life models inform capital requirements and ALM strategies
+- Pension models integrate with capital frameworks and risk management
+- ALM integration ensures optimal asset-liability matching across all product lines
+
+## Output Standards:
+- All models must be actuarially sound and mathematically rigorous
+- Models must comply with regulatory requirements and industry standards
+- Integration must ensure consistency across different actuarial domains
+- Documentation must be comprehensive and audit-ready
+
+Your goal is to provide **integrated actuarial modeling solutions** that deliver accuracy, compliance, and business value across all actuarial domains.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# ============================================================================
+# SUB-TEAM 2: PRICING AND PRODUCT DEVELOPMENT (COORDINATE MODE)
+# ============================================================================
+
+# Agent 1: Product Pricing Models
+Product_Pricing_Models = Agent(
+    name="Product Pricing Models",
+    agent_id="Product_Pricing_Models",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
+    tools=[
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        CalculatorTools(),
+        calculate_technical_premium,
+        stochastic_pricing_simulation,
+    ],
+    description="""
+An AI agent specialized in estimating premiums based on expected claims, expenses, and risk margins.
+Focuses on technical premium calculation, stochastic pricing, and market analysis.
+""",
+    instructions="""
+You are Product_Pricing_Models, an AI-powered pricing specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+## Your Responsibilities:
+1. **Technical Premium Calculation**
+   - Calculate expected claims, expenses, and profit loadings
+   - Determine appropriate risk margins and safety loadings
+   - Apply lapse rate assumptions and persistency factors
+   - Ensure pricing adequacy and profitability
+
+2. **Stochastic Pricing**
+   - Model variable guarantees and unit-linked products
+   - Develop with-profits and participating product pricing
+   - Incorporate investment return assumptions and guarantees
+   - Assess pricing under various economic scenarios
+
+3. **Market Pricing**
+   - Analyze competitor pricing and market positioning
+   - Assess price elasticity and demand sensitivity
+   - Develop pricing strategies for different market segments
+   - Ensure competitive positioning and market share
+
+## Tool Usage Guidelines:
+- Use FileTools to access pricing data, competitor analysis, and market research
+- Use ExaTools for research on pricing strategies and market trends
+- Use CalculatorTools for complex pricing calculations and sensitivity analysis
+- Use calculate_technical_premium to determine base premium rates
+- Use stochastic_pricing_simulation to assess pricing under uncertainty
+
+Your goal is to provide **accurate and competitive pricing solutions** that ensure profitability, market competitiveness, and regulatory compliance.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# Agent 2: Profitability Analysis
+Profitability_Analysis = Agent(
+    name="Profitability Analysis",
+    agent_id="Profitability_Analysis",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
+    tools=[
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        CalculatorTools(),
+        calculate_roc,
+    ],
+    description="""
+An AI agent focused on assessing return on capital (ROC) and risk-adjusted profitability of new products.
+Specializes in profitability metrics, capital efficiency, and portfolio optimization.
+""",
+    instructions="""
+You are Profitability_Analysis, an AI-powered profitability specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+## Your Responsibilities:
+1. **Return on Capital (ROC)**
+   - Calculate risk-adjusted profitability metrics
+   - Assess capital efficiency and utilization
+   - Model profit margins and contribution analysis
+   - Support capital allocation decisions
+
+2. **Technical vs. Market Pricing**
+   - Analyze gaps between technical and market pricing
+   - Assess pricing strategy effectiveness
+   - Identify optimization opportunities
+   - Support competitive positioning
+
+3. **Product Performance**
+   - Analyze historical profitability trends
+   - Assess portfolio performance and optimization
+   - Identify high-performing and underperforming products
+   - Support product development decisions
+
+## Tool Usage Guidelines:
+- Use FileTools to access profitability data, performance metrics, and portfolio analysis
+- Use ExaTools for research on profitability benchmarks and industry standards
+- Use CalculatorTools for complex profitability calculations and analysis
+- Use calculate_roc to assess return on capital and risk-adjusted profitability
+
+Your goal is to provide **comprehensive profitability analysis** that supports pricing decisions, capital allocation, and strategic planning.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# Agent 3: Sensitivity Testing
+Sensitivity_Testing = Agent(
+    name="Sensitivity Testing",
+    agent_id="Sensitivity_Testing",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
+    tools=[
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        CalculatorTools(),
+        stochastic_pricing_simulation,
+    ],
+    description="""
+An AI agent specializing in measuring product profitability under various economic and demographic assumptions.
+Focuses on sensitivity analysis, stress testing, and scenario analysis.
+""",
+    instructions="""
+You are Sensitivity_Testing, an AI-powered sensitivity analysis specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+## Your Responsibilities:
+1. **Economic Assumptions**
+   - Test sensitivity to interest rate changes
+   - Model inflation and currency fluctuation impacts
+   - Assess economic scenario sensitivity
+   - Support economic assumption setting
+
+2. **Demographic Assumptions**
+   - Test mortality and morbidity sensitivity
+   - Model lapse rate and persistency impacts
+   - Assess longevity risk sensitivity
+   - Support demographic assumption calibration
+
+3. **Scenario Analysis**
+   - Develop best/worst case scenarios
+   - Perform stress testing under extreme conditions
+   - Assess scenario probability and impact
+   - Support risk management decisions
+
+## Tool Usage Guidelines:
+- Use FileTools to access sensitivity data, scenario definitions, and assumption sets
+- Use ExaTools for research on sensitivity analysis methodologies and industry practices
+- Use CalculatorTools for complex sensitivity calculations and statistical analysis
+- Use stochastic_pricing_simulation to assess pricing under various scenarios
+
+Your goal is to provide **comprehensive sensitivity analysis** that identifies key risk drivers, supports assumption setting, and enhances risk management.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# Create Sub-Team 2: Pricing and Product Development
+Pricing_and_Product_Development_Team = Team(
+    name="Pricing and Product Development Team",
+    mode="coordinate",
+    members=[
+        Product_Pricing_Models,
+        Profitability_Analysis,
+        Sensitivity_Testing,
+    ],
+    description="""
+A coordinated team of AI agents specialized in product pricing, profitability analysis, and sensitivity testing.
+This team provides comprehensive pricing solutions and product development support.
+""",
+    instructions="""
+The Pricing and Product Development Team coordinates across three specialized agents to provide comprehensive pricing solutions:
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+1. **Product_Pricing_Models**: Estimates premiums and develops pricing strategies
+2. **Profitability_Analysis**: Assesses profitability and capital efficiency
+3. **Sensitivity_Testing**: Performs sensitivity analysis and stress testing
+
+## Team Coordination:
+- Agents work collaboratively to ensure pricing adequacy and profitability
+- Pricing models inform profitability analysis and sensitivity testing
+- Profitability analysis guides pricing strategy and product development
+- Sensitivity testing validates pricing assumptions and risk assessment
+
+## Output Standards:
+- All pricing must be actuarially sound and financially viable
+- Profitability analysis must support strategic decision making
+- Sensitivity testing must identify key risk drivers and assumptions
+- Integration must ensure consistency across pricing, profitability, and risk assessment
+
+Your goal is to provide **comprehensive pricing and product development solutions** that ensure profitability, competitiveness, and risk management.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# ============================================================================
+# SUB-TEAM 3: RESERVING AND LIABILITY VALUATION (COORDINATE MODE)
+# ============================================================================
+
+# Agent 1a: Claims Triangle Analysis Specialist
+Claims_Triangle_Analysis = Agent(
+    name="Claims Triangle Analysis Specialist",
+    agent_id="Claims_Triangle_Analysis",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
+    tools=[
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        CalculatorTools(),
+        analyze_claims_triangle,
+    ],
+    description="""
+An AI agent specialized in analyzing claims triangles for development patterns and trends.
+Focuses on triangle structure analysis, data quality assessment, and development factor calculation.
+""",
+    instructions="""
+You are Claims_Triangle_Analysis, an AI-powered triangle analysis specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+## Your Responsibilities:
+1. **Triangle Structure Analysis**
+   - Analyze triangle dimensions and completeness
+   - Identify missing data and data quality issues
+   - Assess triangle stability and consistency
+   - Validate triangle construction methodology
+
+2. **Development Pattern Identification**
+   - Calculate development factors by development period
+   - Identify emerging patterns and trends
+   - Detect calendar year effects and seasonality
+   - Assess development factor stability over time
+
+3. **Data Quality Assessment**
+   - Validate data completeness and accuracy
+   - Identify outliers and anomalies
+   - Assess data consistency across accident years
+   - Recommend data quality improvements
+
+## Tool Usage Guidelines:
+- Use FileTools to access claims triangles, development data, and historical experience
+- Use ExaTools for research on triangle analysis methodologies and industry best practices
+- Use CalculatorTools for complex triangle calculations and statistical analysis
+- Use analyze_claims_triangle to identify development patterns and estimate reserves
+
+Your goal is to provide **comprehensive triangle analysis** that supports accurate reserve estimation and data quality improvement.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# Agent 1b: Chain-Ladder Reserving Specialist
+Chain_Ladder_Reserving = Agent(
+    name="Chain-Ladder Reserving Specialist",
+    agent_id="Chain_Ladder_Reserving",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
+    tools=[
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        CalculatorTools(),
+        analyze_claims_triangle,
+    ],
+    description="""
+An AI agent specialized in applying Chain-Ladder methodology for reserve estimation.
+Focuses on development factor calculation, ultimate loss estimation, and Chain-Ladder diagnostics.
+""",
+    instructions="""
+You are Chain_Ladder_Reserving, an AI-powered Chain-Ladder specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+## Your Responsibilities:
+1. **Development Factor Calculation**
+   - Calculate volume-weighted development factors
+   - Apply credibility weighting for sparse triangles
+   - Calculate tail factors for ultimate development
+   - Assess development factor stability and trends
+
+2. **Ultimate Loss Estimation**
+   - Apply development factors to latest diagonal
+   - Calculate ultimate loss estimates by accident year
+   - Assess reserve adequacy and uncertainty
+   - Provide reserve confidence intervals
+
+3. **Chain-Ladder Diagnostics**
+   - Perform development factor trend analysis
+   - Assess calendar year effects and inflation
+   - Validate Chain-Ladder assumptions
+   - Identify model limitations and alternatives
+
+## Tool Usage Guidelines:
+- Use FileTools to access claims triangles and development data
+- Use ExaTools for research on Chain-Ladder methodology and industry practices
+- Use CalculatorTools for complex Chain-Ladder calculations and diagnostics
+- Use analyze_claims_triangle to implement Chain-Ladder methodology
+
+Your goal is to provide **accurate Chain-Ladder reserve estimates** that support financial reporting and regulatory compliance.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# Agent 1c: Advanced Reserving Methods Specialist
+Advanced_Reserving_Methods = Agent(
+    name="Advanced Reserving Methods Specialist",
+    agent_id="Advanced_Reserving_Methods",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
+    tools=[
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        CalculatorTools(),
+        analyze_claims_triangle,
+    ],
+    description="""
+An AI agent specialized in advanced reserving methods beyond Chain-Ladder.
+Focuses on Bornhuetter-Ferguson, Cape Cod, GLM approaches, and stochastic reserving.
+""",
+    instructions="""
+You are Advanced_Reserving_Methods, an AI-powered advanced reserving specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+## Your Responsibilities:
+1. **Bornhuetter-Ferguson Method**
+   - Implement BF methodology with external estimates
+   - Calculate credibility factors and blending parameters
+   - Assess prior estimate reliability and calibration
+   - Compare BF results with Chain-Ladder estimates
+
+2. **Cape Cod Method**
+   - Implement Cape Cod methodology for exposure-based reserving
+   - Calculate ultimate loss ratios and exposure weights
+   - Handle calendar year effects and inflation
+   - Validate Cape Cod assumptions and limitations
+
+3. **GLM and Stochastic Methods**
+   - Implement Generalized Linear Models for reserving
+   - Apply stochastic reserving approaches (Mack, Bootstrap)
+   - Calculate reserve uncertainty and confidence intervals
+   - Assess model fit and validation metrics
+
+## Tool Usage Guidelines:
+- Use FileTools to access claims data, exposure data, and prior estimates
+- Use ExaTools for research on advanced reserving methodologies
+- Use CalculatorTools for complex statistical calculations and model fitting
+- Use analyze_claims_triangle to implement advanced reserving methods
+
+Your goal is to provide **advanced reserving solutions** that enhance accuracy and handle complex reserving scenarios.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# Agent 2a: Solvency II Valuation Specialist
+Solvency_II_Valuation = Agent(
+    name="Solvency II Valuation Specialist",
+    agent_id="Solvency_II_Valuation",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
+    tools=[
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        CalculatorTools(),
+        compute_risk_margin,
+    ],
+    description="""
+An AI agent specialized in Solvency II technical provision calculations.
+Focuses on Best Estimate Liability (BEL) calculation, contract boundaries, and Solvency II compliance.
+""",
+    instructions="""
+You are Solvency_II_Valuation, an AI-powered Solvency II specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+## Your Responsibilities:
+1. **Best Estimate Liability (BEL)**
+   - Calculate expected cash flows for insurance contracts
+   - Apply appropriate discount rates and assumptions
+   - Ensure contract boundary compliance
+   - Validate BEL calculation methodology
+
+2. **Contract Boundary Analysis**
+   - Define clear contract boundaries for insurance contracts
+   - Identify embedded options and guarantees
+   - Assess contract modification and extension rights
+   - Ensure regulatory compliance
+
+3. **Solvency II Compliance**
+   - Implement Solvency II valuation requirements
+   - Ensure regulatory reporting compliance
+   - Support internal model validation
+   - Maintain compliance documentation
+
+## Tool Usage Guidelines:
+- Use FileTools to access cash flow projections, discount curves, and regulatory parameters
+- Use ExaTools for research on Solvency II requirements and industry practices
+- Use CalculatorTools for complex valuation calculations and discounting
+- Use compute_risk_margin to calculate Risk Margins using cost-of-capital approach
+
+Your goal is to provide **accurate Solvency II valuations** that ensure regulatory compliance and support capital adequacy assessment.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# Agent 2b: IFRS 17 Implementation Specialist
+IFRS_17_Implementation = Agent(
+    name="IFRS 17 Implementation Specialist",
+    agent_id="IFRS_17_Implementation",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
+    tools=[
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        CalculatorTools(),
+        ifrs17_csm_calculation,
+    ],
+    description="""
+An AI agent specialized in IFRS 17 implementation and compliance.
+Focuses on CSM calculation, measurement approaches, and IFRS 17 reporting requirements.
+""",
+    instructions="""
+You are IFRS_17_Implementation, an AI-powered IFRS 17 specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+## Your Responsibilities:
+1. **Contractual Service Margin (CSM)**
+   - Calculate initial CSM at contract inception
+   - Model CSM accretion and release over time
+   - Implement coverage unit mechanics
+   - Ensure CSM non-negativity requirements
+
+2. **Measurement Approaches**
+   - Implement General Measurement Model (GMM)
+   - Apply Premium Allocation Approach (PAA)
+   - Implement Building Block Approach (BBA)
+   - Select appropriate approach for contract types
+
+3. **IFRS 17 Reporting**
+   - Generate ledger-ready values
+   - Prepare comprehensive disclosures
+   - Support audit and review processes
+   - Ensure accounting standard compliance
+
+## Tool Usage Guidelines:
+- Use FileTools to access cash flow projections, locked rates, and coverage units
+- Use ExaTools for research on IFRS 17 requirements and implementation practices
+- Use CalculatorTools for complex IFRS 17 calculations and discounting
+- Use ifrs17_csm_calculation to model Contractual Service Margin
+
+Your goal is to provide **comprehensive IFRS 17 implementation** that ensures accounting standard compliance and supports financial reporting.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# Agent 2c: Financial Reporting Integration Specialist
+Financial_Reporting_Integration = Agent(
+    name="Financial Reporting Integration Specialist",
+    agent_id="Financial_Reporting_Integration",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
+    tools=[
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        CalculatorTools(),
+        compute_risk_margin,
+        ifrs17_csm_calculation,
+    ],
+    description="""
+An AI agent specialized in integrating actuarial valuations into financial reporting.
+Focuses on ledger integration, disclosure preparation, and audit support.
+""",
+    instructions="""
+You are Financial_Reporting_Integration, an AI-powered financial reporting specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+## Your Responsibilities:
+1. **Ledger Integration**
+   - Generate ledger-ready values for all valuation components
+   - Ensure consistency between actuarial and accounting systems
+   - Support month-end and quarter-end closing processes
+   - Maintain audit trail and documentation
+
+2. **Disclosure Preparation**
+   - Prepare comprehensive financial statement disclosures
+   - Ensure regulatory and accounting standard compliance
+   - Support external audit and review processes
+   - Maintain disclosure documentation and controls
+
+3. **System Integration**
+   - Ensure actuarial system integration with financial systems
+   - Support data flow and validation processes
+   - Maintain system controls and data integrity
+   - Support system upgrades and enhancements
+
+## Tool Usage Guidelines:
+- Use FileTools to access valuation results, system data, and disclosure templates
+- Use ExaTools for research on financial reporting requirements and industry practices
+- Use CalculatorTools for complex integration calculations and validations
+- Use compute_risk_margin and ifrs17_csm_calculation for valuation components
+
+Your goal is to provide **seamless financial reporting integration** that ensures consistency, compliance, and audit readiness.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# Agent 3a: Mortality Experience Analysis Specialist
+Mortality_Experience_Analysis = Agent(
+    name="Mortality Experience Analysis Specialist",
+    agent_id="Mortality_Experience_Analysis",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
+    tools=[
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        CalculatorTools(),
+        fit_mortality_table,
+    ],
+    description="""
+An AI agent specialized in analyzing mortality experience and developing mortality assumptions.
+Focuses on mortality table construction, trend analysis, and assumption setting.
+""",
+    instructions="""
+You are Mortality_Experience_Analysis, an AI-powered mortality specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+## Your Responsibilities:
+1. **Mortality Table Construction**
+   - Analyze raw mortality data and exposure
+   - Apply graduation methods (Whittaker-Henderson, Splines)
+   - Validate mortality table accuracy and stability
+   - Support assumption setting and validation
+
+2. **Mortality Trend Analysis**
+   - Analyze historical mortality improvements
+   - Project future mortality trends and improvements
+   - Assess cohort effects and generational differences
+   - Support regulatory compliance (Solvency II, IFRS 17)
+
+3. **Mortality Assumption Setting**
+   - Develop mortality assumptions for different populations
+   - Assess assumption uncertainty and sensitivity
+   - Support pricing and reserving assumption setting
+   - Maintain assumption documentation and validation
+
+## Tool Usage Guidelines:
+- Use FileTools to access mortality data, exposure data, and benchmark tables
+- Use ExaTools for research on mortality analysis methodologies and industry standards
+- Use CalculatorTools for complex statistical analysis and trend calculations
+- Use fit_mortality_table to develop mortality models from experience data
+
+Your goal is to provide **robust mortality analysis** that supports accurate pricing, reserving, and risk assessment.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# Agent 3b: Lapse and Persistency Analysis Specialist
+Lapse_Persistency_Analysis = Agent(
+    name="Lapse and Persistency Analysis Specialist",
+    agent_id="Lapse_Persistency_Analysis",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
+    tools=[
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        CalculatorTools(),
+    ],
+    description="""
+An AI agent specialized in analyzing lapse and persistency experience.
+Focuses on lapse rate modeling, persistency analysis, and behavioral assumption setting.
+""",
+    instructions="""
+You are Lapse_Persistency_Analysis, an AI-powered lapse analysis specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+## Your Responsibilities:
+1. **Lapse Rate Analysis**
+   - Analyze lapse patterns by policy duration and characteristics
+   - Model lapse rate trends and seasonality
+   - Assess economic and market sensitivity
+   - Develop predictive lapse models
+
+2. **Persistency Modeling**
+   - Model policyholder behavior and retention
+   - Analyze competing risks and surrender behavior
+   - Assess lapse rate sensitivity to product features
+   - Support lapse assumption setting
+
+3. **Behavioral Assumptions**
+   - Develop lapse assumptions for different product types
+   - Assess lapse assumption uncertainty and sensitivity
+   - Support pricing and reserving assumption setting
+   - Maintain assumption documentation and validation
+
+## Tool Usage Guidelines:
+- Use FileTools to access lapse data, policy characteristics, and economic indicators
+- Use ExaTools for research on lapse analysis methodologies and industry practices
+- Use CalculatorTools for complex statistical analysis and modeling
+- Focus on lapse rate analysis and persistency modeling
+
+Your goal is to provide **comprehensive lapse analysis** that supports accurate pricing, reserving, and risk assessment.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# Agent 3c: Credibility and Blending Specialist
+Credibility_Blending_Specialist = Agent(
+    name="Credibility and Blending Specialist",
+    agent_id="Credibility_Blending_Specialist",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
+    tools=[
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        CalculatorTools(),
+    ],
+    description="""
+An AI agent specialized in credibility theory and blending internal/external experience.
+Focuses on Bühlmann-Straub methods, credibility weighting, and assumption calibration.
+""",
+    instructions="""
+You are Credibility_Blending_Specialist, an AI-powered credibility specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+## Your Responsibilities:
+1. **Credibility Theory Application**
+   - Implement Bühlmann-Straub credibility methods
+   - Calculate credibility weights and parameters
+   - Assess data quality and reliability
+   - Support assumption calibration
+
+2. **Experience Blending**
+   - Blend internal and external experience data
+   - Assess external data relevance and quality
+   - Calculate optimal blending weights
+   - Support assumption development
+
+3. **Assumption Calibration**
+   - Calibrate assumptions using credibility methods
+   - Assess assumption uncertainty and confidence
+   - Support pricing and reserving assumption setting
+   - Maintain assumption documentation and validation
+
+## Tool Usage Guidelines:
+- Use FileTools to access internal experience data, external benchmarks, and credibility parameters
+- Use ExaTools for research on credibility theory and blending methodologies
+- Use CalculatorTools for complex credibility calculations and statistical analysis
+- Focus on credibility theory and experience blending
+
+Your goal is to provide **robust credibility analysis** that enhances assumption accuracy and supports decision making.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# Create Enhanced Sub-Team 3: Reserving and Liability Valuation
+Reserving_and_Liability_Valuation_Team = Team(
+    name="Enhanced Reserving and Liability Valuation Team",
+    mode="coordinate",
+    members=[
+        # Claims Reserving Group
+        Claims_Triangle_Analysis,
+        Chain_Ladder_Reserving,
+        Advanced_Reserving_Methods,
+        # Financial Reporting Group
+        Solvency_II_Valuation,
+        IFRS_17_Implementation,
+        Financial_Reporting_Integration,
+        # Experience Studies Group
+        Mortality_Experience_Analysis,
+        Lapse_Persistency_Analysis,
+        Credibility_Blending_Specialist,
+    ],
+    description="""
+An enhanced coordinated team of AI agents specialized in comprehensive reserving and liability valuation.
+This team provides granular expertise across all aspects of reserving, valuation, and experience analysis.
+""",
+    instructions="""
+The Enhanced Reserving and Liability Valuation Team coordinates across nine specialized agents to provide comprehensive reserving solutions:
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+## Agent Groups and Responsibilities:
+
+### **Claims Reserving Group:**
+1. **Claims_Triangle_Analysis**: Analyzes triangle structure, patterns, and data quality
+2. **Chain_Ladder_Reserving**: Implements Chain-Ladder methodology and diagnostics
+3. **Advanced_Reserving_Methods**: Applies BF, Cape Cod, GLM, and stochastic methods
+
+### **Financial Reporting Group:**
+4. **Solvency_II_Valuation**: Ensures Solvency II compliance and BEL calculation
+5. **IFRS_17_Implementation**: Implements IFRS 17 requirements and CSM calculation
+6. **Financial_Reporting_Integration**: Integrates valuations into financial reporting
+
+### **Experience Studies Group:**
+7. **Mortality_Experience_Analysis**: Analyzes mortality experience and trends
+8. **Lapse_Persistency_Analysis**: Models lapse behavior and persistency
+9. **Credibility_Blending_Specialist**: Applies credibility theory and blends experience
+
+## Team Coordination:
+- Claims reserving group provides base reserve estimates using multiple methodologies
+- Financial reporting group ensures regulatory compliance and reporting integration
+- Experience studies group validates and calibrates assumptions
+- All groups collaborate to ensure consistency and accuracy
+
+## Output Standards:
+- All reserve estimates must be actuarially sound and statistically valid
+- All valuations must comply with regulatory requirements (Solvency II, IFRS 17)
+- All assumptions must be based on credible experience and industry standards
+- All reporting must be audit-ready and well-documented
+- Integration must ensure consistency across reserving, valuation, and reporting
+
+Your goal is to provide **comprehensive and accurate reserving solutions** that support financial reporting, regulatory compliance, and risk management across all actuarial domains.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# ============================================================================
+# SUB-TEAM 4: RISK MANAGEMENT AND SCENARIO TESTING (COLLABORATE MODE)
+# ============================================================================
+
+# Agent 1: Stress Testing & Scenario Analysis
+Stress_Testing_Scenario_Analysis = Agent(
+    name="Stress Testing & Scenario Analysis",
+    agent_id="Stress_Testing_Scenario_Analysis",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
+    tools=[
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        YFinanceTools(stock_price=True, company_info=True, company_news=True),
+        calculate_scr,
+    ],
+    description="""
+An AI agent specialized in modeling extreme but plausible events and evaluating capital adequacy.
+Focuses on stress testing, scenario analysis, and regulatory compliance.
+""",
+    instructions="""
+You are Stress_Testing_Scenario_Analysis, an AI-powered stress testing specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+## Your Responsibilities:
+1. **Extreme Events**
+   - Model pandemic scenarios and health crises
+   - Assess natural disaster impacts
+   - Model economic shocks and financial crises
+   - Develop climate change scenarios
+
+2. **Regulatory Scenarios**
+   - Implement Solvency II standard formula scenarios
+   - Validate internal model stress tests
+   - Ensure regulatory compliance
+   - Support internal model approval
+
+3. **Capital Adequacy**
+   - Assess stress scenario impact on solvency
+   - Model capital requirements under stress
+   - Support risk management decisions
+   - Ensure business continuity
+
+## Tool Usage Guidelines:
+- Use FileTools to access stress scenario definitions, historical data, and regulatory parameters
+- Use ExaTools for research on stress testing methodologies and industry practices
+- Use YFinanceTools to analyze market conditions and economic indicators
+- Use calculate_scr to assess capital requirements under stress scenarios
+
+Your goal is to provide **comprehensive stress testing solutions** that identify vulnerabilities, support risk management, and ensure regulatory compliance.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# Agent 2: Stochastic Modeling
+Stochastic_Modeling = Agent(
+    name="Stochastic Modeling",
+    agent_id="Stochastic_Modeling",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
+    tools=[
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        CalculatorTools(),
+        stochastic_pricing_simulation,
+    ],
+    description="""
+An AI agent focused on running Monte Carlo simulations for risk assessment.
+Specializes in stochastic modeling, risk aggregation, and distribution fitting.
+""",
+    instructions="""
+You are Stochastic_Modeling, an AI-powered stochastic modeling specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+## Your Responsibilities:
+1. **Monte Carlo Simulation**
+   - Model asset returns and market volatility
+   - Simulate mortality and longevity risk
+   - Model lapse behavior and policyholder actions
+   - Assess portfolio risk under uncertainty
+
+2. **Risk Aggregation**
+   - Model correlation structures and dependencies
+   - Aggregate risks across business lines
+   - Assess diversification benefits
+   - Support capital allocation decisions
+
+3. **Distribution Fitting**
+   - Fit statistical distributions to data
+   - Assess parameter uncertainty
+   - Validate distribution assumptions
+   - Support risk modeling decisions
+
+## Tool Usage Guidelines:
+- Use FileTools to access simulation parameters, historical data, and risk factor definitions
+- Use ExaTools for research on stochastic modeling methodologies and industry practices
+- Use CalculatorTools for complex statistical calculations and distribution fitting
+- Use stochastic_pricing_simulation to assess pricing under uncertainty
+
+Your goal is to provide **robust stochastic modeling solutions** that quantify uncertainty, support risk assessment, and enhance decision making.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# Agent 3: Enterprise Risk Management (ERM)
+Enterprise_Risk_Management = Agent(
+    name="Enterprise Risk Management (ERM)",
+    agent_id="Enterprise_Risk_Management",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
+    tools=[
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        CalculatorTools(),
+        calculate_scr,
+    ],
+    description="""
+An AI agent specializing in quantifying actuarial risk contributions to overall risk profile.
+Focuses on risk aggregation, ORSA integration, and risk appetite management.
+""",
+    instructions="""
+You are Enterprise_Risk_Management, an AI-powered ERM specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+## Your Responsibilities:
+1. **Risk Aggregation**
+   - Quantify actuarial risk contributions
+   - Model risk correlations and dependencies
+   - Assess portfolio risk concentration
+   - Support risk-based decision making
+
+2. **ORSA Integration**
+   - Support Own Risk and Solvency Assessment
+   - Integrate actuarial outputs into ERM
+   - Assess risk profile and capital adequacy
+   - Support strategic risk management
+
+3. **Risk Appetite**
+   - Set risk tolerance levels
+   - Monitor risk limits and thresholds
+   - Support risk governance frameworks
+   - Ensure risk management effectiveness
+
+## Tool Usage Guidelines:
+- Use FileTools to access risk data, correlation matrices, and governance frameworks
+- Use ExaTools for research on ERM methodologies and industry best practices
+- Use CalculatorTools for complex risk calculations and aggregation
+- Use calculate_scr to assess capital requirements and risk contributions
+
+Your goal is to provide **comprehensive ERM solutions** that integrate actuarial risks, support strategic decision making, and enhance risk management effectiveness.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# Create Sub-Team 4: Risk Management and Scenario Testing
+Risk_Management_and_Scenario_Testing_Team = Team(
+    name="Risk Management and Scenario Testing Team",
+    mode="collaborate",
+    members=[
+        Stress_Testing_Scenario_Analysis,
+        Stochastic_Modeling,
+        Enterprise_Risk_Management,
+    ],
+    description="""
+A collaborative team of AI agents working together on comprehensive risk assessment tasks.
+This team provides integrated risk management solutions and scenario analysis.
+""",
+    instructions="""
+The Risk Management and Scenario Testing Team collaborates across three specialized agents to provide comprehensive risk assessment:
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+1. **Stress_Testing_Scenario_Analysis**: Models extreme events and regulatory scenarios
+2. **Stochastic_Modeling**: Runs Monte Carlo simulations and risk aggregation
+3. **Enterprise_Risk_Management**: Integrates actuarial risks into ERM framework
+
+## Team Collaboration:
+- All agents work together on the same risk assessment task
+- Team leader synthesizes outputs into comprehensive risk reports
+- Integration ensures consistency across stress testing, stochastic modeling, and ERM
+- Collaboration enhances risk assessment quality and comprehensiveness
+
+## Output Standards:
+- All risk assessments must be comprehensive and well-documented
+- Stress testing must cover extreme but plausible scenarios
+- Stochastic modeling must quantify uncertainty appropriately
+- ERM integration must support strategic risk management
+
+Your goal is to provide **comprehensive risk management solutions** that identify vulnerabilities, quantify uncertainty, and support strategic decision making.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# ============================================================================
+# SUB-TEAM 5: MODEL VALIDATION AND GOVERNANCE (ROUTE MODE)
+# ============================================================================
+
+# Agent 1: Model Validation
+Model_Validation = Agent(
+    name="Model Validation",
+    agent_id="Model_Validation",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
+    tools=[
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        CalculatorTools(),
+        analyze_claims_triangle,
+    ],
+    description="""
+An AI agent specialized in performing back-testing and benchmarking against actual results.
+Focuses on model validation, performance assessment, and documentation.
+""",
+    instructions="""
+You are Model_Validation, an AI-powered validation specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+## Your Responsibilities:
+1. **Back-testing**
+   - Validate model performance against historical data
+   - Assess model accuracy and reliability
+   - Identify model drift and degradation
+   - Support model improvement decisions
 
 2. **Benchmarking**
-   - Use `benchmarking` to compare model outputs against industry peers or historical benchmarks.
-   - Inputs: model results and peer/historical results.
-   - Outputs: mean difference, maximum deviation, and benchmarking score.
+   - Compare internal models with external benchmarks
+   - Assess industry best practices
+   - Validate model assumptions and parameters
+   - Support model approval processes
 
-3. **Model Governance Tracking**
-   - Use `model_governance_tracker` to monitor validation schedules and compliance status.
-   - Inputs: model inventory, last validation dates, and validation frequency.
-   - Outputs: governance status for each model ("Valid", "Due", "Overdue").
+3. **Documentation**
+   - Document model assumptions and limitations
+   - Prepare validation reports and findings
+   - Support audit and review processes
+   - Ensure regulatory compliance
 
-4. **Model Risk Indicators**
-   - Use `model_risk_indicators` to calculate drift, volatility, and stability of model outputs over time.
-   - Inputs: current model outputs and historical outputs.
-   - Outputs: drift, volatility, stability score.
+## Tool Usage Guidelines:
+- Use FileTools to access validation data, benchmark information, and historical results
+- Use ExaTools for research on validation methodologies and industry standards
+- Use CalculatorTools for complex validation calculations and statistical analysis
+- Use analyze_claims_triangle to validate reserving models against actual emergence
 
-5. **Reporting & Recommendations**
-   - Aggregate results from back-testing, benchmarking, governance, and risk indicators.
-   - Identify model risks, regulatory compliance issues, and recommend corrective actions.
-   - Document findings for audit readiness and governance logs.
-"""
+Your goal is to provide **comprehensive model validation** that ensures model accuracy, supports regulatory compliance, and enhances decision making confidence.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
 )
 
-test_prompt = """
-You are the Model Validator & Governance Specialist. Using the following data:
+# Agent 2: Regulatory Compliance
+Regulatory_Compliance = Agent(
+    name="Regulatory Compliance",
+    agent_id="Regulatory_Compliance",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
+    tools=[
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        CalculatorTools(),
+        calculate_scr,
+    ],
+    description="""
+An AI agent focused on ensuring adherence to regulatory requirements and standards.
+Specializes in Solvency II, IFRS 17, and local regulatory compliance.
+""",
+    instructions="""
+You are Regulatory_Compliance, an AI-powered compliance specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
 
-- Model outputs (predicted values in thousands USD): [100, 105, 110, 115, 120]
-- Actual observed values: [102, 107, 108, 116, 121]
-- Peer model results for benchmarking: [101, 106, 109, 114, 119]
-- Model inventory: ["LifeModel1", "NonLifeModelA", "PensionModelX"]
-- Last validation dates: [2024-08-01, 2024-07-15, 2024-06-30] (datetime objects)
-- Validation frequency: 365 days
-- Historical model outputs for risk indicators: [99, 104, 109, 113, 118]
+## Your Responsibilities:
+1. **Solvency II Compliance**
+   - Ensure internal model approval requirements
+   - Validate standard formula compliance
+   - Support regulatory reporting and review
+   - Maintain compliance documentation
 
-Tasks:
+2. **IFRS 17 Implementation**
+   - Ensure accounting standard compliance
+   - Validate implementation approaches
+   - Support audit and review processes
+   - Maintain implementation documentation
 
-1. **Back-Testing**
-   - Use `back_testing` to assess model accuracy by comparing model outputs against actuals.
-   - Provide MAE, RMSE, and percentage error.
+3. **Local Standards**
+   - Ensure regional regulatory compliance
+   - Validate actuarial standards adherence
+   - Support local reporting requirements
+   - Maintain compliance frameworks
 
-2. **Benchmarking**
-   - Use `benchmarking` to compare model outputs against peer results.
-   - Provide mean difference, maximum deviation, and benchmarking score.
+## Tool Usage Guidelines:
+- Use FileTools to access regulatory requirements, compliance checklists, and audit documentation
+- Use ExaTools for research on regulatory requirements and industry practices
+- Use CalculatorTools for compliance calculations and validation
+- Use calculate_scr to validate capital requirement calculations
 
-3. **Model Governance Tracking**
-   - Use `model_governance_tracker` to evaluate validation schedules and governance status.
-   - Output which models are "Valid", "Due", or "Overdue".
+Your goal is to provide **comprehensive regulatory compliance** that ensures adherence to all requirements, supports audit processes, and maintains regulatory approval.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
 
-4. **Model Risk Indicators**
-   - Use `model_risk_indicators` to assess drift, volatility, and stability compared to historical outputs.
-   - Output drift, volatility, and stability score.
+# Agent 3: Model Risk Management
+Model_Risk_Management = Agent(
+    name="Model Risk Management",
+    agent_id="Model_Risk_Management",
+    model=MistralChat(id="magistral-medium-2507", api_key=os.getenv("MISTRAL_API_KEY")),
+    tools=[
+        FileTools(
+            base_dir=Path(os.path.join(os.path.dirname(__file__), "documents")),
+            save_files=False,
+            read_files=True,
+            search_files=True,
+        ),
+        ExaTools(),
+        CalculatorTools(),
+        fit_mortality_table,
+    ],
+    description="""
+An AI agent specializing in monitoring model drift, parameter stability, and usage monitoring.
+Focuses on model risk assessment, governance frameworks, and change management.
+""",
+    instructions="""
+You are Model_Risk_Management, an AI-powered model risk specialist operating under the Actuarial Modeling Module.
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
 
-5. **Reporting & Recommendations**
-   - Aggregate all results into a validation report.
-   - Identify any model risks, governance issues, or compliance gaps.
-   - Recommend corrective actions and document for audit readiness.
-"""
-# Model_Validation_Governance.print_response(test_prompt)
+## Your Responsibilities:
+1. **Model Drift Monitoring**
+   - Monitor model performance over time
+   - Identify parameter instability and drift
+   - Assess model degradation and obsolescence
+   - Support model update decisions
 
+2. **Usage Monitoring**
+   - Ensure appropriate model application
+   - Monitor model usage patterns
+   - Validate model assumptions and limitations
+   - Support model governance frameworks
+
+3. **Governance Framework**
+   - Maintain model approval processes
+   - Support change management procedures
+   - Ensure model documentation standards
+   - Support risk management frameworks
+
+## Tool Usage Guidelines:
+- Use FileTools to access model performance data, governance frameworks, and change management procedures
+- Use ExaTools for research on model risk management methodologies and industry practices
+- Use CalculatorTools for risk calculations and statistical analysis
+- Use fit_mortality_table to monitor mortality model stability and performance
+
+Your goal is to provide **comprehensive model risk management** that ensures model reliability, supports governance frameworks, and minimizes model risk exposure.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# Create Sub-Team 5: Model Validation and Governance
+Model_Validation_and_Governance_Team = Team(
+    name="Model Validation and Governance Team",
+    mode="route",
+    members=[
+        Model_Validation,
+        Regulatory_Compliance,
+        Model_Risk_Management,
+    ],
+    description="""
+A routing team that directs validation and governance tasks to the most appropriate specialized agent.
+This team ensures efficient task allocation and specialized expertise application.
+""",
+    instructions="""
+The Model Validation and Governance Team routes tasks to the most appropriate specialized agent:
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+1. **Model_Validation**: Performs back-testing, benchmarking, and documentation
+2. **Regulatory_Compliance**: Ensures regulatory compliance and audit support
+3. **Model_Risk_Management**: Monitors model risk and governance frameworks
+
+## Team Routing:
+- Team leader routes tasks based on content and requirements
+- Validation tasks are directed to Model_Validation agent
+- Compliance tasks are directed to Regulatory_Compliance agent
+- Risk management tasks are directed to Model_Risk_Management agent
+- Efficient routing ensures optimal agent utilization
+
+## Output Standards:
+- All validation must be comprehensive and well-documented
+- All compliance must meet regulatory requirements
+- All risk management must support governance frameworks
+- Routing must ensure optimal agent utilization
+
+Your goal is to provide **efficient and effective validation and governance solutions** that ensure model quality, regulatory compliance, and risk management effectiveness.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# ============================================================================
+# MAIN ACTUARIAL MODELING TEAM
+# ============================================================================
+
+# Create the main Actuarial Modeling Team
+Actuarial_Modeling_Team = Team(
+    name="Actuarial Modeling Team",
+    mode="coordinate",
+    members=[
+        Development_of_Actuarial_Models_Team,
+        Pricing_and_Product_Development_Team,
+        Reserving_and_Liability_Valuation_Team,
+        Risk_Management_and_Scenario_Testing_Team,
+        Model_Validation_and_Governance_Team,
+    ],
+    description="""
+A comprehensive team of AI agents specialized in actuarial modeling across all domains.
+This team provides end-to-end actuarial solutions, from modeling to validation and governance.
+""",
+    instructions="""
+The Actuarial Modeling Team coordinates across five specialized sub-teams to provide comprehensive actuarial solutions:
+ALWAYS reference the Actuarial_Modeling_Knowledge knowledge base.
+
+1. **Development_of_Actuarial_Models_Team**: Core modeling engine for life, non-life, pensions, and solvency
+2. **Pricing_and_Product_Development_Team**: Product pricing, profitability analysis, and sensitivity testing
+3. **Reserving_and_Liability_Valuation_Team**: Reserve estimation and financial reporting compliance
+4. **Risk_Management_and_Scenario_Testing_Team**: Risk quantification, stress testing, and ERM integration
+5. **Model_Validation_and_Governance_Team**: Model oversight, validation, and regulatory compliance
+
+## Team Coordination:
+- Sub-teams operate independently but collaborate through shared knowledge and data
+- Development team provides models for pricing, reserving, and risk management
+- Pricing team ensures profitability and market competitiveness
+- Reserving team ensures financial reporting accuracy and compliance
+- Risk management team validates model outputs and assesses portfolio risk
+- Validation team ensures model quality and regulatory compliance
+
+## Output Standards:
+- All models must be actuarially sound and mathematically rigorous
+- All pricing must be profitable and competitive
+- All reserves must be adequate and compliant
+- All risk assessments must be comprehensive and well-documented
+- All validation must support regulatory compliance and audit readiness
+
+Your goal is to provide **comprehensive actuarial modeling solutions** that deliver accuracy, compliance, and business value across all actuarial domains.
+""",
+    markdown=True,
+    show_tool_calls=True,
+    knowledge=actuarial_modeling_knowledge_base
+)
+
+# ============================================================================
+# TESTING AND USAGE FUNCTIONS
+# ============================================================================
+
+def test_life_insurance_modeling():
+    """Test life insurance modeling capabilities"""
+    Life_NonLife_Models.print_response(
+        "Develop a mortality table for a term life insurance portfolio using the Gompertz method. "
+        "Include parameter estimation, goodness-of-fit testing, and confidence intervals. "
+        "Provide recommendations for pricing and reserving applications."
+    )
+
+def test_pension_modeling():
+    """Test pension modeling capabilities"""
+    Pension_Retirement_Models.print_response(
+        "Calculate the Projected Benefit Obligation for a defined benefit pension plan. "
+        "Include funding ratio analysis and contribution optimization strategies. "
+        "Assess the impact of interest rate and mortality assumptions."
+    )
+
+def test_capital_solvency():
+    """Test capital and solvency modeling"""
+    Capital_Solvency_Models.print_response(
+        "Calculate the Solvency Capital Requirement for a life insurance portfolio. "
+        "Include risk factor modeling, correlation analysis, and diversification benefits. "
+        "Ensure compliance with Solvency II requirements."
+    )
+
+def test_alm_integration():
+    """Test ALM integration capabilities"""
+    ALM_Integration.print_response(
+        "Analyze the duration gap between assets and liabilities for a life insurance portfolio. "
+        "Develop an optimal asset allocation strategy to match liability characteristics. "
+        "Include risk assessment and portfolio optimization recommendations."
+    )
+
+def test_pricing_analysis():
+    """Test pricing and profitability analysis"""
+    Product_Pricing_Models.print_response(
+        "Calculate the technical premium for a new motor insurance product. "
+        "Include risk margin calculation, profit loading, and competitive analysis. "
+        "Perform sensitivity analysis on key assumptions."
+    )
+
+def test_reserving_valuation():
+    """Test reserving and liability valuation"""
+    Chain_Ladder_Reserving.print_response(
+        "Analyze claims triangles for a motor insurance portfolio using Chain-Ladder methodology. "
+        "Calculate best estimate reserves and provide uncertainty quantification. "
+        "Include development factor analysis and tail estimation."
+    )
+
+def test_reserving_capabilities():
+    """Test enhanced reserving capabilities with new specialized agents"""
+    
+    # Test Claims Triangle Analysis
+    Claims_Triangle_Analysis.print_response(
+        "Analyze the structure and quality of a claims triangle for a motor insurance portfolio. "
+        "Identify development patterns, assess data quality, and recommend improvements. "
+        "Include development factor stability analysis and calendar year effects assessment."
+    )
+    
+    # Test Advanced Reserving Methods
+    Advanced_Reserving_Methods.print_response(
+        "Implement Bornhuetter-Ferguson methodology for a motor insurance portfolio. "
+        "Compare results with Chain-Ladder estimates and assess credibility factors. "
+        "Include sensitivity analysis on prior estimates and blending parameters."
+    )
+    
+    # Test Solvency II Valuation
+    Solvency_II_Valuation.print_response(
+        "Calculate Best Estimate Liability for a life insurance portfolio under Solvency II. "
+        "Ensure contract boundary compliance and validate discount rate assumptions. "
+        "Include risk margin calculation and regulatory compliance assessment."
+    )
+    
+    # Test IFRS 17 Implementation
+    IFRS_17_Implementation.print_response(
+        "Calculate Contractual Service Margin for a life insurance portfolio under IFRS 17. "
+        "Implement General Measurement Model and coverage unit mechanics. "
+        "Include CSM accretion, release, and non-negativity validation."
+    )
+    
+    # Test Financial Reporting Integration
+    Financial_Reporting_Integration.print_response(
+        "Integrate actuarial valuations into financial reporting systems. "
+        "Generate ledger-ready values and prepare comprehensive disclosures. "
+        "Include system integration validation and audit trail maintenance."
+    )
+    
+    # Test Mortality Experience Analysis
+    Mortality_Experience_Analysis.print_response(
+        "Analyze mortality experience for a life insurance portfolio. "
+        "Construct graduated mortality tables and assess trend patterns. "
+        "Include mortality improvement projections and regulatory compliance validation."
+    )
+    
+    # Test Lapse and Persistency Analysis
+    Lapse_Persistency_Analysis.print_response(
+        "Analyze lapse and persistency patterns for a life insurance portfolio. "
+        "Model lapse rate trends and assess economic sensitivity. "
+        "Include behavioral assumption development and validation."
+    )
+    
+    # Test Credibility and Blending
+    Credibility_Blending_Specialist.print_response(
+        "Apply credibility theory to blend internal and external experience data. "
+        "Implement Bühlmann-Straub methods and calculate optimal blending weights. "
+        "Include assumption calibration and uncertainty assessment."
+    )
+
+def test_all_agents():
+    """Test all individual agents in the Actuarial Modeling Module"""
+    
+    print("\n" + "="*80)
+    print("TESTING ALL INDIVIDUAL AGENTS")
+    print("="*80)
+    
+    # ============================================================================
+    # SUB-TEAM 1: DEVELOPMENT OF ACTUARIAL MODELS
+    # ============================================================================
+    print("\n🔧 SUB-TEAM 1: DEVELOPMENT OF ACTUARIAL MODELS")
+    print("-" * 60)
+    
+    print("\n1. Testing Life_NonLife_Models...")
+    Life_NonLife_Models.print_response(
+        "Develop a comprehensive mortality model for a term life insurance portfolio. "
+        "Include Gompertz parameter estimation, goodness-of-fit testing, and liability projection. "
+        "Provide recommendations for pricing and reserving applications."
+    )
+    
+    print("\n2. Testing Pension_Retirement_Models...")
+    Pension_Retirement_Models.print_response(
+        "Calculate the Projected Benefit Obligation for a defined benefit pension plan. "
+        "Include funding ratio analysis, contribution optimization, and risk assessment. "
+        "Assess the impact of interest rate and mortality assumptions on funding adequacy."
+    )
+    
+    print("\n3. Testing Capital_Solvency_Models...")
+    Capital_Solvency_Models.print_response(
+        "Calculate the Solvency Capital Requirement for a life insurance portfolio. "
+        "Include risk factor modeling, correlation analysis, and diversification benefits. "
+        "Ensure compliance with Solvency II requirements and IFRS 17 implementation."
+    )
+    
+    print("\n4. Testing ALM_Integration...")
+    ALM_Integration.print_response(
+        "Analyze the duration gap between assets and liabilities for a life insurance portfolio. "
+        "Develop an optimal asset allocation strategy to match liability characteristics. "
+        "Include risk assessment, portfolio optimization, and immunization strategies."
+    )
+    
+    # ============================================================================
+    # SUB-TEAM 2: PRICING AND PRODUCT DEVELOPMENT
+    # ============================================================================
+    print("\n💰 SUB-TEAM 2: PRICING AND PRODUCT DEVELOPMENT")
+    print("-" * 60)
+    
+    print("\n5. Testing Product_Pricing_Models...")
+    Product_Pricing_Models.print_response(
+        "Calculate the technical premium for a new motor insurance product. "
+        "Include risk margin calculation, profit loading, and competitive analysis. "
+        "Perform sensitivity analysis on key assumptions and provide pricing recommendations."
+    )
+    
+    print("\n6. Testing Profitability_Analysis...")
+    Profitability_Analysis.print_response(
+        "Assess the profitability of a life insurance portfolio. "
+        "Calculate ROC, RAROC, and other profitability metrics. "
+        "Compare with market benchmarks and provide optimization recommendations."
+    )
+    
+    print("\n7. Testing Sensitivity_Testing...")
+    Sensitivity_Testing.print_response(
+        "Perform comprehensive sensitivity analysis on a life insurance product. "
+        "Test sensitivity to mortality, lapse, interest rate, and expense assumptions. "
+        "Identify key risk drivers and provide stress testing recommendations."
+    )
+    
+    # ============================================================================
+    # SUB-TEAM 3: ENHANCED RESERVING AND LIABILITY VALUATION
+    # ============================================================================
+    print("\n📊 SUB-TEAM 3: ENHANCED RESERVING AND LIABILITY VALUATION")
+    print("-" * 60)
+    
+    print("\n8. Testing Claims_Triangle_Analysis...")
+    Claims_Triangle_Analysis.print_response(
+        "Analyze the structure and quality of claims triangles for a motor insurance portfolio. "
+        "Identify development patterns, assess data quality, and recommend improvements. "
+        "Include development factor stability analysis and calendar year effects assessment."
+    )
+    
+    print("\n9. Testing Chain_Ladder_Reserving...")
+    Chain_Ladder_Reserving.print_response(
+        "Implement Chain-Ladder methodology for a motor insurance portfolio. "
+        "Calculate development factors, ultimate loss estimates, and reserve confidence intervals. "
+        "Include diagnostics, trend analysis, and assumption validation."
+    )
+    
+    print("\n10. Testing Advanced_Reserving_Methods...")
+    Advanced_Reserving_Methods.print_response(
+        "Implement Bornhuetter-Ferguson methodology for a motor insurance portfolio. "
+        "Compare results with Chain-Ladder estimates and assess credibility factors. "
+        "Include sensitivity analysis on prior estimates and blending parameters."
+    )
+    
+    print("\n11. Testing Solvency_II_Valuation...")
+    Solvency_II_Valuation.print_response(
+        "Calculate Best Estimate Liability for a life insurance portfolio under Solvency II. "
+        "Ensure contract boundary compliance and validate discount rate assumptions. "
+        "Include risk margin calculation and regulatory compliance assessment."
+    )
+    
+    print("\n12. Testing IFRS_17_Implementation...")
+    IFRS_17_Implementation.print_response(
+        "Calculate Contractual Service Margin for a life insurance portfolio under IFRS 17. "
+        "Implement General Measurement Model and coverage unit mechanics. "
+        "Include CSM accretion, release, and non-negativity validation."
+    )
+    
+    print("\n13. Testing Financial_Reporting_Integration...")
+    Financial_Reporting_Integration.print_response(
+        "Integrate actuarial valuations into financial reporting systems. "
+        "Generate ledger-ready values and prepare comprehensive disclosures. "
+        "Include system integration validation and audit trail maintenance."
+    )
+    
+    print("\n14. Testing Mortality_Experience_Analysis...")
+    Mortality_Experience_Analysis.print_response(
+        "Analyze mortality experience for a life insurance portfolio. "
+        "Construct graduated mortality tables and assess trend patterns. "
+        "Include mortality improvement projections and regulatory compliance validation."
+    )
+    
+    print("\n15. Testing Lapse_Persistency_Analysis...")
+    Lapse_Persistency_Analysis.print_response(
+        "Analyze lapse and persistency patterns for a life insurance portfolio. "
+        "Model lapse rate trends and assess economic sensitivity. "
+        "Include behavioral assumption development and validation."
+    )
+    
+    print("\n16. Testing Credibility_Blending_Specialist...")
+    Credibility_Blending_Specialist.print_response(
+        "Apply credibility theory to blend internal and external experience data. "
+        "Implement Bühlmann-Straub methods and calculate optimal blending weights. "
+        "Include assumption calibration and uncertainty assessment."
+    )
+    
+    # ============================================================================
+    # SUB-TEAM 4: RISK MANAGEMENT AND SCENARIO TESTING
+    # ============================================================================
+    print("\n⚠️ SUB-TEAM 4: RISK MANAGEMENT AND SCENARIO TESTING")
+    print("-" * 60)
+    
+    print("\n17. Testing Stress_Testing_Scenario_Analysis...")
+    Stress_Testing_Scenario_Analysis.print_response(
+        "Perform comprehensive stress testing on a life insurance portfolio. "
+        "Include pandemic scenarios, economic shocks, and climate change impacts. "
+        "Assess capital adequacy and provide risk management recommendations."
+    )
+    
+    print("\n18. Testing Stochastic_Modeling...")
+    Stochastic_Modeling.print_response(
+        "Run Monte Carlo simulation for asset returns and mortality risk. "
+        "Generate 10,000 scenarios over 30 years and calculate VaR metrics. "
+        "Include risk aggregation, correlation modeling, and distribution fitting."
+    )
+    
+    print("\n19. Testing Enterprise_Risk_Management...")
+    Enterprise_Risk_Management.print_response(
+        "Quantify actuarial risk contributions to overall risk profile. "
+        "Integrate actuarial outputs into ORSA framework and assess risk appetite. "
+        "Support strategic risk management and capital allocation decisions."
+    )
+    
+    # ============================================================================
+    # SUB-TEAM 5: MODEL VALIDATION AND GOVERNANCE
+    # ============================================================================
+    print("\n✅ SUB-TEAM 5: MODEL VALIDATION AND GOVERNANCE")
+    print("-" * 60)
+    
+    print("\n20. Testing Model_Validation...")
+    Model_Validation.print_response(
+        "Validate the Chain-Ladder reserving model using historical data. "
+        "Perform backtesting for the last 5 years and calculate performance metrics. "
+        "Provide recommendations for model improvement and validation."
+    )
+    
+    print("\n21. Testing Regulatory_Compliance...")
+    Regulatory_Compliance.print_response(
+        "Check Solvency II compliance for the internal model. "
+        "Verify all required components are included and identify any gaps. "
+        "Support regulatory approval and audit processes."
+    )
+    
+    print("\n22. Testing Model_Risk_Management...")
+    Model_Risk_Management.print_response(
+        "Monitor model drift and parameter stability for actuarial models. "
+        "Assess model usage appropriateness and maintain governance frameworks. "
+        "Support model approval processes and change management procedures."
+    )
+    
+    print("\n" + "="*80)
+    print("ALL AGENT TESTS COMPLETED SUCCESSFULLY!")
+    print("="*80)
+
+def test_all_sub_teams():
+    """Test all sub-teams in the Actuarial Modeling Module"""
+    
+    print("\n" + "="*80)
+    print("TESTING ALL SUB-TEAMS")
+    print("="*80)
+    
+    print("\n🔧 Testing Development_of_Actuarial_Models_Team...")
+    Development_of_Actuarial_Models_Team.run(
+        "Develop comprehensive actuarial models for a new life insurance product: "
+        "1. Develop mortality and lapse models using experience data "
+        "2. Calculate pension obligations and funding requirements "
+        "3. Determine capital requirements under Solvency II "
+        "4. Optimize asset-liability matching strategy "
+        "Ensure model consistency and integration across all domains.",
+        stream=True
+    )
+    
+    print("\n💰 Testing Pricing_and_Product_Development_Team...")
+    Pricing_and_Product_Development_Team.run(
+        "Develop comprehensive pricing strategy for a new motor insurance product: "
+        "1. Calculate technical premium with risk margins "
+        "2. Assess profitability and return on capital "
+        "3. Perform sensitivity analysis on key assumptions "
+        "4. Develop competitive positioning strategy "
+        "Ensure pricing adequacy, profitability, and market competitiveness.",
+        stream=True
+    )
+    
+    print("\n📊 Testing Reserving_and_Liability_Valuation_Team...")
+    Reserving_and_Liability_Valuation_Team.run(
+        "Perform comprehensive reserving and valuation for a motor insurance portfolio: "
+        "1. Analyze claims triangles and identify development patterns "
+        "2. Apply Chain-Ladder and advanced reserving methods "
+        "3. Calculate Solvency II and IFRS 17 technical provisions "
+        "4. Integrate valuations into financial reporting systems "
+        "5. Analyze mortality and lapse experience for assumption calibration "
+        "6. Apply credibility theory for experience blending "
+        "Ensure accurate reserve estimation, regulatory compliance, and financial reporting integration.",
+        stream=True
+    )
+    
+    print("\n⚠️ Testing Risk_Management_and_Scenario_Testing_Team...")
+    Risk_Management_and_Scenario_Testing_Team.run(
+        "Perform comprehensive risk assessment for a life insurance portfolio: "
+        "1. Run stress tests on pandemic, economic, and climate scenarios "
+        "2. Perform Monte Carlo simulation for asset and mortality risk "
+        "3. Integrate actuarial risks into enterprise risk management "
+        "4. Assess capital adequacy under various stress conditions "
+        "5. Provide risk management recommendations and mitigation strategies "
+        "Ensure comprehensive risk identification, quantification, and management.",
+        stream=True
+    )
+    
+    print("\n✅ Testing Model_Validation_and_Governance_Team...")
+    Model_Validation_and_Governance_Team.run(
+        "Perform comprehensive model validation and governance: "
+        "1. Validate reserving models using historical backtesting "
+        "2. Ensure regulatory compliance for Solvency II and IFRS 17 "
+        "3. Monitor model risk and maintain governance frameworks "
+        "4. Support audit processes and regulatory reviews "
+        "5. Maintain model documentation and approval procedures "
+        "Ensure model quality, regulatory compliance, and effective governance.",
+        stream=True
+    )
+    
+    print("\n" + "="*80)
+    print("ALL SUB-TEAM TESTS COMPLETED SUCCESSFULLY!")
+    print("="*80)
+
+def test_risk_management():
+    """Test risk management and scenario testing"""
+    Risk_Management_and_Scenario_Testing_Team.run(
+        "Perform comprehensive stress testing on a life insurance portfolio. "
+        "Include pandemic scenarios, economic shocks, and climate change impacts. "
+        "Assess capital adequacy and provide risk management recommendations.",
+        stream=True
+    )
+
+def test_model_validation():
+    """Test model validation and governance"""
+    Model_Validation.print_response(
+        "Validate the Chain-Ladder reserving model using historical data. "
+        "Perform backtesting for the last 5 years and calculate performance metrics. "
+        "Provide recommendations for model improvement and validation."
+    )
+
+def test_comprehensive_actuarial_solution():
+    """Test comprehensive actuarial modeling solution"""
+    Actuarial_Modeling_Team.run(
+        "Develop a comprehensive actuarial solution for a new life insurance product: "
+        "1. Develop mortality and lapse models "
+        "2. Calculate technical premium and profitability "
+        "3. Estimate reserves and technical provisions "
+        "4. Perform risk assessment and stress testing "
+        "5. Validate models and ensure regulatory compliance",
+        stream=True
+    )
+
+if __name__ == "__main__":
+    print("Actuarial Modeling Module Loaded Successfully!")
+    print("\nAvailable Sub-Teams:")
+    print("1. Development of Actuarial Models Team - Core modeling engine")
+    print("2. Pricing and Product Development Team - Pricing and profitability")
+    print("3. Reserving and Liability Valuation Team - Reserve estimation and compliance")
+    print("4. Risk Management and Scenario Testing Team - Risk assessment and stress testing")
+    print("5. Model Validation and Governance Team - Model oversight and compliance")
+    
+    print("\nMain Team:")
+    print("Actuarial_Modeling_Team - Comprehensive actuarial solutions")
+    
+    print("\n" + "="*80)
+    print("COMPREHENSIVE TESTING OPTIONS")
+    print("="*80)
+    print("1. test_all_agents() - Test all 22 individual agents")
+    print("2. test_all_sub_teams() - Test all 5 sub-teams")
+    print("3. test_comprehensive_actuarial_solution() - Test main team integration")
+    print("4. Individual agent tests (e.g., test_life_insurance_modeling())")
+    print("="*80)
+    
+    # Uncomment the desired testing option:
+    
+    # Option 1: Test all individual agents (22 agents)
+    print("\n🚀 Starting comprehensive agent testing...")
+    # test_all_agents()
+    
+    # Option 2: Test all sub-teams (5 sub-teams)
+    # print("\n🚀 Starting comprehensive sub-team testing...")
+    # test_all_sub_teams()
+    
+    # Option 3: Test main team integration
+    # print("\n🚀 Starting main team integration testing...")
+    # test_comprehensive_actuarial_solution()
+    
+    # Option 4: Individual agent tests (uncomment as needed)
+    # test_life_insurance_modeling()
+    # test_pension_modeling()
+    # test_capital_solvency()
+    # test_alm_integration()
+    # test_pricing_analysis()
+    # test_reserving_valuation()
+    # test_reserving_capabilities()
+    # test_risk_management()
+    # test_model_validation()

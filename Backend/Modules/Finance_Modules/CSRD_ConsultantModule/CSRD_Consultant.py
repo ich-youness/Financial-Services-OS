@@ -21,13 +21,13 @@ load_dotenv()
 # Initializing Knowledge Base
 knowledge_base = MarkdownKnowledgeBase(
     path="MarkdownKnowledge/company_data.md",
-    vector_db=PgVector(
-        table_name="analyst_fin_reporting_and_ref_knowledge",
-        db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
-        embedder=MistralEmbedder(api_key=os.getenv('MISTRAL_API_KEY')),
-    ),
+    # vector_db=PgVector(
+    #     table_name="analyst_fin_reporting_and_ref_knowledge",
+    #     db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
+    #     embedder=MistralEmbedder(api_key=os.getenv('MISTRAL_API_KEY')),
+    # ),
 )
-knowledge_base.load(recreate=True)
+# knowledge_base.load(recreate=True)
 
 FrameworkAnalysis = Agent(
     name="Framework Analysis",
@@ -287,6 +287,6 @@ manager_agent = Team(
 # Can you perform a CSRD gap analysis on our ESG disclosures and identify which ESRS standards we’re currently missing? The company is a large European bank.
 # """, stream=True)
 
-manager_agent.print_response("""
-We’re starting a CSRD compliance program. Can you help us determine the material ESG topics we need to focus on, and what data we need to collect for audit purposes? The company is a large European bank.
-""", stream=True)
+# manager_agent.print_response("""
+# We’re starting a CSRD compliance program. Can you help us determine the material ESG topics we need to focus on, and what data we need to collect for audit purposes? The company is a large European bank.
+# """, stream=True)

@@ -12,16 +12,15 @@ from pathlib import Path
 
 # Initializing Knowledge Base
 knowledge_base = MarkdownKnowledgeBase(
-    path=os.path.join(
-        os.path.dirname(__file__), "knowledge", "Structural_Risk_Analyst_Knowledge.md"
-    ),
-    vector_db=PgVector(
-        table_name="structural_risk_analystg_knowledge1",
-        db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
-        embedder=MistralEmbedder(api_key=os.getenv("MISTRAL_API_KEY")),
-    ),
+    path="knowledge/Structural_Risk_Analyst_Knowledge.md"
+    
+    # vector_db=PgVector(
+    #     table_name="structural_risk_analystg_knowledge1",
+    #     db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
+    #     embedder=MistralEmbedder(api_key=os.getenv("MISTRAL_API_KEY")),
+    # ),
 )
-knowledge_base.load(recreate=False)
+# knowledge_base.load(recreate=False)
 
 # Agent 1: Regulatory Reporting – Solvency
 SolvencyReportingAgent = Agent(
@@ -361,13 +360,13 @@ Provide correction recommendations and ensure multi-regulatory compliance.""",
     )
 
 
-# if __name__ == "__main__":
-#     from agno.utils.pprint import pprint_run_response
+if __name__ == "__main__":
+    from agno.utils.pprint import pprint_run_response
 
-#     print("Structural Risk Analyst Module Loaded Successfully!")
-#     print("Available Agents:")
-#     print("1. SolvencyReportingAgent - Regulatory solvency reporting")
-#     test_solvency_calculations()
+    print("Structural Risk Analyst Module Loaded Successfully!")
+    print("Available Agents:")
+    print("1. SolvencyReportingAgent - Regulatory solvency reporting")
+    test_solvency_calculations()
 #     print("2. LiquidityRiskAgent - Liquidity risk analysis")
 #     test_liquidity_analysis()
 #     print("3. InterestRateRiskAgent - Interest rate risk metrics")

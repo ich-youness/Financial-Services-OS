@@ -843,13 +843,13 @@ def test_comprehensive_orsa_implementation():
     )
 
 
-# if __name__ == "__main__":
-#     print("Forward-Looking and Financial Actuarial Module Loaded Successfully!")
-#     print("Available Agents:")
-#     print(
-#         "1. ForwardLookingRiskAssessmentAgent - Risk identification and solvency projection"
-#     )
-#     test_forward_looking_risk_assessment()
+if __name__ == "__main__":
+    print("Forward-Looking and Financial Actuarial Module Loaded Successfully!")
+    print("Available Agents:")
+    print(
+        "1. ForwardLookingRiskAssessmentAgent - Risk identification and solvency projection"
+    )
+    test_forward_looking_risk_assessment()
 #     print(
 #         "2. FinancialActuarialProjectionsAgent - Balance sheet forecasting and capital requirements"
 #     )

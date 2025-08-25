@@ -21,13 +21,13 @@ load_dotenv()
 # Initializing Knowledge Base
 knowledge_base = MarkdownKnowledgeBase(
     path="MarkdownKnowledge/company_data.md",
-    vector_db=PgVector(
-        table_name="treasurer_knowledge",
-        db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
-        embedder=MistralEmbedder(api_key=os.getenv('MISTRAL_API_KEY')),
-    ),
+    # vector_db=PgVector(
+    #     table_name="treasurer_knowledge",
+    #     db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
+    #     embedder=MistralEmbedder(api_key=os.getenv('MISTRAL_API_KEY')),
+    # ),
 )
-knowledge_base.load(recreate=True)
+# knowledge_base.load(recreate=True)
 
 CashFlowManagement = Agent(
     name="Cash Flow Management Agent",
